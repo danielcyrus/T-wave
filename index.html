@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="resources/css/main.css">
+        <link href="resources/css/fontawesome.css" rel="stylesheet">
+     <link href="resources/css/brands.css" rel="stylesheet">
+    <link href="resources/css/solid.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    </head>
+<body>
+   <div>
+       <img src="resources/img/au-logo.svg"/>
+       <h3>Simplified Egg and Changing Yolk Model</h3>
+   </div>
+   <div>
+   <div id="eggmodel"><canvas id="eggCanvas" style="width:80%;border:1px solid #000000;height:30%;display: inline-block;position: relative;"></canvas></div>
+   <div id="graph"><canvas id="eggChart" style="width:80%;border:1px solid #000000;height:30%;display: inline-block;position: relative;"></canvas></div>
+   <div id="configure">
+    <b>Settings</b>
+    <div>
+    <div class="grid-container">
+      <div class="grid-item">Proximal  Hypertrophy</div>
+      <div class="grid-item"><input type="number" id="proximal" name="quantity" min="0" max="2" step="0.1" value="1.0"></div>
+      <div class="grid-item">Apical  Hypertrophy</div>
+      <div class="grid-item"><input type="number" id="apical" name="quantity" min="0" max="2" step="0.1" value="1.0"></div>  
+      <div class="grid-item">Distal  Hypertrophy</div>  
+      <div class="grid-item"><input type="number" id="distal" name="quantity" min="0" max="2" step="0.1" value="1.0"></div>
+      <div class="grid-item">Damage Severity</div>
+      <div class="grid-item"><select name="damage" id="damageCombo">
+        <option value="0.5">Normal Damage</option>
+        <option value="1.0">Severe Damage</option>
+      </select></div>
+      
+    </div>
+  
+
+    </div>
+ <div style="text-align: right;display: inline-block;width: 80%;">
+      <button id="startAnim" onclick="startAnimation(this);">
+        <i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation
+    </button>
+  </div>
+   </div>
+</div>
+<div>
+  Page 1: This work is based on the paper from the <a href="scholar.google.com">link</a>
+</div>
+</body>
+<script>
+    ///////////graph
+  
+  var damageIndex = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  var current_result3=[];
+  function UpdateData(){
+///////////////////////////////////////////
+const Posterior_Signal_Strength = 0.5;
+const Septal_Signal_Strenght = 0.5;
+
+const proximal= document.getElementById("proximal").value;
+const apical= document.getElementById("apical").value;
+const distal= document.getElementById("distal").value;
+const damageCombo= document.getElementById("damageCombo").value;
+
+const Posterior_Wall=	       [0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0];			
+const Posterior_Wall_signal =[];for(var i =0;i<18;i++)Posterior_Wall_signal.push(Posterior_Wall[i]*distal*Posterior_Signal_Strength);
+
+const Basal_Septum_signal	=  [1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0];					
+const Basal_Septum_signal_with_hypertrophy =  [];for(var i =0;i<18;i++)Basal_Septum_signal_with_hypertrophy.push(Basal_Septum_signal[i]*proximal*Septal_Signal_Strenght);
+const Apical_Septum_signal=  [0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0]	;		
+const Apical_Septum_signal_with_hypertrophy=  [];for(var i =0;i<18;i++)Apical_Septum_signal_with_hypertrophy.push(Apical_Septum_signal[i]*distal*Septal_Signal_Strenght);
+const Net_Towards_signal=    [];for(var i =0;i<18;i++)Net_Towards_signal.push(Apical_Septum_signal_with_hypertrophy[i]+Basal_Septum_signal_with_hypertrophy[i]+Posterior_Wall_signal[i]);
+																					
+const Towards_signal_damage=[];for(var i =12;i<27;i++)Towards_signal_damage.push(damageIndex[i]);for(var i =0;i<3;i++)Towards_signal_damage.push(0);				
+const Net_Towards_damage= [];for(var i =0;i<18;i++)Net_Towards_damage.push(Towards_signal_damage[i]*damageCombo);
+																					
+const Net_Result_Towards_side=[];for(var i =0;i<18;i++)Net_Result_Towards_side.push(Net_Towards_signal[i]-Net_Towards_damage[i]);
+//alert(Net_Result_Towards_side);
+const Basal_septum_signal = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0];
+const Basal_septum_signal_with_hypertrophy=[];for(var i =0;i<18;i++)Basal_septum_signal_with_hypertrophy.push(Basal_septum_signal[i]*Septal_Signal_Strenght*proximal);
+const Net_Away_From_signal = Basal_septum_signal_with_hypertrophy;
+const Away_from_signal_damage=[];for(var i =12;i>0;i--)Away_from_signal_damage.push(damageIndex[i]);for(var i =0;i<6;i++)Away_from_signal_damage.push(0);
+const Net_Away_From_damage=[];for(var i =0;i<18;i++)Net_Away_From_damage.push(Away_from_signal_damage[i]*damageCombo);
+const Net_Result_Away_From_side=[];for(var i =0;i<18;i++)Net_Result_Away_From_side.push(Net_Away_From_signal[i]-Net_Away_From_damage[i]);
+//alert(Net_Result_Away_From_side);
+///////////////////////////////////////////
+   current_result3=[];
+   
+    //var yValues = [0,0,0,0,0,0,0,0,0,.0625,0.25,0.4375,0.4375,0.25,0.0625,0,0,0];
+    const current_result=[];for(var i =0;i<18;i++)current_result.push(Net_Result_Towards_side[i]-Net_Result_Away_From_side[i]);
+    var current_result1=[0];
+    var current_result2=[0];
+    for(var i =1;i<18;i++)current_result1.push((current_result[i-1]+current_result[i])/2);
+    for(var i =1;i<18;i++)current_result2.push((current_result1[i-1]+current_result1[i])/2);
+    for(var i =3;i<18;i++)current_result3.push(current_result2[i]);for(var i =0;i<3;i++)current_result3.push(0);
+   // alert(current_result3);
+  
+  }
+
+  
+
+  var xValues = [20,40,60,80,100,120,140,160,180,200,220,240,260,280,300,320,340,380];
+    var chart =new Chart("eggChart", {
+  type: "line",
+  data: {
+    labels: xValues,
+    datasets: [{
+        pointRadius: 0,
+        label:"Current result",
+     // pointBackgroundColor: "rgb(0,0,255)",
+      //backgroundColor: "rgba(255,255,255,0.0)",
+      fill:false,
+      borderColor: "rgba(0,0,255,1)",
+      data: current_result3
+    },
+    {
+      pointRadius: 0,
+      label:"Original trace",
+      data: [0,0,0,0,0,0,0,0,0,0.125,0.375,0.5,0.375,0.125,0,0,0,0],
+      borderColor: "red",
+      fill: false,
+      borderDash: [10,5]
+    }]
+  },
+  options: {
+    legend: {display: true},
+    scales: {
+      xAxes: [{ticks: {min: 0, max:360},scaleLabel:{display: true,labelString: 'mSec'}}],
+      yAxes: [{ticks: {min: -1, max:+1},scaleLabel:{display: true,labelString: 'mV'}}],
+    }
+  }
+});
+
+/////////////////////////////Animation
+var rad =-8;
+var myInterval =null;
+var damageRects = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1];
+var damageIndex = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+const Canvaselement = document.getElementById("eggCanvas");
+const ctx= Canvaselement.getContext("2d");
+
+Canvaselement.addEventListener('click', function(event) {
+  // Check whether point is inside circle
+  var rect = Canvaselement.getBoundingClientRect();
+   
+        x= (event.clientX - rect.left) / (rect.right - rect.left) * Canvaselement.width;
+        y= (event.clientY - rect.top) / (rect.bottom - rect.top) * Canvaselement.height;
+ 
+  //ctx.fillRect(x, y, 7 , 7);
+  //alert(x + " " + y + damageRegcts);
+  for(var i=0;i<28;i++)
+    if(x>=damageRects[i] && x<=damageRects[i]+7 && y>=70 && y<=90 && damageIndex[i]==0)
+    {
+     damageIndex[i]=1;
+     ctx.fillStyle = '#ff0000';
+     ctx.fillRect(damageRects[i], 70, 7 , 20);
+    break;
+    }
+    else if(x>=damageRects[i] && x<=damageRects[i]+7 && y>=70 && y<=90 && damageIndex[i]==1)
+      {
+      
+     ctx.fillStyle = '#ffffff';
+     ctx.fillRect(damageRects[i], 70, 7 , 20);
+     ctx.fillStyle = '#00aa00';
+     ctx.fillRect(damageRects[i], 77, 7 , 7);
+     damageIndex[i]=0;
+     break;
+    }
+
+  //ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+});
+
+function draw(){
+  
+ctx.clearRect(0, 0, 400, 200);
+
+
+
+/////damage rects
+
+for(var i=0;i<12;i++)
+{
+  
+  
+      if(damageIndex[i]==1)
+      {
+      ctx.fillStyle = '#ff0000';
+      ctx.fillRect(35+(i*8), 70, 7 , 20); 
+      }
+      else
+      {
+      ctx.fillStyle = '#00aa00';
+      ctx.fillRect(35+(i*8), 77, 7 , 7);
+      }
+   
+   
+  
+    
+  
+  damageRects[i]=35+(i*8);
+
+}
+
+for(var i=0;i<15;i++)
+{
+  if(damageIndex[i+12]==1)
+      {
+      ctx.fillStyle = '#ff0000';
+      ctx.fillRect(132+(i*8), 70, 7 , 20); 
+      }
+      else
+      {
+      ctx.fillStyle = '#00aa00';
+      ctx.fillRect(132+(i*8), 77, 7 , 7);
+      }
+   
+   
+  
+  damageRects[i+12]=132+(i*8);
+}
+
+chart.data.datasets[0].data.push(current_result3[Math.round(rad/8)]);
+      chart.update();
+//ctx.endPath();
+rad=rad+8;
+
+if(rad>140){
+    var element=document.getElementById("startAnim");
+    element.innerHTML='<i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation';
+    clearInterval(myInterval);
+    myInterval =null;
+    rad=0;
+}
+
+
+
+var img1 = new Image();
+
+//drawing of the test image - img1
+img1.onload = function () {
+  //////////////////
+ctx.beginPath();
+ctx.arc(123, 80, rad, 0, 2 * Math.PI, false);
+ctx.lineWidth = 8
+ctx.strokeStyle = '#FFA500';
+ctx.stroke();
+    //draw background image
+    ctx.drawImage(img1, -20, -40,345,220);
+    var centerX = ctx.width / 2;
+    var centerY = ctx.height / 2;
+    ctx.beginPath();
+    ctx.arc(123, 80, 8, 0, 2 * Math.PI, false);
+    ctx.fillStyle = 'black';
+    ctx.fill();
+
+    ctx.font = "38px serif";
+    ctx.fillText("+", 265, 90);
+    ctx.fillText("-", 10, 90);
+    
+};
+img1.src ="./resources/img/egg.png";
+
+}
+
+function startAnimation(element){
+    
+    
+    if(myInterval==null)
+    {
+      UpdateData();
+      chart.data.datasets[0].data=[];
+      //chart.update();
+      
+        myInterval=setInterval(draw, 280);
+        element.innerHTML="<i class='fa-sharp fa-solid fa-stop' style='color: red;'></i>'Stop Simulation";
+        
+    }
+    else
+    {
+    rad=0;
+    element.innerHTML='<i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation';
+    clearInterval(myInterval);
+    myInterval =null;
+    }
+}
+//UpdateData();
+
+      //chart.data.labels.push("Post " + postId++);
+//drawChart();
+draw();
+
+</script>
+</html>
