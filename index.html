@@ -13,9 +13,11 @@
        <h3>Simplified Egg and Changing Yolk Model</h3>
    </div>
    <div>
-   <div id="eggmodel"><canvas id="eggCanvas" style="width:80%;border:1px solid #000000;height:30%;display: inline-block;position: relative;"></canvas></div>
-   <div id="graph"><canvas id="eggChart" style="width:80%;border:1px solid #000000;height:30%;display: inline-block;position: relative;"></canvas></div>
-   <div id="configure">
+    <div style="display: flex;">
+   <div id="eggmodel" style="flex: 1;"> <i class="fa-solid fa-download" style="color:  rgb(34, 87, 139);float:right;" onclick='saveCanvasAsImage("eggCanvas","egg.jpg");'></i><canvas id="eggCanvas" style="width:80%;height:90%;display: inline-block;position: relative;"></canvas></div>
+   <div id="graph" style="flex: 1;"> <i class="fa-solid fa-download" style="color: rgb(34, 87, 139);float:right;" onclick='saveCanvasAsImage("eggChart","chart.jpg");'></i><canvas id="eggChart" style="width:80%;height:90%;display: inline-block;position: relative;"></canvas></div>
+  </div>
+   <div id="configure" style="width: 99%;">
     <b>Settings</b>
     <div>
     <div class="grid-container">
@@ -47,6 +49,22 @@
 </div>
 </body>
 <script>
+
+function saveCanvasAsImage(element,filename){
+  
+  const canvas = document.getElementById(element);
+  var dataURL = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+  window.Location =dataURL;
+    downloadImage(dataURL, filename);
+}
+function downloadImage(data, filename = 'untitled.jpeg') {
+    var a = document.createElement('a');
+    a.href = data;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+}
+
     ///////////graph
   
   var damageIndex = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
@@ -104,6 +122,7 @@ const Net_Result_Away_From_side=[];for(var i =0;i<18;i++)Net_Result_Away_From_si
   data: {
     labels: xValues,
     datasets: [{
+      pointStyle: 'line',
         pointRadius: 0,
         label:"Current result",
      // pointBackgroundColor: "rgb(0,0,255)",
@@ -113,6 +132,7 @@ const Net_Result_Away_From_side=[];for(var i =0;i<18;i++)Net_Result_Away_From_si
       data: current_result3
     },
     {
+      pointStyle: 'dash',
       pointRadius: 0,
       label:"Original trace",
       data: [0,0,0,0,0,0,0,0,0,0.125,0.375,0.5,0.375,0.125,0,0,0,0],
@@ -122,10 +142,12 @@ const Net_Result_Away_From_side=[];for(var i =0;i<18;i++)Net_Result_Away_From_si
     }]
   },
   options: {
-    legend: {display: true},
+    legend: {display: true,labels: {
+      usePointStyle: true
+    }},
     scales: {
       xAxes: [{ticks: {min: 0, max:360},scaleLabel:{display: true,labelString: 'mSec'}}],
-      yAxes: [{ticks: {min: -1, max:+1},scaleLabel:{display: true,labelString: 'mV'}}],
+      yAxes: [{ticks: {min: -1.5, max:+1.5},scaleLabel:{display: true,labelString: 'mV'}}],
     }
   }
 });
@@ -253,7 +275,7 @@ ctx.stroke();
     ctx.fillStyle = 'black';
     ctx.fill();
 
-    ctx.font = "38px serif";
+    ctx.font = "28px serif";
     ctx.fillText("+", 265, 90);
     ctx.fillText("-", 10, 90);
     
