@@ -45,7 +45,7 @@
     </button><br><br>
    
     Presets
-    <select name="damage" id="damageCombo">
+    <select name="damage" id="damageCombo" onchange="presets(this)">
       <option value="1">None</option>
       <option value="2">Normal T wave</option>
       <option value="3">ST elevation</option>
@@ -343,7 +343,9 @@ function startAnimation(element){
       //chart.data.labels.push("Post " + postId++);
 //drawChart();
 /////////////////////
-
+function presets(element){
+  alert(element.value);
+}
 /////////////////////
 
 
