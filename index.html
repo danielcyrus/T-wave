@@ -341,8 +341,84 @@ function startAnimation(element){
       //chart.data.labels.push("Post " + postId++);
 //drawChart();
 /////////////////////
+unction clearDamages(){
+  for(var i=0;i<27;i++)
+    {
+     ctx.fillStyle = '#ffffff';
+     ctx.fillRect(damageRects[i], 70, 7 , 20);
+     ctx.fillStyle = '#00aa00';
+     ctx.fillRect(damageRects[i], 77, 7 , 7);
+     damageIndex[i]=0;
+    }
+}
+/////////////////////
 function presets(element){
-  alert(element.value);
+  var V =parseInt(element.value);
+  switch(V){
+    case 1:
+    clearDamages();
+    break;
+    case 2:
+    clearDamages();
+    break;
+  case 3:
+  clearDamages();
+    for(var i=0;i<12;i++)
+    {
+     damageIndex[i]=1;
+     ctx.fillStyle = '#ff0000';
+     ctx.fillRect(damageRects[i], 70, 7 , 20);
+    }
+    break;
+    case 4:
+    clearDamages();
+    for(var i=12;i<23;i++)
+    {
+     damageIndex[i]=1;
+     ctx.fillStyle = '#ff0000';
+     ctx.fillRect(damageRects[i], 70, 7 , 20);
+    }
+    break;
+    case 5:
+    clearDamages();
+    for(var i=0;i<5;i++)
+    {
+     damageIndex[i]=1;
+     ctx.fillStyle = '#ff0000';
+     ctx.fillRect(damageRects[i], 70, 7 , 20);
+    }
+    break;
+    case 6:
+    clearDamages();
+    for(var i=24;i<27;i++)
+    {
+     damageIndex[i]=1;
+     ctx.fillStyle = '#ff0000';
+     ctx.fillRect(damageRects[i], 70, 7 , 20);
+    }
+    break;
+    case 7:
+    clearDamages();
+    const elem = document.getElementById("damageCombo");
+    elem.value="1.0";
+    for(var i=24;i<27;i++)
+    {
+     damageIndex[i]=1;
+     ctx.fillStyle = '#ff0000';
+     ctx.fillRect(damageRects[i], 70, 7 , 20);
+    }
+    break;
+    case 8:
+    clearDamages();
+    for(var i=21;i<24;i++)
+    {
+     damageIndex[i]=1;
+     ctx.fillStyle = '#ff0000';
+     ctx.fillRect(damageRects[i], 70, 7 , 20);
+    }
+    break;
+}
+
 }
 /////////////////////
 
