@@ -40,7 +40,7 @@
     </div>
     </div>
     <div style="width: 40%;display: inline-block;vertical-align:top;text-align: right;">
-      <button id="Instructions" onclick="Swal.fire('Click on the green lead to designate damaged areas, or select one of the presets, then run the simulation. You can also adjust the hypertrophy or damage severity to see the effects on the T wave simulation.')">
+      <button id="Instructions" onclick="Swal.fire({text:'Click on the green lead to designate damaged areas, or select one of the presets, then run the simulation. You can also adjust the hypertrophy or damage severity to see the effects on the T wave simulation.',confirmButtonColor: 'forestgreen'})">
         <i class="fa-sharp fa-solid fa-circle-info" style="color: forestgreen;"></i> Instructions
     </button><br><br>
    
@@ -68,11 +68,7 @@
 </div>
 </body>
 <script>
-  swal({
-    title: "Are you sure?",
-    text: "You will not be able to recover this imaginary file!",
- confirmButtonColor: "#DD6B55"
-  });
+
 function saveCanvasAsImage(element,filename){
   
   const canvas = document.getElementById(element);
