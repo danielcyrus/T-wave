@@ -387,11 +387,17 @@ function presets(element){
     break;
     case 5:
     clearDamages();
-    for(var i=0;i<5;i++)
+    for(var i=0;i<2;i++)
     {
      damageIndex[i]=1;
      ctx.fillStyle = '#ff0000';
      ctx.fillRect(damageRects[i], 70, 7 , 20);
+    const elem = document.getElementById("damageCombo");
+    elem.value="1.0";   
+	    const apical = document.getElementById("apical");
+	     const distal = document.getElementById("distal");
+	   apical.value = "1.5"
+	    distal.value = "1.5"
     }
     break;
     case 6:
