@@ -268,7 +268,7 @@ for(var i=0;i<15;i++)
 chart.data.datasets[0].data.push(current_result3[Math.round(rad/8)]);
       chart.update();
 //ctx.endPath();
-rad=rad+8;
+rad=rad+5;
 
 if(rad>140){
     var element=document.getElementById("startAnim");
@@ -287,7 +287,7 @@ img1.onload = function () {
   //////////////////
 ctx.beginPath();
 ctx.arc(122, 80, rad, 0, 2 * Math.PI, false);
-ctx.lineWidth = 8
+ctx.lineWidth = 10
 ctx.strokeStyle = '#FFA500';
 ctx.stroke();
     //draw background image
