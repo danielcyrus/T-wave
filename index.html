@@ -186,6 +186,7 @@ const Canvaselement = document.getElementById("eggCanvas");
 const ctx= Canvaselement.getContext("2d");
 
 Canvaselement.addEventListener('click', function(event) {
+	if(myInterval==null){
   // Check whether point is inside circle
   var rect = Canvaselement.getBoundingClientRect();
    
@@ -214,7 +215,7 @@ Canvaselement.addEventListener('click', function(event) {
     }
 
   //ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
+	}
 });
 
 function draw(){
