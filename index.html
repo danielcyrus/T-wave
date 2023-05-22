@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <link rel="stylesheet" href="resources/css/main.css">
+        <link rel="stylesheet" href="resources/css/tooltip.css">
         <link href="resources/css/fontawesome.css" rel="stylesheet">
      <link href="resources/css/brands.css" rel="stylesheet">
     <link href="resources/css/solid.css" rel="stylesheet">
@@ -26,27 +27,30 @@
     <div style="display: inline-block;vertical-align:top;width: 40%;">
     <div class="grid-container">
       <div class="grid-item">Proximal  Hypertrophy</div>
-      <div class="grid-item"><input type="number" id="proximal" name="quantity" min="1" max="1.5" step="0.1" value="1.0"></div>
+      <div class="grid-item"><input type="number" id="proximal" name="quantity" min="1" max="1.5" step="0.1" value="1.0" class="settings"></div>
       <div class="grid-item">Apical  Hypertrophy</div>
-      <div class="grid-item"><input type="number" id="apical" name="quantity" min="1" max="1.5" step="0.1" value="1.0"></div>  
+      <div class="grid-item"><input type="number" id="apical" name="quantity" min="1" max="1.5" step="0.1" value="1.0" class="settings"></div>  
       <div class="grid-item">Distal  Hypertrophy</div>  
-      <div class="grid-item"><input type="number" id="distal" name="quantity" min="1" max="1.5" step="0.1" value="1.0"></div>
+      <div class="grid-item"><input type="number" id="distal" name="quantity" min="1" max="1.5" step="0.1" value="1.0" class="settings"></div>
       <div class="grid-item">Damage Severity</div>
-      <div class="grid-item"><select name="damage" id="damageCombo">
+      <div class="grid-item"><select name="damage" id="damageCombo" class="settings">
         <option value="0.5">Normal Damage</option>
         <option value="1.0">Severe Damage</option>
       </select></div>
       
     </div>
     </div>
-    <div style="width: 40%;display: inline-block;vertical-align:top;text-align: right;">
-      <button id="Instructions" onclick="Swal.fire({text:'Click on the green lead to designate damaged areas, or select one of the presets, then run the simulation. You can also adjust the hypertrophy or damage severity to see the effects on the T wave simulation.',confirmButtonColor: 'forestgreen'})">
+    <div style="width: 40%;display: inline-block;vertical-align:top;text-align: right;" >
+      <!--<button id="Instructions" onclick="Swal.fire({text:'Click on the green lead to designate damaged areas, or select one of the presets, then run the simulation. You can also adjust the hypertrophy or damage severity to see the effects on the T wave simulation.',confirmButtonColor: 'forestgreen'})">-->
+        <button id="Instructions" onclick="showTooltip();">
         <i class="fa-sharp fa-solid fa-circle-info" style="color: forestgreen;"></i> Instructions
+         
     </button><br><br>
-   
+   <div class="tooltip"> click<span class="tooltiptext">Tooltip text</span></div>
     Presets
     <select name="damage" id="damageCombo" onchange="presets(this)">
-      <option value="1">None</option>
+    
+      <option value="1">Custom</option>
       <option value="2">Normal T wave</option>
       <option value="3">ST elevation</option>
       <option value="4">ST depression</option>
@@ -63,17 +67,28 @@
   </div>
    </div>
 </div>
+
 <div>
   This work is based on the paper from the <a href="scholar.google.com">link</a>
   <br>
-  Our team:
-  Daniel Cyrus, Arvind Mistry, John Cannon, Kieran Stone, Faisal Rezwan
+  Our research team:<b>
+  Arvind Mistry, John Cannon, Kieran Stone, Daniel Cyrus, Faisal Rezwan
+  </b>
+  <br>Developers: Daniel Cyrus, Kieran Stone
   <br>
   Contact: <a href="mailto:far8@aber.ac.uk">Faisal Rezwan</a>
+  
 </div>
 </body>
 <script>
+function showTooltip(){
+  var cells = document.getElementsByClassName("tooltiptext"); 
+for (var i = 0; i < cells.length; i++) { 
+  var event = new Event('mouseover');
+  cells[i].dispatchEvent(event);   
+} 
 
+}
 function saveCanvasAsImage(element,filename){
   
   const canvas = document.getElementById(element);
@@ -92,7 +107,7 @@ function downloadImage(data, filename = 'untitled.jpeg') {
 
     ///////////graph
   
-  var damageIndex = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  var damageIndex = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
   var current_result3=[];
   function UpdateData(){
     
@@ -114,7 +129,7 @@ const Apical_Septum_signal=  [0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0]	;
 const Apical_Septum_signal_with_hypertrophy=  [];for(var i =0;i<18;i++)Apical_Septum_signal_with_hypertrophy.push(Apical_Septum_signal[i]*distal*Septal_Signal_Strenght);
 const Net_Towards_signal=    [];for(var i =0;i<18;i++)Net_Towards_signal.push(Apical_Septum_signal_with_hypertrophy[i]+Basal_Septum_signal_with_hypertrophy[i]+Posterior_Wall_signal[i]);
 																					
-const Towards_signal_damage=[];for(var i =12;i<30;i++)Towards_signal_damage.push(damageIndex[i]);for(var i =0;i<3;i++)Towards_signal_damage.push(0);				
+const Towards_signal_damage=[];for(var i =12;i<27;i++)Towards_signal_damage.push(damageIndex[i]);for(var i =0;i<3;i++)Towards_signal_damage.push(0);				
 const Net_Towards_damage= [];for(var i =0;i<18;i++)Net_Towards_damage.push(Towards_signal_damage[i]*damageCombo);
 																					
 const Net_Result_Towards_side=[];for(var i =0;i<18;i++)Net_Result_Towards_side.push(Net_Towards_signal[i]-Net_Towards_damage[i]);
@@ -179,15 +194,16 @@ const Net_Result_Away_From_side=[];for(var i =0;i<18;i++)Net_Result_Away_From_si
 });
  
 /////////////////////////////Animation
-var rad =-11;
+var rad =-10;
 var myInterval =null;
-var damageRects = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1];
-var damageIndex = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+var damageRects = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1];
+var damageIndex = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 const Canvaselement = document.getElementById("eggCanvas");
 const ctx= Canvaselement.getContext("2d");
 
+var enableDiasble = true;
 Canvaselement.addEventListener('click', function(event) {
-	if(myInterval==null){
+	if(myInterval==null && enableDiasble==true){
   // Check whether point is inside circle
   var rect = Canvaselement.getBoundingClientRect();
    
@@ -196,13 +212,12 @@ Canvaselement.addEventListener('click', function(event) {
  
   //ctx.fillRect(x, y, 7 , 7);
   //alert(x + " " + y + damageRegcts);
-  for(var i=0;i<30;i++)
+  for(var i=0;i<28;i++)
     if(x>=damageRects[i] && x<=damageRects[i]+7 && y>=70 && y<=90 && damageIndex[i]==0)
     {
      damageIndex[i]=1;
      ctx.fillStyle = '#ff0000';
      ctx.fillRect(damageRects[i], 70, 7 , 20);
-
     break;
     }
     else if(x>=damageRects[i] && x<=damageRects[i]+7 && y>=70 && y<=90 && damageIndex[i]==1)
@@ -213,7 +228,6 @@ Canvaselement.addEventListener('click', function(event) {
      ctx.fillStyle = '#00aa00';
      ctx.fillRect(damageRects[i], 77, 7 , 7);
      damageIndex[i]=0;
-
      break;
     }
 
@@ -250,7 +264,7 @@ for(var i=0;i<12;i++)
 
 }
 
-for(var i=0;i<18;i++)
+for(var i=0;i<15;i++)
 {
   if(damageIndex[i+12]==1)
       {
@@ -269,10 +283,10 @@ for(var i=0;i<18;i++)
 }
 
 
-chart.data.datasets[0].data.push(current_result3[Math.round(rad/11)]);
+chart.data.datasets[0].data.push(current_result3[Math.round(rad/10)]);
       
 //ctx.endPath();
-rad=rad+11;
+rad=rad+10;
 chart.update();
 if(rad>220){
     var element=document.getElementById("startAnim");
@@ -291,11 +305,11 @@ img1.onload = function () {
   //////////////////
 ctx.beginPath();
 ctx.arc(122, 80, rad, 0, 2 * Math.PI, false);
-ctx.lineWidth = 8
+ctx.lineWidth = 24
 ctx.strokeStyle = '#FFA500';
 ctx.stroke();
     //draw background image
-    ctx.drawImage(img1, -65, -50,435,240);
+    ctx.drawImage(img1, -65, -50,410,240);
     var centerX = ctx.width / 2;
     var centerY = ctx.height / 2;
    
@@ -305,7 +319,7 @@ ctx.stroke();
     ctx.fill();
 
     ctx.font = "28px serif";
-    ctx.fillText("+", 285, 88);
+    ctx.fillText("+", 270, 88);
     ctx.fillText("-", 0, 88);
     
 };
@@ -315,11 +329,9 @@ img1.src ="./resources/img/egg.png";
 
 function startAnimation(element){
     
-    
     if(myInterval==null && rad==0)
     {
      
-      
       UpdateData();
       chart.data.datasets[0].data=[];
       //chart.update();
@@ -353,7 +365,13 @@ function startAnimation(element){
 //drawChart();
 /////////////////////
 function clearDamages(){
-  for(var i=0;i<30;i++)
+  var cells = document.getElementsByClassName("settings"); 
+for (var i = 0; i < cells.length; i++) { 
+    cells[i].value = "1.0";
+} 
+const elem = document.getElementById("damageCombo");
+    elem.value="0.5";
+  for(var i=0;i<27;i++)
     {
      ctx.fillStyle = '#ffffff';
      ctx.fillRect(damageRects[i], 70, 7 , 20);
@@ -363,17 +381,37 @@ function clearDamages(){
     }
 }
 /////////////////////
+function disableElements(){
+  enableDiasble=false;
+  var cells = document.getElementsByClassName("settings"); 
+for (var i = 0; i < cells.length; i++) { 
+    cells[i].disabled = true;
+} 
+}
+function enableElements(){
+  enableDiasble=true;
+  var cells = document.getElementsByClassName("settings"); 
+for (var i = 0; i < cells.length; i++) { 
+    cells[i].disabled = false;
+} 
+}
 function presets(element){
+  clearDamages();
+  rad=-10;
+  draw();
   var V =parseInt(element.value);
   switch(V){
     case 1:
-    clearDamages();
+  
+    enableElements();
     break;
     case 2:
-    clearDamages();
+   
+    disableElements();
     break;
   case 3:
-  clearDamages();
+ 
+  disableElements();
     for(var i=0;i<12;i++)
     {
      damageIndex[i]=1;
@@ -382,7 +420,8 @@ function presets(element){
     }
     break;
     case 4:
-    clearDamages();
+   
+    disableElements();
     for(var i=12;i<23;i++)
     {
      damageIndex[i]=1;
@@ -391,7 +430,8 @@ function presets(element){
     }
     break;
     case 5:
-    clearDamages();
+  
+    disableElements();
     for(var i=0;i<2;i++)
     {
      damageIndex[i]=1;
@@ -406,8 +446,9 @@ function presets(element){
     }
     break;
     case 6:
-    clearDamages();
-    for(var i=24;i<29;i++)
+  
+    disableElements();
+    for(var i=24;i<27;i++)
     {
      damageIndex[i]=1;
      ctx.fillStyle = '#ff0000';
@@ -415,10 +456,11 @@ function presets(element){
     }
     break;
     case 7:
-    clearDamages();
+  
+    disableElements();
     const elem = document.getElementById("damageCombo");
     elem.value="1.0";
-    for(var i=24;i<30;i++)
+    for(var i=24;i<27;i++)
     {
      damageIndex[i]=1;
      ctx.fillStyle = '#ff0000';
@@ -426,7 +468,8 @@ function presets(element){
     }
     break;
     case 8:
-    clearDamages();
+  
+    disableElements();
     for(var i=21;i<24;i++)
     {
      damageIndex[i]=1;
