@@ -7,7 +7,8 @@
      <link href="resources/css/brands.css" rel="stylesheet">
     <link href="resources/css/solid.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>-->
+    <script src="resources/js/chart.js"></script>
     </head>
 <body>
    <div>
@@ -24,7 +25,9 @@
     Settings
     <br>
     <div>
+      <div class="tooltip"><span class="tooltiptextleft">Hypertrophy's value(min:1,max:1.5),You can adjust the hypertrophy or damage severity to see the effects on the T wave simulation.</span></div>
     <div style="display: inline-block;vertical-align:top;width: 40%;">
+      
     <div class="grid-container">
       <div class="grid-item">Proximal  Hypertrophy</div>
       <div class="grid-item"><input type="number" id="proximal" name="quantity" min="1" max="1.5" step="0.1" value="1.0" class="settings"></div>
@@ -37,8 +40,9 @@
         <option value="0.5">Normal Damage</option>
         <option value="1.0">Severe Damage</option>
       </select></div>
-      
+     
     </div>
+   
     </div>
     <div style="width: 40%;display: inline-block;vertical-align:top;text-align: right;" >
       <!--<button id="Instructions" onclick="Swal.fire({text:'Click on the green lead to designate damaged areas, or select one of the presets, then run the simulation. You can also adjust the hypertrophy or damage severity to see the effects on the T wave simulation.',confirmButtonColor: 'forestgreen'})">-->
@@ -46,7 +50,8 @@
         <i class="fa-sharp fa-solid fa-circle-info" style="color: forestgreen;"></i> Instructions
          
     </button><br><br>
-   <div class="tooltip"> click<span class="tooltiptext">Tooltip text</span></div>
+
+   <div class="tooltip"><span class="tooltiptextleft">The list of presets</span></div>
     Presets
     <select name="damage" id="damageCombo" onchange="presets(this)">
     
@@ -59,6 +64,7 @@
       <option value="7">Inverted T wave</option>
       <option value="8">Biphasic T wave</option>
     </select><br><br>
+    <div class="tooltip"><span class="tooltiptextleft">Run the simulation when the settings has set</span></div>
       <button id="startAnim" onclick="startAnimation(this);">
         <i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation
     </button>
@@ -81,13 +87,40 @@
 </div>
 </body>
 <script>
+var intru = false;
 function showTooltip(){
-  var cells = document.getElementsByClassName("tooltiptext"); 
-for (var i = 0; i < cells.length; i++) { 
-  var event = new Event('mouseover');
-  cells[i].dispatchEvent(event);   
-} 
-
+  var cells = document.getElementsByClassName("tooltiptextleft"); 
+  var cells1 = document.getElementsByClassName("tooltiptextright"); 
+if(intru==false){
+  for (var i = 0; i < cells.length; i++) { 
+  cells[i].style.visibility = "visible";
+  cells[i].style.opacity= 1;
+  //cells[i].style.display= "block";
+ 
+  } 
+  for (var i = 0; i < cells1.length; i++) { 
+  cells1[i].style.visibility = "visible";
+  cells1[i].style.opacity= 1;
+  //cells[i].style.display= "block";
+ 
+  } 
+  intru=true;
+}
+  else{
+    for (var i = 0; i < cells.length; i++) { 
+    cells[i].style.visibility = "hidden";
+    cells[i].style.opacity= 0;
+    //cells[i].style.display= "block";
+  
+    } 
+    for (var i = 0; i < cells1.length; i++) { 
+  cells1[i].style.visibility = "hidden";
+  cells1[i].style.opacity= 0;
+  //cells[i].style.display= "block";
+ 
+  }
+  intru=false; 
+  }
 }
 function saveCanvasAsImage(element,filename){
   
@@ -179,7 +212,7 @@ const Net_Result_Away_From_side=[];for(var i =0;i<18;i++)Net_Result_Away_From_si
       data: [0,0,0,0,0,0,0,0,0,0.125,0.375,0.5,0.375,0.125,0,0,0,0],
       borderColor: "red",
       fill: false,
-      borderDash: [10,5]
+      borderDash: [5,5],
     }]
   },
   options: {
@@ -309,7 +342,7 @@ ctx.lineWidth = 24
 ctx.strokeStyle = '#FFA500';
 ctx.stroke();
     //draw background image
-    ctx.drawImage(img1, -65, -50,410,240);
+    ctx.drawImage(img1, -65, -45,410,235);
     var centerX = ctx.width / 2;
     var centerY = ctx.height / 2;
    
