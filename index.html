@@ -18,14 +18,16 @@
    </div>
    <div>
     <div style="display: flex;">
-   <div id="eggmodel" style="flex: 1;">Egg Model<!--<i class="fa-solid fa-download" style="color:  rgb(34, 87, 139);float:right;" onclick='saveCanvasAsImage("eggCanvas","egg.jpg");'></i>--><br><canvas id="eggCanvas" style="width:80%;height:90%;display: inline-block;position: relative;"></canvas></div>
-   <div id="graph" style="flex: 1;"> Repolarisation Trace <!--<i class="fa-solid fa-download" style="color: rgb(34, 87, 139);float:right;" onclick='saveCanvasAsImage("eggChart","chart.jpg");'></i>--><canvas id="eggChart" style="width:80%;height:90%;display: inline-block;position: relative;"></canvas></div>
+     
+   <div id="eggmodel" style="flex: 1;"> <div class="tooltip"><span class="tooltiptexttop">Custom select damage area by clicking on the green blocks</span></div><b>Egg Model</b><!--<i class="fa-solid fa-download" style="color:  rgb(34, 87, 139);float:right;" onclick='saveCanvasAsImage("eggCanvas","egg.jpg");'></i>--><br><canvas id="eggCanvas" style="width:80%;height:90%;display: inline-block;position: relative;"></canvas></div>
+   
+   <div id="graph" style="flex: 1;"><div class="tooltip"><span class="tooltiptexttop">Result of the T-wave trace shown here</span></div> <b>Repolarisation Trace</b> <!--<i class="fa-solid fa-download" style="color: rgb(34, 87, 139);float:right;" onclick='saveCanvasAsImage("eggChart","chart.jpg");'></i>--><canvas id="eggChart" style="width:80%;height:90%;display: inline-block;position: relative;"></canvas></div>
   </div>
    <div id="configure" style="width: 99%;">
-    Settings
+    <b>Settings</b>
     <br>
     <div>
-      <div class="tooltip"><span class="tooltiptextleft">Hypertrophy's value(min:1,max:1.5),You can adjust the hypertrophy or damage severity to see the effects on the T wave simulation.</span></div>
+      <div class="tooltip"><span class="tooltiptexttop">Select the level of damage</span></div>
     <div style="display: inline-block;vertical-align:top;width: 40%;">
       
     <div class="grid-container">
@@ -41,6 +43,7 @@
         <option value="1.0">Severe Damage</option>
       </select></div>
      
+     
     </div>
    
     </div>
@@ -51,20 +54,20 @@
          
     </button><br><br>
 
-   <div class="tooltip"><span class="tooltiptextleft">The list of presets</span></div>
+   <div class="tooltip" onc><span class="tooltiptextleft">Select either "Custom" or "Presets" value</span></div>
     Presets
-    <select name="damage" id="damageCombo" onchange="presets(this)">
+    <select name="damage" id="preset" onchange="presets(this)">
     
       <option value="1">Custom</option>
-      <option value="2">Normal T wave</option>
-      <option value="3">ST elevation</option>
-      <option value="4">ST depression</option>
-      <option value="5">Higher T wave</option>
-      <option value="6">Flattened T wave</option>
-      <option value="7">Inverted T wave</option>
-      <option value="8">Biphasic T wave</option>
+      <option value="2">Normal T Wave</option>
+      <option value="3">ST Elevation</option>
+      <option value="4">ST Depression</option>
+      <option value="5">Higher T Wave</option>
+      <option value="6">Flattened T Wave</option>
+      <option value="7">Inverted T Wave</option>
+      <option value="8">Biphasic T Wave</option>
     </select><br><br>
-    <div class="tooltip"><span class="tooltiptextleft">Run the simulation when the settings has set</span></div>
+    <div class="tooltip"><span class="tooltiptextleft">Run,Pause or Continuew the simulation</span></div>
       <button id="startAnim" onclick="startAnimation(this);">
         <i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation
     </button>
@@ -77,7 +80,7 @@
 <div>
   This work is based on the paper from the <a href="scholar.google.com">link</a>
   <br>
-  Our research team:<b>
+  Our Research Team:<b>
   Arvind Mistry, John Cannon, Kieran Stone, Daniel Cyrus, Faisal Rezwan
   </b>
   <br>Developers: Daniel Cyrus, Kieran Stone
@@ -87,20 +90,34 @@
 </div>
 </body>
 <script>
+  window.addEventListener('click', function(e){   
+  if (!document.getElementById('Instructions').contains(e.target) && intru==true){
+    // Clicked in box
+    showTooltip();
+  } 
+});
 var intru = false;
 function showTooltip(){
   var cells = document.getElementsByClassName("tooltiptextleft"); 
   var cells1 = document.getElementsByClassName("tooltiptextright"); 
+  var cells2 = document.getElementsByClassName("tooltiptexttop"); 
+  
 if(intru==false){
   for (var i = 0; i < cells.length; i++) { 
   cells[i].style.visibility = "visible";
-  cells[i].style.opacity= 1;
+  cells[i].style.opacity= .9;
   //cells[i].style.display= "block";
- 
+  
   } 
   for (var i = 0; i < cells1.length; i++) { 
   cells1[i].style.visibility = "visible";
-  cells1[i].style.opacity= 1;
+  cells1[i].style.opacity= .9;
+  //cells[i].style.display= "block";
+ 
+  } 
+  for (var i = 0; i < cells2.length; i++) { 
+    cells2[i].style.visibility = "visible";
+    cells2[i].style.opacity= .9;
   //cells[i].style.display= "block";
  
   } 
@@ -119,6 +136,12 @@ if(intru==false){
   //cells[i].style.display= "block";
  
   }
+  for (var i = 0; i < cells2.length; i++) { 
+    cells2[i].style.visibility = "hidden";
+    cells2[i].style.opacity= 0;
+  //cells[i].style.display= "block";
+ 
+  } 
   intru=false; 
   }
 }
@@ -198,7 +221,7 @@ const Net_Result_Away_From_side=[];for(var i =0;i<18;i++)Net_Result_Away_From_si
     datasets: [{
       pointStyle: 'line',
         pointRadius: 0,
-        label:"Current result",
+        label:"Current Result",
      // pointBackgroundColor: "rgb(0,0,255)",
       //backgroundColor: "rgba(255,255,255,0.0)",
       fill:false,
@@ -208,13 +231,14 @@ const Net_Result_Away_From_side=[];for(var i =0;i<18;i++)Net_Result_Away_From_si
     {
       pointStyle: 'dash',
       pointRadius: 0,
-      label:"Original trace",
+      label:"Original Trace",
       data: [0,0,0,0,0,0,0,0,0,0.125,0.375,0.5,0.375,0.125,0,0,0,0],
       borderColor: "red",
       fill: false,
       borderDash: [5,5],
     }]
   },
+  
   options: {
     legend: {display: true,labels: {
       usePointStyle: true
@@ -321,12 +345,14 @@ chart.data.datasets[0].data.push(current_result3[Math.round(rad/10)]);
 //ctx.endPath();
 rad=rad+10;
 chart.update();
-if(rad>220){
+if(rad>180){
     var element=document.getElementById("startAnim");
     element.innerHTML='<i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation';
     clearInterval(myInterval);
     myInterval =null;
     rad=0;
+    var preset = document.getElementById("preset"); 
+        preset.disabled = false;
 }
 
 
@@ -352,7 +378,8 @@ ctx.stroke();
     ctx.fill();
 
     ctx.font = "28px serif";
-    ctx.fillText("+", 270, 88);
+    ctx.fillText("+", 262, 88);
+    ctx.font = "36px serif";
     ctx.fillText("-", 0, 88);
     
 };
@@ -371,6 +398,8 @@ function startAnimation(element){
         myInterval=setInterval(draw, 500);
         element.innerHTML="<i class='fa-sharp fa-solid fa-pause' style='color: forestgreen;'> </i> Pause Simulation";
         
+        var preset = document.getElementById("preset"); 
+        preset.disabled = true;
     }
     if(myInterval==null)
     {
@@ -380,7 +409,8 @@ function startAnimation(element){
    
         myInterval=setInterval(draw, 500);
         element.innerHTML="<i class='fa-sharp fa-solid fa-pause' style='color: forestgreen;'> </i> Pause Simulation";
-        
+        var preset = document.getElementById("preset"); 
+        preset.disabled = true;
     }
     else if(rad!=0)
     {
@@ -388,6 +418,8 @@ function startAnimation(element){
     element.innerHTML='<i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"> </i> Continue Simulation';
     clearInterval(myInterval);
     myInterval =null;
+    var preset = document.getElementById("preset"); 
+        preset.disabled = false;
     }
 }
 //UpdateData();
