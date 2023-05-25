@@ -15176,8 +15176,8 @@
             onLeave: null,
     
             labels: {
-                boxWidth: 40,
-                padding: 10,
+                boxWidth: 50,
+                padding: 20,
                 // Generates labels shown in the legend
                 // Valid properties to return:
                 // text : text to display
