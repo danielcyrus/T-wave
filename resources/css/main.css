@@ -33,6 +33,7 @@ input[type="number"] {
    border-radius: 5px;
    font-family: interFont;
    display: inline-block;
+   font-size: 14px;
 }
 button {
     border-style: solid;
@@ -40,6 +41,7 @@ button {
     font-family: interFont;
     display: inline-block;
     font-size: medium;
+  
  }
 span > i {
     color: white;
@@ -52,7 +54,7 @@ span > input {
 }
 .grid-container {
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: 170px auto;
     /*background-color: #2196F3;*/
     width: 90%;
     padding: 5px;
@@ -69,4 +71,7 @@ span > input {
     border-color: black;
     padding: 2px;
     background-color: white;
+    font-size: 14px;
   }
+
+ 
