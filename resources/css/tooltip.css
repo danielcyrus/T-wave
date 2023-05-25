@@ -34,7 +34,7 @@
 
 .tooltiptextleft {
   visibility: hidden;
-  width: 200px;
+  width: 220px;
   background-color: rgb(26, 103, 26);;
   color: #fff;
   text-align: center;
@@ -59,4 +59,34 @@
   border-width: 5px;
   border-style: solid;
   border-color: transparent transparent transparent rgb(26, 103, 26);
+}
+
+.tooltiptexttop {
+  visibility: hidden;
+  width: 170px;
+  background-color: rgb(26, 103, 26);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 130%;
+  left: 50%;
+  margin-left: 0px;
+  
+  /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+  opacity: 0;
+  transition: opacity 2s;
+}
+
+.tooltiptexttop::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgb(26, 103, 26) transparent transparent transparent;
 }
