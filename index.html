@@ -19,7 +19,7 @@
    <div>
     <div style="display: flex;">
      
-   <div id="eggmodel" style="flex: 1;"> <div class="tooltip"><span class="tooltiptexttop">Custom select damage area by clicking on the green blocks</span></div><b>Egg Model</b><!--<i class="fa-solid fa-download" style="color:  rgb(34, 87, 139);float:right;" onclick='saveCanvasAsImage("eggCanvas","egg.jpg");'></i>--><br><canvas id="eggCanvas" style="width:80%;height:90%;display: inline-block;position: relative;"></canvas></div>
+   <div id="eggmodel" style="flex: 1;"> <div class="tooltip"><span class="tooltiptexttop">For the "Custom" Preset - You can select damage area by clicking on the green blocks</span></div><b>Egg Model</b><!--<i class="fa-solid fa-download" style="color:  rgb(34, 87, 139);float:right;" onclick='saveCanvasAsImage("eggCanvas","egg.jpg");'></i>--><br><canvas id="eggCanvas" style="width:80%;height:90%;display: inline-block;position: relative;"></canvas></div>
    
    <div id="graph" style="flex: 1;"><div class="tooltip"><span class="tooltiptexttop">Result of the T-wave trace shown here</span></div> <b>Repolarisation Trace</b> <!--<i class="fa-solid fa-download" style="color: rgb(34, 87, 139);float:right;" onclick='saveCanvasAsImage("eggChart","chart.jpg");'></i>--><canvas id="eggChart" style="width:80%;height:90%;display: inline-block;position: relative;"></canvas></div>
   </div>
@@ -27,7 +27,7 @@
     <b>Settings</b>
     <br>
     <div>
-      <div class="tooltip"><span class="tooltiptexttop">Select the level of damage</span></div>
+      <div class="tooltip"><span class="tooltiptexttop">Select the areas of hypertrophy</span></div>
     <div style="display: inline-block;vertical-align:top;width: 40%;">
       
     <div class="grid-container">
@@ -37,6 +37,7 @@
       <div class="grid-item"><input type="number" id="apical" name="quantity" min="1" max="1.5" step="0.1" value="1.0" class="settings"></div>  
       <div class="grid-item">Distal  Hypertrophy</div>  
       <div class="grid-item"><input type="number" id="distal" name="quantity" min="1" max="1.5" step="0.1" value="1.0" class="settings"></div>
+	    <div class="tooltip"><span class="tooltiptexttop">Select the level of damage</span></div>
       <div class="grid-item">Damage Severity</div>
       <div class="grid-item"><select name="damage" id="damageCombo" class="settings">
         <option value="0.5">Normal Damage</option>
@@ -67,7 +68,7 @@
       <option value="7">Inverted T Wave</option>
       <option value="8">Biphasic T Wave</option>
     </select><br><br>
-    <div class="tooltip"><span class="tooltiptextleft">Run,Pause or Continuew the simulation</span></div>
+    <div class="tooltip"><span class="tooltiptextleft">Run, Pause or Continue the simulation</span></div>
       <button id="startAnim" onclick="startAnimation(this);">
         <i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation
     </button>
