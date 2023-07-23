@@ -19,9 +19,18 @@
    <div>
     <div style="display: flex;">
      
-   <div id="eggmodel" style="flex: 1;"> <div class="tooltip"><span class="tooltiptexttop">For the "Custom" Preset - You can select damage area by clicking on the green blocks</span></div><b>Egg Model</b><i class="fa-solid fa-download" style="color:  rgb(34, 87, 139);float:right;" onclick='saveCanvasAsImage("eggCanvas","egg.jpg");'></i><br><canvas id="eggCanvas" style="width:80%;height:90%;display: inline-block;position: relative;"></canvas></div>
-   
-   <div id="graph" style="flex: 1;"><div class="tooltip"><span class="tooltiptexttop">Result of the T-wave trace shown here</span></div> <b>Repolarisation Trace</b> <i class="fa-solid fa-download" style="color: rgb(34, 87, 139);float:right;" onclick='saveCanvasAsImage("eggChart","chart.jpg");'></i><canvas id="eggChart" style="width:80%;height:90%;display: inline-block;position: relative;"></canvas></div>
+   <div id="eggmodel" style="flex: 1;"> <div class="tooltip"><span class="tooltiptexttop">For the "Custom" Preset - You can select damage area by clicking on the green blocks</span></div><b>Egg Model</b><!--<i class="fa-solid fa-download" style="color:  rgb(34, 87, 139);float:right;" onclick='saveCanvasAsImage("eggCanvas","egg.jpg");'></i>--><br><canvas id="eggCanvas" style="width:80%;height:90%;display: inline-block;position: relative;"></canvas></div>
+   <!--
+   <div class="tooltip" style="font-size: small;">
+    <span class="tooltiptextcenter">
+    Our display is split into two main parts. On the left, you'll see the simplified egg and yolk model. On the right, we have a T-wave trace that relates to the egg and yolk model.
+    There are two ways to operate the tool:
+    a) Custom Mode: This is where you can manually adjust the amount of damage and mark out areas of hypertrophy using the numbered boxes.
+    b) Preset Mode: You can pick an egg and yolk model from our preset list. After you've picked one, click on the 'Run Simulation' button to see the T-wave trace that matches with your selected model.
+  </span>
+</div>
+-->
+   <div id="graph" style="flex: 1;"><div class="tooltip"><span class="tooltiptexttop">Result of the T-wave trace shown here</span></div> <b>Repolarisation Trace</b><!-- <i class="fa-solid fa-download" style="color: rgb(34, 87, 139);float:right;" onclick='saveCanvasAsImage("eggChart","chart.jpg");'></i>--><canvas id="eggChart" style="width:80%;height:90%;display: inline-block;position: relative;"></canvas></div>
   </div>
    <div id="configure" style="width: 99%;">
     <b>Settings</b>
@@ -37,17 +46,20 @@
       <div class="grid-item"><input type="number" id="apical" name="quantity" min="1" max="1.5" step="0.1" value="1.0" class="settings"></div>  
       <div class="grid-item">Distal  Hypertrophy</div>  
       <div class="grid-item"><input type="number" id="distal" name="quantity" min="1" max="1.5" step="0.1" value="1.0" class="settings"></div>
-	    <div class="tooltip"><span class="tooltiptexttop">Select the level of damage</span></div>
       <div class="grid-item">Damage Severity</div>
+    
       <div class="grid-item"><select name="damage" id="damageCombo" class="settings">
+        
         <option value="0.5">Normal Damage</option>
         <option value="1.0">Severe Damage</option>
+       
       </select></div>
-     
+      <div class="tooltip"><span class="tooltiptextbottom">Select the level of damage</span></div> 
      
     </div>
    
     </div>
+
     <div style="width: 40%;display: inline-block;vertical-align:top;text-align: right;" >
       <!--<button id="Instructions" onclick="Swal.fire({text:'Click on the green lead to designate damaged areas, or select one of the presets, then run the simulation. You can also adjust the hypertrophy or damage severity to see the effects on the T wave simulation.',confirmButtonColor: 'forestgreen'})">-->
         <button id="Instructions" onclick="showTooltip();">
@@ -55,7 +67,7 @@
          
     </button><br><br>
 
-   <div class="tooltip"><span class="tooltiptextleft">Select either "Custom" or "Presets" value</span></div>
+   <div class="tooltip"><span class="tooltiptextleft1">Select either "Custom"<br>or "Presets" value</span></div>
     Presets
     <select name="damage" id="preset" onchange="presets(this)">
     
@@ -68,7 +80,7 @@
       <option value="7">Inverted T Wave</option>
       <option value="8">Biphasic T Wave</option>
     </select><br><br>
-    <div class="tooltip"><span class="tooltiptextleft">Run, Pause or Continue the simulation</span></div>
+    <div class="tooltip"><span class="tooltiptextleft2">Run, Pause or Continue the simulation</span></div>
       <button id="startAnim" onclick="startAnimation(this);">
         <i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation
     </button>
@@ -91,7 +103,8 @@
 </div>
 </body>
 <script>
-  window.addEventListener('click', function(e){   
+
+window.addEventListener('click', function(e){   
   if (!document.getElementById('Instructions').contains(e.target) && intru==true){
     // Clicked in box
     showTooltip();
@@ -99,47 +112,74 @@
 });
 var intru = false;
 function showTooltip(){
-  var cells = document.getElementsByClassName("tooltiptextleft"); 
-  var cells1 = document.getElementsByClassName("tooltiptextright"); 
-  var cells2 = document.getElementsByClassName("tooltiptexttop"); 
-  
+  var cells1 = document.getElementsByClassName("tooltiptextleft1");
+  var cells2 = document.getElementsByClassName("tooltiptextleft2"); 
+  var cells3 = document.getElementsByClassName("tooltiptextright"); 
+  var cells4 = document.getElementsByClassName("tooltiptexttop");
+  var cells5 = document.getElementsByClassName("tooltiptextbottom"); 
+  var cells6 = document.getElementsByClassName("tooltiptextcenter");
 if(intru==false){
-  for (var i = 0; i < cells.length; i++) { 
-  cells[i].style.visibility = "visible";
-  cells[i].style.opacity= .9;
-  //cells[i].style.display= "block";
-  
-  } 
   for (var i = 0; i < cells1.length; i++) { 
   cells1[i].style.visibility = "visible";
   cells1[i].style.opacity= .9;
-  //cells[i].style.display= "block";
- 
-  } 
+  }
   for (var i = 0; i < cells2.length; i++) { 
-    cells2[i].style.visibility = "visible";
-    cells2[i].style.opacity= .9;
   //cells[i].style.display= "block";
- 
+  cells2[i].style.visibility = "visible";
+  cells2[i].style.opacity= .9;
+  }
+  for (var i = 0; i < cells3.length; i++) { 
+  cells3[i].style.visibility = "visible";
+  cells3[i].style.opacity= .9;
+  }
+  for (var i = 0; i < cells4.length; i++) { 
+  cells4[i].style.visibility = "visible";
+  cells4[i].style.opacity= .9;
+  } 
+  for (var i = 0; i < cells5.length; i++) { 
+  cells5[i].style.visibility = "visible";
+  cells5[i].style.opacity= .9;
+  } 
+  for (var i = 0; i < cells6.length; i++) { 
+  cells6[i].style.visibility = "visible";
+  cells6[i].style.opacity= .9;
   } 
   intru=true;
 }
   else{
-    for (var i = 0; i < cells.length; i++) { 
-    cells[i].style.visibility = "hidden";
-    cells[i].style.opacity= 0;
+    for (var i = 0; i < cells1.length; i++) { 
+    cells1[i].style.visibility = "hidden";
+    cells1[i].style.opacity= 0;
     //cells[i].style.display= "block";
   
     } 
-    for (var i = 0; i < cells1.length; i++) { 
-  cells1[i].style.visibility = "hidden";
-  cells1[i].style.opacity= 0;
+    for (var i = 0; i < cells2.length; i++) { 
+  cells2[i].style.visibility = "hidden";
+  cells2[i].style.opacity= 0;
   //cells[i].style.display= "block";
  
   }
-  for (var i = 0; i < cells2.length; i++) { 
-    cells2[i].style.visibility = "hidden";
-    cells2[i].style.opacity= 0;
+  for (var i = 0; i < cells3.length; i++) { 
+    cells3[i].style.visibility = "hidden";
+    cells3[i].style.opacity= 0;
+  //cells[i].style.display= "block";
+ 
+  } 
+  for (var i = 0; i < cells4.length; i++) { 
+    cells4[i].style.visibility = "hidden";
+    cells4[i].style.opacity= 0;
+  //cells[i].style.display= "block";
+ 
+  } 
+  for (var i = 0; i < cells5.length; i++) { 
+    cells5[i].style.visibility = "hidden";
+    cells5[i].style.opacity= 0;
+  //cells[i].style.display= "block";
+ 
+  } 
+  for (var i = 0; i < cells6.length; i++) { 
+    cells6[i].style.visibility = "hidden";
+    cells6[i].style.opacity= 0;
   //cells[i].style.display= "block";
  
   } 
