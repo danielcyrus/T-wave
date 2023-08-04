@@ -36,7 +36,7 @@
     <b>Settings</b>
     <br>
     <div>
-      <div class="tooltip"><span class="tooltiptexttop">Select the areas of hypertrophy</span></div>
+      <div class="tooltip"><span class="tooltiptexttop1">Select the areas of hypertrophy</span></div>
     <div style="display: inline-block;vertical-align:top;width: 40%;">
       
     <div class="grid-container">
@@ -118,6 +118,8 @@ function showTooltip(){
   var cells4 = document.getElementsByClassName("tooltiptexttop");
   var cells5 = document.getElementsByClassName("tooltiptextbottom"); 
   var cells6 = document.getElementsByClassName("tooltiptextcenter");
+  var cells7 = document.getElementsByClassName("tooltiptexttop1");
+	
 if(intru==false){
   for (var i = 0; i < cells1.length; i++) { 
   cells1[i].style.visibility = "visible";
@@ -143,6 +145,10 @@ if(intru==false){
   for (var i = 0; i < cells6.length; i++) { 
   cells6[i].style.visibility = "visible";
   cells6[i].style.opacity= .9;
+  } 
+  for (var i = 0; i < cells7.length; i++) { 
+  cells7[i].style.visibility = "visible";
+  cells7[i].style.opacity= .9;
   } 
   intru=true;
 }
@@ -180,6 +186,12 @@ if(intru==false){
   for (var i = 0; i < cells6.length; i++) { 
     cells6[i].style.visibility = "hidden";
     cells6[i].style.opacity= 0;
+  //cells[i].style.display= "block";
+ 
+  } 
+for (var i = 0; i < cells7.length; i++) { 
+    cells7[i].style.visibility = "hidden";
+    cells7[i].style.opacity= 0;
   //cells[i].style.display= "block";
  
   } 
