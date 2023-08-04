@@ -99,7 +99,7 @@
   padding: 8px 5px;
   position: absolute;
   z-index: 1;
-  bottom: -600%;
+  bottom: -630%;
   left: 50%;
   margin-left: 0px;
   
@@ -109,6 +109,36 @@
 }
 
 .tooltiptexttop::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgb(26, 103, 26) transparent transparent transparent;
+}
+
+.tooltiptexttop1 {
+  visibility: hidden;
+  width: 180px;
+  background-color: rgb(26, 103, 26);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 130%;
+  left: 50%;
+  margin-left: 0px;
+  
+  /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+  opacity: 0;
+  transition: opacity 2s;
+}
+
+.tooltiptexttop1::after {
   content: "";
   position: absolute;
   top: 100%;
