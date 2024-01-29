@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="resources/css/main.css">
+       <!-- <link rel="stylesheet" href="resources/css/tooltip.css">-->
+        <link href="resources/css/fontawesome.css" rel="stylesheet">
+     <!--<link href="resources/css/brands.css" rel="stylesheet">-->
+    <link href="resources/css/solid.css" rel="stylesheet">
+    <!--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>-->
+    <script src="resources/js/chart.js"></script>
+    <script src="resources/js/three.js"></script>
+    </head>
+  
+<body>
+   <div>
+       <img src="resources/img/au-logo.svg"/>
+	   <h3>Department of Computer Science</h3>
+       <h2>Four Chambered Egg and Changing Yolk Model</h2>
+   </div>
+   <div>
+    <div style="display: flex;">
+     
+   <div id="eggmodel" style="flex: 1;"> <b>Egg Model</b><br><div id="canvas3D" style="width:80%;height:90%;display: inline-block;position: relative;"></div></div>
+
+   <div id="graph" style="flex: 1;"> <b>Repolarisation Trace</b> <!--<i class="fa-solid fa-download" style="color: rgb(34, 87, 139);float:right;" onclick='saveCanvasAsImage("eggChart","chart.jpg");'></i>--><canvas id="eggChart" style="width:80%;height:90%;display: inline-block;position: relative;"></canvas></div>
+  </div>
+   <div id="configure" style="width: 99%;">
+    <b>Settings</b>
+    <br>
+    <br>
+      <div id="div-slider" style ="width: 45%;height: 200px;border-width: 1px;border-color: black;border-style: solid;display: inline-block;vertical-align: middle">
+        mode Orientation
+        <br>
+        <table>
+          <tr>
+        <td>Rotate vertically</td>
+        <td><input type="range" value="90" id="myRangeY" max="90" orient="vertical" onmousedown="resetSliderX()"></td>
+      
+        <td>Rotate horizontally</td>
+        <td><input type="range" value="92" id="myRangeX" max="92" min="-5" onmousedown="resetSliderY()"></td>
+      </tr>
+        </table>
+        
+      </div>
+      <div id="div-display-graph" style ="width: 45%;height: 200px;border-width: 1px;border-color: black;border-style: solid;display: inline-block;vertical-align: middle;text-align: center;">
+        Display Graph
+        <br>
+      <table style="width: 100%;">
+        <tr>
+        <td><input type="checkbox" id="Lead_V5" name="vehicle1" value="Bike"></td>
+          <td><label for="Lead_V5"> Lead V5</label></td>
+      </tr>
+      <tr>
+        <td><input type="checkbox" id="Lead_sV1" name="vehicle2" value="Car"></td>
+        <td><label for="Lead_sV1"> Lead sV1</label></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" id="Lead_III" name="vehicle3" value="Boat"></td>
+            <td><label for="Lead_III"> Lead III</label></td>
+      </tr>
+      </table>
+        </div>
+        <div id="div-slider" style ="width: 25%;height: 300px ;border-width: 1px;border-color: black;border-style: solid;display: inline-block;vertical-align: middle">
+          Allocate Hypertrophy
+          <br>
+          <table>
+        <tr>
+         <td><label for="Basal_Septal" style="float:left"> Basal Septal </label></td> 
+         <td><input type="number" id="Basal_Septal"  min="1" max="1.5" step="0.1" value="1.0"></td>
+        </tr>
+        <tr>
+          <td><label for="Apical_Septal" style="float:left"> Apical Septal </label></td>
+          <td><input type="number" id="Apical_Septal"  min="1" max="1.5" step="0.1" value="1.0" ></td>
+        </tr>
+          <tr>
+            <td><label for="Left_Ventricular" style="float:left"> Left Ventricular </label></td>
+              <td><input type="number" id="Left_Ventricular"  min="1" max="1.5" step="0.1" value="1.0"> </td>
+        </tr>
+        <tr>
+          <td><label for="Right_Ventricular" style="float:left"> Right Ventricular </label></td>
+          <td><input type="number" id="Right_Ventricular" min="1" max="1.5" step="0.1" value="1.0" ></td>
+        </tr>
+        </table>
+        </div>
+        <div id="div-slider" style ="width: 40%;height: 300px;border-width: 1px;border-color: black;border-style: solid;display: inline-block;vertical-align: middle">
+          Allocate Artery Occlusion 
+          <br>
+          <table>
+          <tr>
+            <td></td>
+          <td><p style="text-align: right;">Proximal &ensp;&ensp;Distal&ensp;</p></td>
+          </tr>
+          <tr>
+            <td><label for="vehicle1"> Left Anterior Descending Artery </label></td>
+              <td><input type="range" orient="horizontal" min="1" max="20" value="20"/></td>
+        </tr>
+          <tr>
+            <td><label for="vehicle2"> Left Circumflex Artery </label></td>
+              <td><input type="range" orient="horizontal" min="9" max="21" value="21"/></td>
+        </tr>
+          <tr>
+            <td><label for="vehicle3"> Proximal Right Coronary Artery </label></td>
+              <td><input type="range" orient="horizontal" min="9" max="21" value="21"/></td>
+        </tr>
+          <tr>
+            <td><label for="vehicle3"> Right Marginal Artery </label></td>
+              <td><input type="range" orient="horizontal" min="12" max="20" value="20"/></td>
+        </tr>
+          <tr>
+            <td><label for="vehicle3"> Posterior Descending Artery </label></td>
+              <td><input type="range" orient="horizontal" min="1" max="20" value="20"/></td>
+        </tr>
+          <tr>
+            <td><label for="vehicle3"> Severity Of Occulsion </label></td>
+              <td><input type="number" id="proximal" name="quantity" min="1" max="1.5" step="0.1" value="1.0" class="settings"></td>
+          </tr>
+          </table>
+        </div>
+        <div id="div-slider" style ="width: 25%;height: 300px;display: inline-block;vertical-align: middle">
+          <div id="div-slider" style ="width: 90%;border-width: 1px;border-color: black;border-style: solid;display: inline-block;vertical-align: middle">
+            U Wave Component
+            <br><br>
+            <input type="checkbox" id="Anterior_Rotated_Heart" name="vehicle1" value="Bike">
+            <label for="Anterior_Rotated_Heart"> Anterior Rotated Heart</label><br>
+            <input type="checkbox" id="Prominent_U_Wave_Factors_Present" name="vehicle2" value="Car">
+             <label for="Prominent_U_Wave_Factors_Present"> Prominent U Wave Factors Present </label><br>
+          </div>
+          <div id="div-slider" style ="width: 90%;;border-width: 1px;border-color: black;border-style: solid;display: inline-block;vertical-align: middle">
+            
+            <button id="startAnim" onclick="startAnimation(this);">
+              <i class="fa-sharp fa-solid fa-play" style="color: rgb(48, 34, 139);"></i> Presents
+          </button><br><br>
+            <button id="startAnim" onclick="startAnimation(this);">
+              <i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation
+          </button>
+          </div>
+
+          </div>
+          
+  </div>
+   </div>
+</div>
+
+<div>
+  This work is based on the paper from the <a href="scholar.google.com">link</a>
+  <br>
+  Our Research Team:<b>
+  Arvind Mistry, John Cannon, Kieran Stone, Daniel Cyrus, Faisal Rezwan
+  </b>
+  <br>Developers: Daniel Cyrus
+  <br>
+  Contact: <a href="mailto:far8@aber.ac.uk">Faisal Rezwan</a>
+  
+</div>
+</body>
+
+<script>
+
+
+
+/////////////////////////////////////////////////
+const container = document.getElementById("canvas3D");
+var sliderX = document.getElementById("myRangeX");
+var sliderY = document.getElementById("myRangeY");
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera( 75, 300 / 300, 0.1, 1000 );
+
+const renderer = new THREE.WebGLRenderer();
+renderer.setClearColor( 0xffffff, 1);
+renderer.setSize( 450, 300 );
+document.body.appendChild( renderer.domElement );
+////////////////////Sphere
+/*
+const geometrysp = new THREE.BoxGeometry( 7, 5, 0.01 );
+const loaderEyesp = new THREE.TextureLoader();
+  
+  const materialEyesp = new THREE.MeshBasicMaterial({
+    map: loaderEyesp.load('resources/img/circle.png'),
+    transparent: true, opacity: 1, color: 0xffffff
+  });
+const cube1 = new THREE.Mesh( geometry1, materialEye1 );
+scene.add( cube1 );
+*/
+///////////////////blue egg
+const geometry = new THREE.BoxGeometry( 0.01, 6, 7 );
+const loaderEye = new THREE.TextureLoader();
+  
+  const materialEye = new THREE.MeshBasicMaterial({
+    map: loaderEye.load('resources/img/egg.png'),
+    transparent: true, opacity: 1, color: 0xffffff
+  });
+
+const cube = new THREE.Mesh( geometry, materialEye );
+scene.add( cube );
+
+/////circle
+const geometry1 = new THREE.BoxGeometry( 7, 5, 0.01 );
+const loaderEye1 = new THREE.TextureLoader();
+  
+  const materialEye1 = new THREE.MeshBasicMaterial({
+    map: loaderEye1.load('resources/img/circle.png'),
+    transparent: true, opacity: 1, color: 0xffffff
+  });
+const cube1 = new THREE.Mesh( geometry1, materialEye1 );
+scene.add( cube1 );
+/////yellow egg
+const geometry2 = new THREE.BoxGeometry( 6, 0.01, 7 );
+const loaderEye2 = new THREE.TextureLoader();
+  
+  const materialEye2 = new THREE.MeshBasicMaterial({
+    map: loaderEye2.load('resources/img/egg1.png'),
+    transparent: true, opacity: 1, color: 0xffffff
+  });
+const cube2 = new THREE.Mesh( geometry2, materialEye2 );
+scene.add( cube2 );
+
+
+//////////////Sphere///////////////
+
+
+////////////////////////////////////
+
+camera.position.z = 6;
+camera.position.x = -0.55;
+
+cube1.position.y = 0.35;
+cube1.position.x = -0.75;
+
+
+
+function animate() {
+	requestAnimationFrame( animate );
+    var deg=(sliderX.value * Math.PI) /180;
+    var deg1=(sliderY.value * Math.PI) /180;
+	//cube.rotation.x += 0.01;
+	  cube.rotation.y = deg;
+    cube1.rotation.y = deg;
+    cube2.rotation.y = deg;
+
+    cube.rotation.z = deg1;
+    cube1.rotation.z = deg1;
+    cube2.rotation.z = deg1;
+
+	renderer.render( scene, camera );
+}
+
+function resetSliderX(){
+    sliderX.value = 92
+}
+
+function resetSliderY(){
+    sliderY.value = 90
+}
+animate();
+container.appendChild( renderer.domElement );
+
+
+   ///////////graph
+  
+   var damageIndex = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  var current_result3=[];
+  function UpdateData(){
+    
+///////////////////////////////////////////
+const Posterior_Signal_Strength = 0.5;
+const Septal_Signal_Strenght = 0.5;
+
+const proximal= document.getElementById("proximal").value;
+const apical= document.getElementById("apical").value;
+const distal= document.getElementById("distal").value;
+const damageCombo= document.getElementById("damageCombo").value;
+
+const Posterior_Wall=	       [0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0];			
+const Posterior_Wall_signal =[];for(var i =0;i<18;i++)Posterior_Wall_signal.push(Posterior_Wall[i]*distal*Posterior_Signal_Strength);
+
+const Basal_Septum_signal	=  [1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0];					
+const Basal_Septum_signal_with_hypertrophy =  [];for(var i =0;i<18;i++)Basal_Septum_signal_with_hypertrophy.push(Basal_Septum_signal[i]*proximal*Septal_Signal_Strenght);
+const Apical_Septum_signal=  [0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0]	;		
+const Apical_Septum_signal_with_hypertrophy=  [];for(var i =0;i<18;i++)Apical_Septum_signal_with_hypertrophy.push(Apical_Septum_signal[i]*distal*Septal_Signal_Strenght);
+const Net_Towards_signal=    [];for(var i =0;i<18;i++)Net_Towards_signal.push(Apical_Septum_signal_with_hypertrophy[i]+Basal_Septum_signal_with_hypertrophy[i]+Posterior_Wall_signal[i]);
+																					
+const Towards_signal_damage=[];for(var i =12;i<27;i++)Towards_signal_damage.push(damageIndex[i]);for(var i =0;i<3;i++)Towards_signal_damage.push(0);				
+const Net_Towards_damage= [];for(var i =0;i<18;i++)Net_Towards_damage.push(Towards_signal_damage[i]*damageCombo);
+																					
+const Net_Result_Towards_side=[];for(var i =0;i<18;i++)Net_Result_Towards_side.push(Net_Towards_signal[i]-Net_Towards_damage[i]);
+//alert(Net_Result_Towards_side);
+const Basal_septum_signal = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0];
+const Basal_septum_signal_with_hypertrophy=[];for(var i =0;i<18;i++)Basal_septum_signal_with_hypertrophy.push(Basal_septum_signal[i]*Septal_Signal_Strenght*proximal);
+const Net_Away_From_signal = Basal_septum_signal_with_hypertrophy;
+const Away_from_signal_damage=[];for(var i =12;i>0;i--)Away_from_signal_damage.push(damageIndex[i]);for(var i =0;i<6;i++)Away_from_signal_damage.push(0);
+const Net_Away_From_damage=[];for(var i =0;i<18;i++)Net_Away_From_damage.push(Away_from_signal_damage[i]*damageCombo);
+const Net_Result_Away_From_side=[];for(var i =0;i<18;i++)Net_Result_Away_From_side.push(Net_Away_From_signal[i]-Net_Away_From_damage[i]);
+//alert(Net_Result_Away_From_side);
+///////////////////////////////////////////
+   current_result3=[];
+   
+    //var yValues = [0,0,0,0,0,0,0,0,0,.0625,0.25,0.4375,0.4375,0.25,0.0625,0,0,0];
+    const current_result=[];for(var i =0;i<18;i++)current_result.push(Net_Result_Towards_side[i]-Net_Result_Away_From_side[i]);
+    var current_result1=[0];
+    var current_result2=[0];
+    for(var i =1;i<18;i++)current_result1.push((current_result[i-1]+current_result[i])/2);
+    for(var i =1;i<18;i++)current_result2.push((current_result1[i-1]+current_result1[i])/2);
+    for(var i =3;i<18;i++)current_result3.push(current_result2[i]);for(var i=0;i<3;i++)current_result3.push(0);
+   // alert(current_result3);
+  
+  }
+
+  
+
+  var xValues = [20,40,60,80,100,120,140,160,180,200,220,240,260,280,300,320,340,380];
+    var chart =new Chart("eggChart", {
+  type: "line",
+  data: {
+    labels: xValues,
+    datasets: [
+    {
+      pointStyle: 'line',
+      pointRadius: 0,
+      label:"T Wave",
+      data: [0,0,0.125,0.5,0.75,0.5,0.125,0,0,0,0,0.125,0.375,0.5,0.375,0.125,0,0],
+      borderColor: "blue",
+      fill: false,
+      borderDash: [5,5],
+    },
+    {
+      pointStyle: 'line',
+      pointRadius: 0,
+      label:"U Wave",
+      data: [0,0,0.125,0.375,0.5,0.375,0.125,0,0,0,0,0.1,0.2,0.3,0.2,0.1,0,0],
+      borderColor: "red",
+      fill: false,
+      borderDash: [5,5],
+    }]
+  },
+  
+  options: {
+    legend: {display: true,labels: {
+      usePointStyle: true
+    }},
+    scales: {
+      xAxes: [{ticks: {min: 0, max:360},scaleLabel:{display: true,labelString: 'mSec'}}],
+      yAxes: [{ticks: {min: -1.5, max:+1.5},scaleLabel:{display: true,labelString: 'mV'}}],
+    }
+  }
+});
+
+
+</script>
+</html>
