@@ -5,6 +5,8 @@
 
 div {text-align: center;
      padding: 10px;
+     border-radius: 5px;
+     margin: 3px;
 }
 body{
     margin: 50px;
@@ -74,21 +76,21 @@ span > input {
     font-size: 14px;
   }
 
-    input[type='range'] {
+    .damage{
       overflow: hidden;
-      width: 90px;
+      width: 150px;
       -webkit-appearance: none;
       background-color: #ff0000
     }
     
-    input[type='range']::-webkit-slider-runnable-track {
+    .damage::-webkit-slider-runnable-track {
       height: 15px;
       -webkit-appearance: none;
       color: #e8f2f0;
       margin-top: -1px;
     }
     
-    input[type='range']::-webkit-slider-thumb {
+    .damage::-webkit-slider-thumb {
       width: 15px;
       -webkit-appearance: none;
       height: 15px;
@@ -101,5 +103,84 @@ span > input {
 canvas{
   width: 450px;
   height: 300px;
+ 
+}
+.range3d {
+  --ticksThickness: 2px;
+  --ticksHeight: 30%;
+  --ticksColor: #434343;
+  display: inline-block;
+  background: #434343;
+  background: linear-gradient(to right, var(--ticksColor) var(--ticksThickness), transparent 1px) repeat-x;
+  background-size: calc(100%/((var(--max) - var(--min)) / var(--step)) - .1%) var(--ticksHeight);
+  background-position: 0 bottom;
+  position: relative;
+}
+
+/* min / max labels at the edges */
+.range3d::before, .range3d::after {
+  font: 12px monospace;
+  content: counter(x);
+  position: absolute;
+  bottom: -2ch;
+}
+
+.range3d::before {
+  counter-reset: x var(--min);
+  transform: translateX(-50%);
+}
+
+.range3d::after {
+  counter-reset: x var(--max);
+  right: 0;
+  transform: translateX(50%);
+}
+
+.range3d > input {
+  width: 200px;
+  margin: 0 -6px; /* Critical adjustment */
+}
+
+
+.range3d_1 {
+  --ticksThickness: 2px;
+  --ticksHeight: 30%;
+  --ticksColor: #434343;
+
+  display: inline-block;
+  background: #434343;
+  background: repeat-y linear-gradient(to bottom, var(--ticksColor) var(--ticksThickness), transparent 1px);
+  background-size:var(--ticksHeight) calc(100%/((var(--max) - var(--min)) / var(--step)) - .1%);
+  background-position: right 0;
+  position: relative;
+}
+
+/* min / max labels at the edges */
+.range3d_1::before, .range3d_1::after {
+  font: 12px monospace;
+  content: counter(y);
+  position: absolute;
+  bottom: -2ch;
+}
+
+.range3d_1::before {
+  margin-left: 35px;
+  counter-reset:y var(--min);
+  transform:translateY(-150px);
+}
+
+.range3d_1::after {
+  margin-left: 12px;
+  counter-reset:y var(--max);
+  bottom: 0;
+  
+}
+
+.range3d_1 input[orient=vertical] {
+  appearance: slider-vertical;
+  -moz-appearance: slider-vertical;
+  -webkit-appearance: slider-vertical;
+  width: 8px;
+  height: 150px;
  
 }
