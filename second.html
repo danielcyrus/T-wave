@@ -219,6 +219,7 @@ const loaderEye = new THREE.TextureLoader();
     transparent: true, opacity: 1, color: 0xffffff
   });
 
+
 const cube = new THREE.Mesh( geometry, materialEye );
 scene.add( cube );
 
@@ -239,6 +240,7 @@ const materialEye2 = new THREE.MeshBasicMaterial({
     map: loaderEye2.load('resources/img/egg1.png'),
     transparent: true, opacity: 1, color: 0xffffff
   });
+
 const cube2 = new THREE.Mesh( geometry2, materialEye2 );
 scene.add( cube2 );
 //////////////lines///////////////
@@ -274,7 +276,7 @@ cubeLine1.position.x = .0
 function animate() {
 	requestAnimationFrame( animate );
     var deg=(sliderX.value * Math.PI) /180;
-    var deg1=(sliderY.value * Math.PI) /180;
+    var deg1=(sliderY.value * Math.PI) /180 * -1;
 	//cube.rotation.x += 0.01;
 	  cube.rotation.y = deg;
     cube1.rotation.y = deg;
