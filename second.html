@@ -53,15 +53,15 @@
         <br>
       <table style="width: 100%;">
         <tr>
-        <td><input type="checkbox" id="Lead_V5"  checked="true"></td>
+        <td><input type="checkbox" id="Lead_V5"  checked="true" onchange="showOffCharts(this,0);"></td>
           <td><label for="Lead_V5"> Lead V5</label></td>
       </tr>
       <tr>
-        <td><input type="checkbox" id="Lead_sV1"  checked="true"></td>
+        <td><input type="checkbox" id="Lead_sV1"  checked="true"  onchange="showOffCharts(this,1);"></td>
         <td><label for="Lead_sV1"> Lead sV1</label></td>
         </tr>
         <tr>
-          <td><input type="checkbox" id="Lead_III" checked="true"></td>
+          <td><input type="checkbox" id="Lead_III" checked="true" onchange="showOffCharts(this,2);"></td>
             <td><label for="Lead_III"> Lead III</label></td>
       </tr>
       </table>
@@ -117,8 +117,8 @@
               <td><input type="range" class="damage" orient="horizontal" min="1" max="21" value="21" id="pda" step="1"/></td>
         </tr>
           <tr>
-            <td><label for="vehicle3"> Severity Of Occulsion </label></td>
-              <td><input type="number" id="proximal" name="quantity" min="1" max="1.5" step="0.1" value="1.0"></td>
+            <td><label for="Severity_Of_Occulsion"> Severity Of Occulsion </label></td>
+              <td><input type="number" id="Severity_Of_Occulsion" name="quantity" min="1" max="1.5" step="0.1" value="0.5"></td>
           </tr>
           </table>
         </div>
@@ -235,15 +235,12 @@ scene.add( cube1 );
 /////yellow egg
 const geometry2 = new THREE.BoxGeometry( 6, 0.01, 7 );
 const loaderEye2 = new THREE.TextureLoader();
-  
-  const materialEye2 = new THREE.MeshBasicMaterial({
+const materialEye2 = new THREE.MeshBasicMaterial({
     map: loaderEye2.load('resources/img/egg1.png'),
     transparent: true, opacity: 1, color: 0xffffff
   });
 const cube2 = new THREE.Mesh( geometry2, materialEye2 );
 scene.add( cube2 );
-
-
 //////////////lines///////////////
 const geometryLine = new THREE.BoxGeometry( .1, 7, .1 );
 const loaderEyeline = new THREE.TextureLoader();
@@ -359,7 +356,64 @@ III_Current_Result =	[0,	0,	0.0625,	0.25,	0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0
 });
 
 function presets(elem){
-  alert(elem.value);
+  val = elem.value;
+  if(val==1){
+    document.getElementById("lad").value =21;
+    document.getElementById("lcx").value=22;
+    document.getElementById("rca").value=21;
+    document.getElementById("rma").value=21;
+    document.getElementById("pda").value=21;
+    document.getElementById("Severity_Of_Occulsion").value=0.5;
+  }
+ else if(val==2){
+    document.getElementById("lad").value =1;
+    document.getElementById("lcx").value=9;
+    document.getElementById("rca").value=21;
+    document.getElementById("rma").value=21;
+    document.getElementById("pda").value=21;
+    document.getElementById("Severity_Of_Occulsion").value=0.5;
+  }
+  else if(val==3){
+    document.getElementById("lad").value =21;
+    document.getElementById("lcx").value=22;
+    document.getElementById("rca").value=9;
+    document.getElementById("rma").value=12;
+    document.getElementById("pda").value=1;
+    document.getElementById("Severity_Of_Occulsion").value=0.5;
+  }
+  else if(val==4){
+    document.getElementById("lad").value =1;
+    document.getElementById("lcx").value=22;
+    document.getElementById("rca").value=21;
+    document.getElementById("rma").value=21;
+    document.getElementById("pda").value=21;
+    document.getElementById("Severity_Of_Occulsion").value=0.5;
+  }
+  else if(val==5){
+    document.getElementById("lad").value =21;
+    document.getElementById("lcx").value=9;
+    document.getElementById("rca").value=21;
+    document.getElementById("rma").value=21;
+    document.getElementById("pda").value=21;
+    document.getElementById("Severity_Of_Occulsion").value=0.5;
+  }
+  else if(val==6){
+    document.getElementById("lad").value =21;
+    document.getElementById("lcx").value=22;
+    document.getElementById("rca").value=21;
+    document.getElementById("rma").value=1;
+    document.getElementById("pda").value=21;
+    document.getElementById("Severity_Of_Occulsion").value=0.5;
+  }
+  else if(val==7){
+    document.getElementById("lad").value =21;
+    document.getElementById("lcx").value=22;
+    document.getElementById("rca").value=21;
+    document.getElementById("rma").value=21;
+    document.getElementById("pda").value=1;
+    document.getElementById("Severity_Of_Occulsion").value=0.5;
+  }
+
 }
 
 function UpdateData(){
@@ -389,14 +443,14 @@ var Prominent_U_Wave_present=	0;
 var Prominent_U_Wave = 0;
 var U_wave = 0;
 
-var Left_Ventricular_Hypertrophy =	1;
-var Basal_Septal_Hypertrophy=	1;
-var Apical_Septal_Hypertrophy=	1;
-var Right_Ventricular_Hypertrophy=1;
+var Left_Ventricular_Hypertrophy =	document.getElementById("Left_Ventricular").value;
+var Basal_Septal_Hypertrophy=	document.getElementById("Basal_Septal").value;
+var Apical_Septal_Hypertrophy=	document.getElementById("Apical_Septal").value;;
+var Right_Ventricular_Hypertrophy=document.getElementById("Right_Ventricular").value;
 
 if(LCX_range[20]==1)Prominent_U_Wave=1;
 if(LCX_range[19]==1)U_wave=1;
-var Severity_of_Damage =	0.5;
+var Severity_of_Damage =	document.getElementById("Right_Ventricular").value;
 
 
 
@@ -412,7 +466,7 @@ var Anterior_Signal_Strength	=	0.5;
 
 const Posterior_Wall_signal = [0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0]; 
 const Posterior_Wall_signal_with_hypertrophy = [];for(var i =0;i<22;i++)Posterior_Wall_signal_with_hypertrophy.push((Posterior_Signal_Strength*Left_Ventricular_Hypertrophy*Posterior_Wall_signal[i]));
-const U_wave_extended_Posterior_Wall = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,U_Wave_present,0];
+const U_wave_extended_Posterior_Wall =                 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,U_Wave_present,0];
 const U_wave_with_Hypertrophy = [];for(var i =0;i<22;i++)U_wave_with_Hypertrophy.push((Posterior_Signal_Strength*Left_Ventricular_Hypertrophy*U_wave_extended_Posterior_Wall[i]));
 const Prominent_U_wave_extended_Posterior_Wall_further=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,Prominent_U_Wave_present];
 const Prominent_U_wave_with_hypertrophy=[];for(var i =0;i<22;i++)Prominent_U_wave_with_hypertrophy.push((Posterior_Signal_Strength*Left_Ventricular_Hypertrophy*Prominent_U_wave_extended_Posterior_Wall_further[i]));
@@ -434,9 +488,9 @@ const Left_Circumflex_Artery_posterior_damage_value = [0,0,0,0,0,0,0,0,1,1,1,1,1
 const Left_Circumflex_Artery_from_posterior_damage = LCX_range;
 const LCx_posterior_damage_with_severity = [];for(var i =0;i<22;i++)LCx_posterior_damage_with_severity.push((Posterior_Signal_Strength*Severity_of_Damage*Left_Circumflex_Artery_from_posterior_damage[i]));
 //LCx_U_wave_damage_value = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,U_Wave_present,0]
-const LCx_U_wave_damage_value =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,U_Wave_present*U_wave,0];
+const LCx_U_wave_damage_value =   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,U_Wave_present*U_wave,0];
 const LCx_U_wave_damage_with_severity = [];for(var i =0;i<22;i++)LCx_U_wave_damage_with_severity.push((Posterior_Signal_Strength*Severity_of_Damage*LCx_U_wave_damage_value[i]));
-const LCx_Prominent_U_Wave_1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,Prominent_U_Wave_present];
+const LCx_Prominent_U_Wave_1 =    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,Prominent_U_Wave_present];
 const LCx_U_wave_damage_value_1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,Prominent_U_Wave_present * Prominent_U_Wave];
 const LCx_U_wave_damage_with_severity_1 = [];for(var i =0;i<22;i++)LCx_U_wave_damage_with_severity_1.push((Posterior_Signal_Strength*Severity_of_Damage*LCx_U_wave_damage_value_1[i]));
 const Right_Coronary_Artery_left_anterior_damage_value = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
@@ -571,10 +625,111 @@ const Balance_Averagesx3_sv1 =[0,0,0];for(var i =3;i<22;i++)Balance_Averagesx3_s
 ////////////////////////////////
 const sv1_current_result = [];for(var i =3;i<25;i++)sv1_current_result.push(Balance_Averagesx3_sv1[i]);
 
+//////////////////////////////Lead III /////////////////////////
+//**************************************************************
+var Towards_Signal_Strength_III = 0.5;
+var Septal_Signal_Strenght_III = 0.5;
+var Away_from_Signal_Strength_III = 0.5;
 
+const Lateral_signal_III = [0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0];  
+const Laterall_signal_with_hypertrophy_RV_LV_III = [];for(var i =0;i<22;i++)Laterall_signal_with_hypertrophy_RV_LV_III.push(((Lateral_signal_III[i]*Right_Ventricular_Hypertrophy*Towards_Signal_Strength_III)+(Lateral_signal_III[i]*Left_Ventricular_Hypertrophy*Towards_Signal_Strength_III))/2);
+const U_wave_extended_Lateral_Wall_III =                   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,U_Wave_present,0];
+const U_wave_with_Hypertrophy_III = [];for(var i =0;i<22;i++)U_wave_with_Hypertrophy_III.push(U_wave_extended_Lateral_Wall_III[i]*Left_Ventricular_Hypertrophy*Towards_Signal_Strength_III);
+const Prominent_U_wave_extended_Lateral_Wall_further_III = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,Prominent_U_Wave_present];
+const Prominent_U_wave_with_hypertrophy_III = [];for(var i =0;i<22;i++)Prominent_U_wave_with_hypertrophy_III.push(Prominent_U_wave_extended_Lateral_Wall_further_III[i]*Left_Ventricular_Hypertrophy*Towards_Signal_Strength_III);
+const Bottom_Basal_Septum_signal_III = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0];
+const Bottom_Basal_Septum_signal_with_hypertrophy_III = [];for(var i =0;i<22;i++)Bottom_Basal_Septum_signal_with_hypertrophy_III.push(Bottom_Basal_Septum_signal_III[i]*Basal_Septal_Hypertrophy*Septal_Signal_Strenght_III);
+const Lateral_Apical_Septum_signal_III = [0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0];
+const Lateral_Apical_Septum_signal_with_hypertrophy_III = [];for(var i =0;i<22;i++)Lateral_Apical_Septum_signal_with_hypertrophy_III.push(Lateral_Apical_Septum_signal_III[i]*Septal_Signal_Strenght_III*Apical_Septal_Hypertrophy);
+const Medial_signal_III = [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,2,0,0,0];
+const Medial_signal_with_hypertrophy_RV_LV_III = [];for(var i =0;i<22;i++)Medial_signal_with_hypertrophy_RV_LV_III.push(((Medial_signal_III[i]*Right_Ventricular_Hypertrophy*Towards_Signal_Strength_III)+(Medial_signal_III[i]*Left_Ventricular_Hypertrophy*Towards_Signal_Strength_III))/2);
+const Net_Towards_signal_III = [];for(var i =0;i<22;i++)Net_Towards_signal_III.push(Laterall_signal_with_hypertrophy_RV_LV_III[i]+U_wave_with_Hypertrophy_III[i]+Prominent_U_wave_with_hypertrophy_III[i]+Bottom_Basal_Septum_signal_with_hypertrophy_III[i]+Lateral_Apical_Septum_signal_with_hypertrophy_III[i]+Medial_signal_with_hypertrophy_RV_LV_III[i]);
+
+const Left_Anterior_Descending_Artery_central_septal_damage_value_III =[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0,0,0,0,0];
+const Left_Anterior_Descending_Artery_central_septal_damage_III =LAD_range;
+const LAD_central_septal_damage_with_severity_III = [];for(var i =0;i<22;i++)LAD_central_septal_damage_with_severity_III.push(Left_Anterior_Descending_Artery_central_septal_damage_value_III[i]*Left_Anterior_Descending_Artery_central_septal_damage_III[i]*Septal_Signal_Strenght_III*Severity_of_Damage);
+const Left_Anterior_Descending_Artery_anterior_damage_value_III=[0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0];
+const Left_Anterior_Descending_Artery_anterior_damage_III = LAD_range;
+const LAD_anterior_damage_with_severity_III= [];for(var i =0;i<22;i++)LAD_anterior_damage_with_severity_III.push(Left_Anterior_Descending_Artery_anterior_damage_value_III[i]*Left_Anterior_Descending_Artery_anterior_damage_III[i]*Towards_Signal_Strength_III*Severity_of_Damage);
+const LCx_U_wave_damage_value_bottom_III = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,U_Wave_present,0];
+const LCx_U_wave_damage_value_III =        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,U_Wave_present*U_wave,0];
+const LCx_U_wave_damage_with_severity_III = [];for(var i =0;i<22;i++)LCx_U_wave_damage_with_severity_III.push(LCx_U_wave_damage_value_bottom_III[i]*LCx_U_wave_damage_value_III[i]*Towards_Signal_Strength_III*Severity_of_Damage);
+const LCx_Prominent_U_Wave_bottom_III = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,Prominent_U_Wave_present];
+const LCx_U_wave_damage_value_III_2 =   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,Prominent_U_Wave_present * Prominent_U_Wave];
+const LCx_U_wave_damage_with_severity_III_2=[];for(var i =0;i<22;i++)LCx_U_wave_damage_with_severity_III_2.push(LCx_Prominent_U_Wave_bottom_III[i]*LCx_U_wave_damage_value_III_2[i]*Towards_Signal_Strength_III*Severity_of_Damage);
+const Right_Coronary_Artery_left_anterior_damage_value_III = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+const Right_Coronary_Artery_left_anterior_damage_III = RCA_range;
+const RCA_left_anterior_damage_with_severity_III = [];for(var i =0;i<22;i++)RCA_left_anterior_damage_with_severity_III.push(Right_Coronary_Artery_left_anterior_damage_value_III[i]*Right_Coronary_Artery_left_anterior_damage_III[i]*Towards_Signal_Strength_III*Severity_of_Damage);
+const Right_Marginal_Artery_damage_value_III = [0,0,0,0,0,0,0,0,0,0,0,1,1,2,2,2,2,3,4,1,0,0];
+const Right_Marginal_Artery_damage_III = RMA_range;
+const RMA_damage_with_severity_III = [];for(var i =0;i<22;i++)RMA_damage_with_severity_III.push(Right_Marginal_Artery_damage_value_III[i]*Right_Marginal_Artery_damage_III[i]*Towards_Signal_Strength_III*Severity_of_Damage);
+const Posterior_Descending_Artery_bottom_damage_value_III = [0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0];
+const Posterior_Descending_Artery_bottom_damage_III = PDA_range;
+const PDA_bottom_damage_with_severity_III = [];for(var i =0;i<22;i++)PDA_bottom_damage_with_severity_III.push(Posterior_Descending_Artery_bottom_damage_value_III[i]*Posterior_Descending_Artery_bottom_damage_III[i]*Towards_Signal_Strength_III*Severity_of_Damage);
+const Posterior_Descending_Artery_central_septal_damage_value_III=[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0,0,0,0,0];
+const Posterior_Descending_Artery_central_septal_damage_III = PDA_range;
+const Central_PDA_septal_damage_with_severity_III=[];for(var i =0;i<22;i++)Central_PDA_septal_damage_with_severity_III.push(Posterior_Descending_Artery_central_septal_damage_value_III[i]*Posterior_Descending_Artery_central_septal_damage_III[i]*Septal_Signal_Strenght_III*Severity_of_Damage);
+const Net_Towards_damage_III = [];for(var i =0;i<22;i++)Net_Towards_damage_III.push(LAD_central_septal_damage_with_severity_III[i]+LAD_anterior_damage_with_severity_III[i]+LCx_U_wave_damage_with_severity_III[i]+LCx_U_wave_damage_with_severity_III_2[i]+RCA_left_anterior_damage_with_severity_III[i]+RMA_damage_with_severity_III[i]+PDA_bottom_damage_with_severity_III[i]+Central_PDA_septal_damage_with_severity_III[i]);
+ 
+const Net_Result_Towards_side_III=[];for(var i =0;i<22;i++)Net_Result_Towards_side_III.push(Net_Towards_signal_III[i]-Net_Towards_damage_III[i]);
+ 
+const Lateral_signal_III_1 = [0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,2,1,0,0];  
+const Laterall_signal_with_hypertrophy_RV_LV_III_1 = [];for(var i =0;i<22;i++)Laterall_signal_with_hypertrophy_RV_LV_III_1.push(((Lateral_signal_III_1[i]*Right_Ventricular_Hypertrophy*Towards_Signal_Strength_III)+(Lateral_signal_III[i]*Left_Ventricular_Hypertrophy*Towards_Signal_Strength_III))/2);
+const U_wave_extended_Lateral_Wall_III_1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+const U_wave_with_Hypertrophy_III_1 = [];for(var i =0;i<22;i++)U_wave_with_Hypertrophy_III_1.push(U_wave_extended_Lateral_Wall_III_1[i]*Left_Ventricular_Hypertrophy*Towards_Signal_Strength_III);
+const Prominent_U_wave_extended_Lateral_Wall_further_III_1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+const Prominent_U_wave_with_hypertrophy_III_1 = [];for(var i =0;i<22;i++)Prominent_U_wave_with_hypertrophy_III_1.push(Prominent_U_wave_extended_Lateral_Wall_further_III_1[i]*Left_Ventricular_Hypertrophy*Towards_Signal_Strength_III);
+const Top_Basal_Septum_signal_III_1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0];
+const Top_Basal_Septum_signal_with_hypertrophy_III_1 = [];for(var i =0;i<22;i++)Top_Basal_Septum_signal_with_hypertrophy_III_1.push(Top_Basal_Septum_signal_III_1[i]*Basal_Septal_Hypertrophy*Septal_Signal_Strenght_III);
+const Medial_signal_III_1 = [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,2,0,0,0];
+const Medial_signal_with_hypertrophy_RV_LV_III_1 = [];for(var i =0;i<22;i++)Medial_signal_with_hypertrophy_RV_LV_III_1.push(((Medial_signal_III_1[i]*Right_Ventricular_Hypertrophy*Towards_Signal_Strength_III)+(Medial_signal_III[i]*Left_Ventricular_Hypertrophy*Towards_Signal_Strength_III))/2);
+const Net_Towards_signal_III_1 = [];for(var i =0;i<22;i++)Net_Towards_signal_III_1.push(Laterall_signal_with_hypertrophy_RV_LV_III_1[i]+U_wave_with_Hypertrophy_III_1[i]+Prominent_U_wave_with_hypertrophy_III_1[i]+Top_Basal_Septum_signal_with_hypertrophy_III_1[i]+Medial_signal_with_hypertrophy_RV_LV_III_1[i]);
+ 
+const Left_Coronary_Main_Artery_damage_III_1 =  [0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0,0,0,0,0];
+const Left_Anterior_Descending_Artery_central_septal_damage_value_III_1 = LAD_range;
+const Left_Anterior_Descending_Artery_central_septal_damage_III_1 = [];for(var i =0;i<22;i++)Left_Anterior_Descending_Artery_central_septal_damage_III_1.push(Left_Coronary_Main_Artery_damage_III_1[i]*Left_Anterior_Descending_Artery_central_septal_damage_value_III_1[i]*Septal_Signal_Strenght_III*Severity_of_Damage);
+const Left_Anterior_Descending_Artery_anterior_damage_value_III_1=[0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,2,2,1,0,0];
+const Left_Anterior_Descending_Artery_anterior_damage_III_1 = LAD_range;
+const LAD_anterior_damage_with_severity_III_1= [];for(var i =0;i<22;i++)LAD_anterior_damage_with_severity_III_1.push(Left_Anterior_Descending_Artery_anterior_damage_value_III_1[i]*Left_Anterior_Descending_Artery_anterior_damage_III_1[i]*Towards_Signal_Strength_III*Severity_of_Damage);
+const Right_Coronary_Artery_left_anterior_damage_value_III_1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+const Right_Coronary_Artery_left_anterior_damage_III_1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+const RCA_left_anterior_damage_with_severity_III_1 = [];for(var i =0;i<22;i++)RCA_left_anterior_damage_with_severity_III_1.push(Right_Coronary_Artery_left_anterior_damage_value_III_1[i]*Right_Coronary_Artery_left_anterior_damage_value_III_1[i]*Towards_Signal_Strength_III*Severity_of_Damage);
+const Right_Marginal_Artery_damage_value_III_1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+const Right_Marginal_Artery_damage_III_1 = RMA_range;
+const RMA_damage_with_severity_III_1 = [];for(var i =0;i<22;i++)RMA_damage_with_severity_III_1.push(Right_Marginal_Artery_damage_value_III_1[i]*Right_Marginal_Artery_damage_III_1[i]*Towards_Signal_Strength_III*Severity_of_Damage);
+const Posterior_Descending_Artery_top_damage_value_III_1 = [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,2,0,0,0];
+const Posterior_Descending_Artery_top_damage_III_1 = PDA_range;
+const PDA_bottom_damage_with_severity_III_1 = [];for(var i =0;i<22;i++)PDA_bottom_damage_with_severity_III_1.push(Posterior_Descending_Artery_top_damage_III_1[i]*Posterior_Descending_Artery_top_damage_value_III_1[i]*Towards_Signal_Strength_III*Severity_of_Damage);
+const Posterior_Descending_Artery_central_septal_damage_value_III_1=[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0,0,0,0,0];
+const Posterior_Descending_Artery_central_septal_damage_III_1 = PDA_range;
+const Central_PDA_septal_damage_with_severity_III_1=[];for(var i =0;i<22;i++)Central_PDA_septal_damage_with_severity_III_1.push(Posterior_Descending_Artery_central_septal_damage_value_III_1[i]*Posterior_Descending_Artery_central_septal_damage_III_1[i]*Septal_Signal_Strenght_III*Severity_of_Damage);
+const Net_Away_Fom_damage_III=[];for(var i =0;i<22;i++)Net_Away_Fom_damage_III.push(Left_Anterior_Descending_Artery_central_septal_damage_III_1[i]+LAD_anterior_damage_with_severity_III_1[i]+RCA_left_anterior_damage_with_severity_III_1[i]+RMA_damage_with_severity_III_1[i]+PDA_bottom_damage_with_severity_III_1[i]+Central_PDA_septal_damage_with_severity_III_1[i]);
+ 
+const Net_Result_Away_From_side_III=[];for(var i =0;i<22;i++)Net_Result_Away_From_side_III.push(Net_Towards_signal_III_1[i]-Net_Away_Fom_damage_III[i]);
+///////////////////////////////
+const Balance_raw_data_III = [];for(var i =0;i<22;i++)Balance_raw_data_III.push(Net_Result_Towards_side_III[i]-Net_Result_Away_From_side_III[i]);
+const Balance_averagesx1_III = [0];for(var i =1;i<22;i++)Balance_averagesx1_III.push((Balance_raw_data_III[i-1]+Balance_raw_data_III[i])/2);
+const Balance_Averagesx2_III = [0,0];for(var i =2;i<22;i++)Balance_Averagesx2_III.push((Balance_averagesx1_III[i-1]+Balance_averagesx1_III[i])/2);
+const Balance_Averagesx3_III =[0,0,0];for(var i =3;i<22;i++)Balance_Averagesx3_III.push((Balance_Averagesx2_III[i-1]+Balance_Averagesx2_III[i])/2);Balance_Averagesx3_III.push(0);Balance_Averagesx3_III.push(0);Balance_Averagesx3_III.push(0);
+//const Three_Averaged_III = [(Balance_raw_data[0]+Balance_raw_data[1])/2];for(var i =1;i<21;i++)Three_Averaged_III.push((Balance_Averagesx2[i-1]+Balance_Averagesx2[i]+Balance_Averagesx2[i+1])/3);Three_Averaged.push((Balance_Averagesx2[20]+Balance_Averagesx2[21])/2);Three_Averaged_III.push(0);Three_Averaged_III.push(0);Three_Averaged_III.push(0);
+////////////////////////////////
+
+const III_current_result = [];for(var i =3;i<25;i++)III_current_result.push(Balance_Averagesx3_III[i]);
+//alert(III_current_result);
+////////////////////////////////////////////////////////////////
 chart.data.datasets[0].data=V5_current_result;
 chart.data.datasets[1].data=sv1_current_result;
-      chart.update();
+chart.data.datasets[2].data=III_current_result;
+chart.update();
       }
+function showOffCharts(elem, id){
+if(elem.checked)
+  chart.data.datasets[parseInt(id)].hidden=false;
+else
+chart.data.datasets[parseInt(id)].hidden=true;
+
+chart.update();
+}
+
 </script>
 </html>
