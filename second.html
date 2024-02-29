@@ -36,13 +36,13 @@
           <tr>
         <td>Rotate Vertically</td>
         <td>
-        <div class="range3d_1" style="--step:20; --min:0; --max:180">
-          <input type="range" min="20" step="10" value="90" id="myRangeY" max="180" onmousedown="resetSliderX()"  orient="vertical">
+        <div class="range3d_1" style="--step:10; --min:0; --max:180">
+          <input type="range" min="0" step="10" value="90" id="myRangeY" max="180" onmousedown="resetSliderX()"  orient="vertical">
         </div></td>
         <td style="width: 20%;"></td>
         <td>Rotate Horizontally</td>
         <td><div class="range3d" style="--step:10; --min:0; --max:180">
-          <input type="range" min="20" step="10" value="90" id="myRangeX" max="180" onmousedown="resetSliderY()">
+          <input type="range" min="-7" step="2" value="90" id="myRangeX" max="173" onmousedown="resetSliderY()">
         </div></td>
       </tr>
         </table>
@@ -51,23 +51,25 @@
       <div id="div-display-graph" style ="width: 45%;height: 200px;border-width: 1px;border-color: black;border-style: solid;display: inline-block;vertical-align: middle;text-align: center;">
         <b>Display Graph</b>
         <br>
-      <table style="width: 100%;">
+      <table style="width: 100%;margin-left: 20%;margin-top: 20px;">
         <tr>
-        <td><input type="checkbox" id="Lead_V5"  checked="true" onchange="showOffCharts(this,0);"></td>
-          <td><label for="Lead_V5"> Lead V5</label></td>
+        <td><input type="checkbox" id="Lead_V5" onchange="showOffCharts(this,0);" style="float: right;"></td>
+          <td><label for="Lead_V5" style="float: left;">Lead V5</label></td>
       </tr>
       <tr>
-        <td><input type="checkbox" id="Lead_sV1"  checked="true"  onchange="showOffCharts(this,1);"></td>
-        <td><label for="Lead_sV1"> Lead sV1</label></td>
+        <td><input type="checkbox" id="Lead_sV1" onchange="showOffCharts(this,1);" style="float: right;"></td>
+        <td><label for="Lead_sV1" style="float: left;">Lead sV1</label></td>
         </tr>
         <tr>
-          <td><input type="checkbox" id="Lead_III" checked="true" onchange="showOffCharts(this,2);"></td>
-            <td><label for="Lead_III"> Lead III</label></td>
+          <td><input type="checkbox" id="Lead_III" onchange="showOffCharts(this,2);" style="float: right;"></td>
+            <td><label for="Lead_III" style="float: left;">Lead III</label></td>
       </tr>
       </table>
         </div>
-        <div id="div-slider" style ="width: 25%;height: 300px ;border-width: 1px;border-color: black;border-style: solid;display: inline-block;vertical-align: middle">
+        <div id="div-slider" style ="margin-right: 15px;width: 20%;height: 250px ;border-width: 1px;border-color: black;border-style: solid;display: inline-block;vertical-align: middle">
           <b>Allocate Hypertrophy</b>
+          <br>
+          <br>
           <br>
           <table>
         <tr>
@@ -118,7 +120,7 @@
         </tr>
           <tr>
             <td><label for="Severity_Of_Occulsion"> Severity Of Occulsion </label></td>
-              <td><input type="number" id="Severity_Of_Occulsion" name="quantity" min="1" max="1.5" step="0.1" value="0.5"></td>
+              <td><input type="number" id="Severity_Of_Occulsion" name="quantity" min="0.0" max="1.0" step="0.1" value="1.0"></td>
           </tr>
           </table>
         </div>
@@ -128,36 +130,36 @@
             <br><br>
             <table>
               <tr></tr>
-           <td> <input type="checkbox" id="Anterior_Rotated_Heart" name="vehicle1"></td>
+           <td> <input type="checkbox" id="Anterior_Rotated_Heart" name="vehicle1" onchange="setEnable(this);"></td>
             <td><label for="Anterior_Rotated_Heart" style="float: left;"> Anterior Rotated Heart</label></td>
           </tr>
           <tr>
-            <td><input type="checkbox" id="Prominent_U_Wave_Factors_Present"></td>
+            <td><input type="checkbox" id="Prominent_U_Wave_Factors_Present" disabled></td>
             <td> <label for="Prominent_U_Wave_Factors_Present" style="float: left;"> Prominent U Wave Factors Present </label></td>
             </tr>
             </table>
           </div>
           <div id="div-slider" style ="width: 90%;;border-width: 1px;border-color: black;border-style: solid;display: inline-block;vertical-align: middle">
             
-            <button id="Instructions" onclick="showTooltip();">
+            Presets
+
+            <select name="damage" id="preset" onchange="presets(this)">
+              <option value="1">No Coronary Artery Occlusion</option>
+              <option value="2">Proximal LMCA Occlusion</option>
+              <option value="3">Proximal RCA Occlusion</option>
+              <option value="4">Proximal LAD Occlusion</option>
+              <option value="5">Proximal LCx Occlusion</option>
+              <option value="6">Proximal RMA Occlusion</option>
+              <option value="7">Proximal PDA Occlusion</option>
+         
+            </select>
+                     
+                     <br><br>
+            <button id="Instructions" onclick="showTooltip();" style="float: right; width: 80%;">
               <i class="fa-sharp fa-solid fa-circle-info" style="color: forestgreen;"></i> Instructions
           </button><br><br>
    <!--<div class="tooltip" onc><span class="tooltiptextleft">Select either "Custom" or "Presets" value</span></div>-->
-   Presets
-
-   <select name="damage" id="preset" onchange="presets(this)">
-     <option value="1">No Coronary Artery Occlusion</option>
-     <option value="2">Proximal LMCA Occlusion</option>
-     <option value="3">Proximal RCA Occlusion</option>
-     <option value="4">Proximal LAD Occlusion</option>
-     <option value="5">Proximal LCx Occlusion</option>
-     <option value="6">Proximal RMA Occlusion</option>
-     <option value="7">Proximal PDA Occlusion</option>
-
-   </select>
-            
-            <br><br>
-            <button id="startAnim" onclick="UpdateData();">
+            <button id="startAnim" onclick="UpdateData();" style="float: right; width: 80%;">
               <i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation
           </button>
           </div>
@@ -244,34 +246,45 @@ const materialEye2 = new THREE.MeshBasicMaterial({
 const cube2 = new THREE.Mesh( geometry2, materialEye2 );
 scene.add( cube2 );
 //////////////lines///////////////
+
 const geometryLine = new THREE.BoxGeometry( .1, 7, .1 );
 const loaderEyeline = new THREE.TextureLoader();
   
   const materialEyeline = new THREE.MeshBasicMaterial({
-    transparent: false, opacity: 1, color: 0x00ff00
+    transparent: false, opacity: 1, color: 0x00aa00
   });
-const cubeLine = new THREE.Mesh( geometryLine, materialEyeline );
-scene.add( cubeLine );
+const line1 = new THREE.Mesh( geometryLine, materialEyeline );
 
 
 const geometryLine1 = new THREE.BoxGeometry( .1, .1, 7 );
 const loaderEyeline1 = new THREE.TextureLoader();
   
   const materialEyeline1 = new THREE.MeshBasicMaterial({
+    transparent: false, opacity: 1, color: 0xee0000
+  });
+const line2 = new THREE.Mesh( geometryLine1, materialEyeline1 );
+
+
+
+const geometryLine2 = new THREE.BoxGeometry( .1, 6, .1 );
+const loaderEyeline2 = new THREE.TextureLoader();
+  
+  const materialEyeline2 = new THREE.MeshBasicMaterial({
     transparent: false, opacity: 1, color: 0x0000ff
   });
-const cubeLine1 = new THREE.Mesh( geometryLine1, materialEyeline1 );
-scene.add( cubeLine1 );
+const line3 = new THREE.Mesh( geometryLine2, materialEyeline2 );
+
 ////////////////////////////////////
 
 camera.position.z = 6;
-camera.position.x = -0.55;
+camera.position.x = -0.7;
 
 cube1.position.y = 0.35;
 cube1.position.x = -0.75;
 
-cubeLine.position.x = -.65
-cubeLine1.position.x = .0
+line1.position.x = -.75
+line2.position.x = .0
+line3.position.x = -.75
 
 function animate() {
 	requestAnimationFrame( animate );
@@ -286,17 +299,17 @@ function animate() {
     cube1.rotation.z = deg1;
     cube2.rotation.z = deg1;
 
-    cubeLine.rotation.y = deg;
-    cubeLine.rotation.z = deg1;
+    line1.rotation.y = deg;
+    line1.rotation.z = deg1;
 
-    cubeLine1.rotation.y = deg;
-    cubeLine1.rotation.z = deg1;
+    line2.rotation.y = deg;
+    line2.rotation.z = deg1;
 
 	renderer.render( scene, camera );
 }
 
 function resetSliderX(){
-    sliderX.value = 92
+    sliderX.value = 90
 }
 
 function resetSliderY(){
@@ -325,6 +338,7 @@ III_Current_Result =	[0,	0,	0.0625,	0.25,	0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0
       borderColor: "blue",
       fill: false,
       borderDash: [5,5],
+      hidden:true
     },
     {
       pointStyle: 'line',
@@ -334,6 +348,7 @@ III_Current_Result =	[0,	0,	0.0625,	0.25,	0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0
       borderColor: "red",
       fill: false,
       borderDash: [5,5],
+      hidden:true
     },
     {
       pointStyle: 'line',
@@ -343,11 +358,12 @@ III_Current_Result =	[0,	0,	0.0625,	0.25,	0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0
       borderColor: "green",
       fill: false,
       borderDash: [5,5],
+      hidden:true
     }]
   },
   
   options: {
-    legend: {display: true,labels: {
+    legend: {position: 'bottom' ,display: true,labels: {
       usePointStyle: true
     }},
     scales: {
@@ -417,6 +433,8 @@ function presets(elem){
   }
 
 }
+
+
 
 function UpdateData(){
 LAD_range = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
@@ -725,6 +743,26 @@ chart.data.datasets[2].data=III_current_result;
 chart.update();
       }
 function showOffCharts(elem, id){
+
+if(id==2){
+if(elem.checked)  
+  scene.add( line1 );
+else
+  scene.remove( line1 );
+}
+else if(id==1){
+if(elem.checked)  
+  scene.add( line2 );
+else
+  scene.remove( line2 );
+}
+else if(id==0){
+if(elem.checked)  
+  scene.add( line3 );
+else
+  scene.remove( line3 );
+}
+
 if(elem.checked)
   chart.data.datasets[parseInt(id)].hidden=false;
 else
@@ -733,5 +771,17 @@ chart.data.datasets[parseInt(id)].hidden=true;
 chart.update();
 }
 
+function setEnable(elem){
+  if(elem.checked)
+  document.getElementById("Prominent_U_Wave_Factors_Present").disabled = false;
+else{
+  temp =document.getElementById("Prominent_U_Wave_Factors_Present");
+  temp.disabled = true;
+  temp.checked= false;
+
+}
+
+  
+}
 </script>
 </html>
