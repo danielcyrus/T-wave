@@ -159,7 +159,7 @@
               <i class="fa-sharp fa-solid fa-circle-info" style="color: forestgreen;"></i> Instructions
           </button><br><br>
    <!--<div class="tooltip" onc><span class="tooltiptextleft">Select either "Custom" or "Presets" value</span></div>-->
-            <button id="startAnim" onclick="UpdateData();" style="float: right; width: 80%;">
+            <button id="startAnim" onclick="startAnimation(this);" style="float: right; width: 80%;">
               <i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation
           </button>
           </div>
@@ -435,7 +435,9 @@ function presets(elem){
 }
 
 
-
+const III_current_result = [];
+const V5_current_result = [];
+const sv1_current_result = [];
 function UpdateData(){
 LAD_range = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
 var ladVal = parseInt(document.getElementById("lad").value)
@@ -558,7 +560,7 @@ const Balance_Averagesx2 = [0,0];for(var i =2;i<22;i++)Balance_Averagesx2.push((
 const Balance_Averagesx3 =[0,0,0];for(var i =3;i<22;i++)Balance_Averagesx3.push((Balance_Averagesx2[i-1]+Balance_Averagesx2[i])/2);Balance_Averagesx3.push(0);Balance_Averagesx3.push(0);Balance_Averagesx3.push(0);
 const Three_Averaged = [(Balance_raw_data[0]+Balance_raw_data[1])/2];for(var i =1;i<21;i++)Three_Averaged.push((Balance_Averagesx2[i-1]+Balance_Averagesx2[i]+Balance_Averagesx2[i+1])/3);Three_Averaged.push((Balance_Averagesx2[20]+Balance_Averagesx2[21])/2);Three_Averaged.push(0);Three_Averaged.push(0);Three_Averaged.push(0);
 ////////////////////////////////
-const V5_current_result = [];for(var i =3;i<25;i++)V5_current_result.push(Balance_Averagesx3[i]);
+for(var i =3;i<25;i++)V5_current_result.push(Balance_Averagesx3[i]);
 /////////////////////////Lead SV1 //////////
 //***************************************************************
 var Posterior_Signal_Strength_sv1 = 1;
@@ -643,7 +645,7 @@ const Balance_Averagesx2_sv1 = [0,0];for(var i =2;i<22;i++)Balance_Averagesx2_sv
 const Balance_Averagesx3_sv1 =[0,0,0];for(var i =3;i<22;i++)Balance_Averagesx3_sv1.push((Balance_Averagesx2_sv1[i-1]+Balance_Averagesx2_sv1[i])/2);Balance_Averagesx3_sv1.push(0);Balance_Averagesx3_sv1.push(0);Balance_Averagesx3_sv1.push(0);
 //const Three_Averaged_sv1 = [(Balance_raw_data[0]+Balance_raw_data[1])/2];for(var i =1;i<21;i++)Three_Averaged_sv1.push((Balance_Averagesx2[i-1]+Balance_Averagesx2[i]+Balance_Averagesx2[i+1])/3);Three_Averaged.push((Balance_Averagesx2[20]+Balance_Averagesx2[21])/2);Three_Averaged_sv1.push(0);Three_Averaged_sv1.push(0);Three_Averaged_sv1.push(0);
 ////////////////////////////////
-const sv1_current_result = [];for(var i =3;i<25;i++)sv1_current_result.push(Balance_Averagesx3_sv1[i]);
+for(var i =3;i<25;i++)sv1_current_result.push(Balance_Averagesx3_sv1[i]);
 
 //////////////////////////////Lead III /////////////////////////
 //**************************************************************
@@ -734,13 +736,13 @@ const Balance_Averagesx3_III =[0,0,0];for(var i =3;i<22;i++)Balance_Averagesx3_I
 //const Three_Averaged_III = [(Balance_raw_data[0]+Balance_raw_data[1])/2];for(var i =1;i<21;i++)Three_Averaged_III.push((Balance_Averagesx2[i-1]+Balance_Averagesx2[i]+Balance_Averagesx2[i+1])/3);Three_Averaged.push((Balance_Averagesx2[20]+Balance_Averagesx2[21])/2);Three_Averaged_III.push(0);Three_Averaged_III.push(0);Three_Averaged_III.push(0);
 ////////////////////////////////
 
-const III_current_result = [];for(var i =3;i<25;i++)III_current_result.push(Balance_Averagesx3_III[i]);
+for(var i =3;i<25;i++)III_current_result.push(Balance_Averagesx3_III[i]);
 //alert(III_current_result);
 ////////////////////////////////////////////////////////////////
-chart.data.datasets[0].data=V5_current_result;
-chart.data.datasets[1].data=sv1_current_result;
-chart.data.datasets[2].data=III_current_result;
-chart.update();
+//chart.data.datasets[0].data=V5_current_result;
+//chart.data.datasets[1].data=sv1_current_result;
+//chart.data.datasets[2].data=III_current_result;
+//chart.update();
       }
 function showOffCharts(elem, id){
 
@@ -770,7 +772,7 @@ chart.data.datasets[parseInt(id)].hidden=true;
 
 chart.update();
 }
-
+var btnStart = document.getElementById("startAnim");
 function setEnable(elem){
   if(elem.checked)
   document.getElementById("Prominent_U_Wave_Factors_Present").disabled = false;
@@ -780,8 +782,44 @@ else{
   temp.checked= false;
 
 }
+}
 
-  
+var myInterval=null;
+var tick =0;
+function draw(){
+const data0=[],data1=[],data2=[];
+ for(var i=0;i<tick;i++)
+  {
+    data0.push(V5_current_result[i]);
+    data1.push(sv1_current_result[i]);
+    data2.push(III_current_result[i]);
+
+
+  }
+  if(tick>22){
+    clearInterval(myInterval);
+    myInterval =null;
+    btnStart.innerHTML = '<i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation'
+  } 
+//alert(III_current_result);
+////////////////////////////////////////////////////////////////
+chart.data.datasets[0].data=data0;
+chart.data.datasets[1].data=data1;
+chart.data.datasets[2].data=data2;
+chart.update();
+tick = tick + 1;
+}
+
+function startAnimation(elem){
+  elem.innerHTML= '<i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Stop Simulation'
+  tick=0;
+  UpdateData()
+  if(myInterval==null)
+    myInterval=setInterval(draw, 500);
+  else{
+    clearInterval(myInterval);
+    myInterval =null;
+  }
 }
 </script>
 </html>
