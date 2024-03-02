@@ -23,7 +23,10 @@
      
    <div id="eggmodel" style="flex: 1;"> <b style="font-size: 19px;">Egg Model</b><br><div id="canvas3D" style="width:80%;height:90%;display: inline-block;position: relative;"></div></div>
 
-   <div id="graph" style="flex: 1;"> <b style="font-size: 19px;">Repolarisation Trace</b> <!--<i class="fa-solid fa-download" style="color: rgb(34, 87, 139);float:right;" onclick='saveCanvasAsImage("eggChart","chart.jpg");'></i>--><canvas id="eggChart" style="width:80%;height:90%;display: inline-block;position: relative;"></canvas></div>
+   <div id="graph" style="flex: 1;"> <b style="font-size: 19px;">Repolarisation Trace</b> <!--<i class="fa-solid fa-download" style="color: rgb(34, 87, 139);float:right;" onclick='saveCanvasAsImage("eggChart","chart.jpg");'></i>-->
+    <br>
+    <div style="display: inline;"></dvi><div style="display: inline;margin-left: 160px;float: left;">T wave</div><div style="display: inline;float: right;margin-right: 90px;">U wave</div></div>
+    <canvas id="eggChart" style="width:80%;height:90%;display: inline-block;position: relative;"></canvas></div>
   </div>
    <div id="configure" style="width: 99%;">
     <b style="font-size: 19px;">Settings</b>
@@ -36,13 +39,13 @@
           <tr>
         <td>Rotate Vertically</td>
         <td>
-        <div class="range3d_1" style="--step:10; --min:0; --max:180">
+        <div class="range3d_1" style="--step:10; --min:-90; --max:90">
           <input type="range" min="0" step="10" value="90" id="myRangeY" max="180" onmousedown="resetSliderX()"  orient="vertical">
         </div></td>
         <td style="width: 20%;"></td>
         <td>Rotate Horizontally</td>
-        <td><div class="range3d" style="--step:10; --min:0; --max:180">
-          <input type="range" min="-7" step="2" value="90" id="myRangeX" max="173" onmousedown="resetSliderY()">
+        <td><div class="range3d" style="--step:10; --min:-90; --max:90">
+          <input type="range" min="0" step="2" value="90" id="myRangeX" max="180" onmousedown="resetSliderY()">
         </div></td>
       </tr>
         </table>
@@ -71,7 +74,7 @@
           <br>
           <br>
           <br>
-          <table>
+          <table style="width: 100%;padding: 5%;">
         <tr>
          <td><label for="Basal_Septal" style="float:left"> Basal Septal </label></td> 
          <td><input type="number" id="Basal_Septal"  min="1" max="1.5" step="0.1" value="1.0"></td>
@@ -93,7 +96,7 @@
         <div id="div-slider" style ="width: 40%;height: 300px;border-width: 1px;border-color: black;border-style: solid;display: inline-block;vertical-align: middle">
           <b>Allocate Artery Occlusion </b>
           <br>
-          <table>
+          <table style="width: 100%;padding: 5%;">
           <tr>
             <td></td>
           <td><p style="text-align: right;font-size: 14px;">Proximal&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Distal&ensp;</p></td>
@@ -193,7 +196,7 @@ var sliderX = document.getElementById("myRangeX");
 var sliderY = document.getElementById("myRangeY");
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 75, 300 / 300, 0.1, 1000 );
+const camera = new THREE.PerspectiveCamera( 60, 400 / 400, 0.1, 1000 );
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setClearColor( 0xffffff, 1);
@@ -212,46 +215,57 @@ const loaderEyesp = new THREE.TextureLoader();
 const cube1 = new THREE.Mesh( geometry1, materialEye1 );
 scene.add( cube1 );
 */
+///Egg
+const points = [];
+for ( let deg = 0; deg <= 180; deg += 6 ) {
+    const rad = Math.PI * deg / 180;
+    const point = new THREE.Vector2( ( 0.72 + .08 * Math.cos( rad ) ) * Math.sin( rad ), - Math.cos( rad ) ); // the "egg equation"
+    points.push( point );
+
+}
 ///////////////////blue egg
-const geometry = new THREE.BoxGeometry( 0.01, 6, 7 );
-const loaderEye = new THREE.TextureLoader();
-  
-  const materialEye = new THREE.MeshBasicMaterial({
-    map: loaderEye.load('resources/img/egg.png'),
-    transparent: true, opacity: 1, color: 0xffffff
+const materialEye = new THREE.MeshBasicMaterial({
+    transparent: true, opacity: 0.8, color: 0x0000aa
   });
 
+const geometryEgg = new THREE.LatheGeometry( points, 32 );
+const EggBlue = new THREE.Mesh( geometryEgg, materialEye );
 
-const cube = new THREE.Mesh( geometry, materialEye );
-scene.add( cube );
-
+scene.add( EggBlue );
+EggBlue.scale.x = 3.5;
+EggBlue.scale.y = 3.5;
+EggBlue.scale.z = 0.01;
+EggBlue.rotation.y=(180 * Math.PI) /180;
+//EggBlue.rotation.x=(180 * Math.PI) /180;
 /////circle
-const geometry1 = new THREE.BoxGeometry( 7, 5, 0.01 );
-const loaderEye1 = new THREE.TextureLoader();
-  
-  const materialEye1 = new THREE.MeshBasicMaterial({
-    map: loaderEye1.load('resources/img/circle.png'),
-    transparent: true, opacity: 1, color: 0xffffff
-  });
-const cube1 = new THREE.Mesh( geometry1, materialEye1 );
-scene.add( cube1 );
+const geometryCy = new THREE.CylinderGeometry( 3, 3, 0.01, 20 ); 
+const materialCy = new THREE.MeshBasicMaterial( {color: 0x00aa00,opacity: 0.8} ); 
+const cylinderCy = new THREE.Mesh( geometryCy, materialCy ); 
+scene.add( cylinderCy );
+cylinderCy.position.x = -.75
+
+//cylinderCy.rotation.y = (180 * Math.PI) /180;
+//scene.add( cube1 );
 /////yellow egg
-const geometry2 = new THREE.BoxGeometry( 6, 0.01, 7 );
-const loaderEye2 = new THREE.TextureLoader();
-const materialEye2 = new THREE.MeshBasicMaterial({
-    map: loaderEye2.load('resources/img/egg1.png'),
-    transparent: true, opacity: 1, color: 0xffffff
+const materialEyeYello = new THREE.MeshBasicMaterial({
+    transparent: true, opacity: 0.8, color: 0xaaaa00
   });
 
-const cube2 = new THREE.Mesh( geometry2, materialEye2 );
-scene.add( cube2 );
+const geometryEgg1 = new THREE.LatheGeometry( points, 32 );
+const EggYellow = new THREE.Mesh( geometryEgg1, materialEyeYello );
+
+scene.add( EggYellow );
+EggYellow.scale.x = 0.01;
+EggYellow.scale.y = 3.5;
+EggYellow.scale.z = 3.5;
+EggYellow.rotation.y=(180 * Math.PI) /180;
 //////////////lines///////////////
 
-const geometryLine = new THREE.BoxGeometry( .1, 7, .1 );
+const geometryLine = new THREE.BoxGeometry( 7, .1, .1 );
 const loaderEyeline = new THREE.TextureLoader();
   
   const materialEyeline = new THREE.MeshBasicMaterial({
-    transparent: false, opacity: 1, color: 0x00aa00
+    transparent: false, opacity: 1, color: 0xff0000
   });
 const line1 = new THREE.Mesh( geometryLine, materialEyeline );
 
@@ -260,9 +274,9 @@ const geometryLine1 = new THREE.BoxGeometry( .1, .1, 7 );
 const loaderEyeline1 = new THREE.TextureLoader();
   
   const materialEyeline1 = new THREE.MeshBasicMaterial({
-    transparent: false, opacity: 1, color: 0xee0000
+    transparent: false, opacity: 1, color: 0x0000ff
   });
-const line2 = new THREE.Mesh( geometryLine1, materialEyeline1 );
+const line2 = new THREE.Mesh( geometryLine1, materialEyeline1 );///lead v5 blue
 
 
 
@@ -270,40 +284,104 @@ const geometryLine2 = new THREE.BoxGeometry( .1, 6, .1 );
 const loaderEyeline2 = new THREE.TextureLoader();
   
   const materialEyeline2 = new THREE.MeshBasicMaterial({
-    transparent: false, opacity: 1, color: 0x0000ff
+    transparent: false, opacity: 1, color: 0x00aa00
   });
 const line3 = new THREE.Mesh( geometryLine2, materialEyeline2 );
 
-////////////////////////////////////
+////////////////////////////////////Cylinders
+const materialC = new THREE.MeshBasicMaterial({
+    transparent: false, opacity: 1, color: 0xffff00
+  });
 
-camera.position.z = 6;
-camera.position.x = -0.7;
+var outerRadius = 1;
+var innerRadius = 0.8;
+var height = 1;
 
-cube1.position.y = 0.35;
-cube1.position.x = -0.75;
+var arcShape = new THREE.Shape();
+arcShape.moveTo(outerRadius * 2, outerRadius);
+arcShape.absarc(outerRadius, outerRadius, outerRadius, 0, Math.PI * 2, false);
+var holePath = new THREE.Path();
+holePath.moveTo(outerRadius + innerRadius, outerRadius);
+holePath.absarc(outerRadius, outerRadius, innerRadius, 0, Math.PI * 2, true);
+arcShape.holes.push(holePath);
+var geometryC = new THREE.ExtrudeGeometry(arcShape, {
+  amount: height,
+  bevelEnabled: false,
+  steps: 1,
+  curveSegments: 60
+});
+geometryC.center();
+geometryC.rotateX(Math.PI * -.5);
+var meshCylinder = new THREE.Mesh(geometryC, [materialC, materialC]);
+scene.add(meshCylinder);
+meshCylinder.position.x = -.75
+meshCylinder.scale.y = 0.02;
+//////////////////////////////////////////////////////////
+
+var arcShape1 = new THREE.Shape();
+arcShape1.moveTo(outerRadius * 2, outerRadius);
+arcShape1.absarc(outerRadius, outerRadius, outerRadius, 0, Math.PI * 2, false);
+var holePath1 = new THREE.Path();
+holePath1.moveTo(outerRadius + innerRadius, outerRadius);
+holePath1.absarc(outerRadius, outerRadius, innerRadius, 0, Math.PI * 2, true);
+arcShape1.holes.push(holePath1);
+var geometryC1 = new THREE.ExtrudeGeometry(arcShape1, {
+  amount: height,
+  bevelEnabled: false,
+  steps: 1,
+  curveSegments: 60
+});
+geometryC1.center();
+geometryC1.rotateX(Math.PI * -.5);
+var meshCylinder1 = new THREE.Mesh(geometryC1, [materialC, materialC]);
+scene.add(meshCylinder1);
+meshCylinder1.rotation.x = (90 * Math.PI) /180 * -1;
+meshCylinder1.position.x = -.75
+meshCylinder1.scale.y = 0.02;
+/////////////////////////////////////
+camera.position.z = 8;
+camera.position.x = -.75;
 
 line1.position.x = -.75
 line2.position.x = .0
 line3.position.x = -.75
+
 
 function animate() {
 	requestAnimationFrame( animate );
     var deg=(sliderX.value * Math.PI) /180;
     var deg1=(sliderY.value * Math.PI) /180 * -1;
 	//cube.rotation.x += 0.01;
-	  cube.rotation.y = deg;
-    cube1.rotation.y = deg;
-    cube2.rotation.y = deg;
+	  
+ 
+    EggBlue.rotation.z = EggBlue.rotation.z - (EggBlue.rotation.z - deg) ;
+    EggBlue.rotation.x = EggBlue.rotation.x - (EggBlue.rotation.x - deg1) ;
 
-    cube.rotation.z = deg1;
-    cube1.rotation.z = deg1;
-    cube2.rotation.z = deg1;
+    EggYellow.rotation.z = EggYellow.rotation.z - (EggYellow.rotation.z - deg) ;
+    EggYellow.rotation.x = EggYellow.rotation.x - (EggYellow.rotation.x - deg1) ;
 
-    line1.rotation.y = deg;
-    line1.rotation.z = deg1;
+    cylinderCy.rotation.z =  cylinderCy.rotation.z - (cylinderCy.rotation.z - deg) ;;
+    cylinderCy.rotation.x = cylinderCy.rotation.x - (cylinderCy.rotation.x - deg1) ;
+ 
+    line1.rotation.y = EggBlue.rotation.z - (EggBlue.rotation.z - deg);
+    line1.rotation.z = EggBlue.rotation.x - (EggBlue.rotation.x - deg1);
 
-    line2.rotation.y = deg;
-    line2.rotation.z = deg1;
+    line2.rotation.y = EggBlue.rotation.z - (EggBlue.rotation.z - deg);
+    line2.rotation.z = EggBlue.rotation.x - (EggBlue.rotation.x - deg1);
+
+    line3.rotation.y = EggBlue.rotation.z - (EggBlue.rotation.z - deg);
+    line3.rotation.z = EggBlue.rotation.x - (EggBlue.rotation.x - deg1);
+
+    cylinderCy.rotation.z = EggBlue.rotation.z - (EggBlue.rotation.z - deg);
+    cylinderCy.rotation.x = EggBlue.rotation.x - (EggBlue.rotation.x - deg1);
+
+    meshCylinder.rotation.z =  EggBlue.rotation.z - (EggBlue.rotation.z - deg);
+    meshCylinder.rotation.x = EggBlue.rotation.x - (EggBlue.rotation.x - deg1);
+    if(sliderX.value!=90)
+    meshCylinder1.rotation.z =  EggBlue.rotation.z - (EggBlue.rotation.z - deg);
+    if(sliderY.value!=90)
+    meshCylinder1.rotation.x = meshCylinder1.rotation.x - (meshCylinder1.rotation.x - deg1);
+    
 
 	renderer.render( scene, camera );
 }
@@ -318,9 +396,9 @@ function resetSliderY(){
 animate();
 container.appendChild( renderer.domElement );
 //////////////////////////////////////////////CALCULATION///////////
-V5_Current_Result = [0,	0,	0.0625,	0.25,	0.4375,	0.4375,	0.25,	0.0625,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0.03125,	0.0625,	0,	0,	0];
-sV1_Current_Result =	[0,	0,	-0.125,	-0.5,	-0.875,	-0.875,	-0.5,	-0.125,	0,	0,	0,	0,	0, 0,	0,	0,	0,	-0.0625,	-0.125,	0,	0,	0];
-III_Current_Result =	[0,	0,	0.0625,	0.25,	0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0.0625,	0,	0,	0,	0,	0,	0,	0.03125,	0.0625,	0,	0,	0];
+V5_Current_Result = [0,	0,	0.0625,	0.25,	0.4375,	0.4375,	0.25,	0.0625,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0];
+sV1_Current_Result =	[0,	0,	-0.125,	-0.5,	-0.875,	-0.875,	-0.5,	-0.125,	0,	0,	0,	0,	0, 0,	0,	0,	0,	0,	0,	0,	0,	0];
+III_Current_Result =	[0,	0,	0.0625,	0.25,	0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0.0625,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0];
 
 
 ///////////graph
@@ -337,7 +415,7 @@ III_Current_Result =	[0,	0,	0.0625,	0.25,	0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0
       data: V5_Current_Result,
       borderColor: "blue",
       fill: false,
-      borderDash: [5,5],
+     // borderDash: [5,5],
       hidden:true
     },
     {
@@ -347,7 +425,7 @@ III_Current_Result =	[0,	0,	0.0625,	0.25,	0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0
       data: sV1_Current_Result,
       borderColor: "red",
       fill: false,
-      borderDash: [5,5],
+     // borderDash: [5,5],
       hidden:true
     },
     {
@@ -357,12 +435,12 @@ III_Current_Result =	[0,	0,	0.0625,	0.25,	0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0
       data: III_Current_Result,
       borderColor: "green",
       fill: false,
-      borderDash: [5,5],
+    //  borderDash: [5,5],
       hidden:true
     }]
   },
   
-  options: {
+  options: {responsive: true,
     legend: {position: 'bottom' ,display: true,labels: {
       usePointStyle: true
     }},
@@ -748,21 +826,21 @@ function showOffCharts(elem, id){
 
 if(id==2){
 if(elem.checked)  
+  scene.add( line3 );
+else
+  scene.remove( line3 );
+}
+else if(id==1){
+if(elem.checked)  
   scene.add( line1 );
 else
   scene.remove( line1 );
 }
-else if(id==1){
+else if(id==0){
 if(elem.checked)  
   scene.add( line2 );
 else
   scene.remove( line2 );
-}
-else if(id==0){
-if(elem.checked)  
-  scene.add( line3 );
-else
-  scene.remove( line3 );
 }
 
 if(elem.checked)
@@ -787,6 +865,11 @@ else{
 var myInterval=null;
 var tick =0;
 function draw(){
+  meshCylinder.scale.x = tick/5;
+  meshCylinder.scale.z = tick/5;
+
+  meshCylinder1.scale.x = tick/5;
+  meshCylinder1.scale.z = tick/5;
 const data0=[],data1=[],data2=[];
  for(var i=0;i<tick;i++)
   {
@@ -811,6 +894,12 @@ tick = tick + 1;
 }
 
 function startAnimation(elem){
+  meshCylinder.scale.x = 0.1;
+  meshCylinder.scale.z =0.1;
+
+  meshCylinder1.scale.x = 0.1;
+  meshCylinder1.scale.z =0.1;
+
   elem.innerHTML= '<i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Stop Simulation'
   tick=0;
   UpdateData()
