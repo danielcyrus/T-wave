@@ -9,7 +9,7 @@
     <!--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>-->
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>-->
     <script src="resources/js/chart.js"></script>
-    <script src="resources/js/three.js"></script>
+   <!-- <script src="resources/js/three.js"></script> -->
     </head>
   
 <body>
@@ -45,7 +45,7 @@
         <td style="width: 20%;"></td>
         <td>Rotate Horizontally</td>
         <td><div class="range3d" style="--step:10; --min:-90; --max:90">
-          <input type="range" min="0" step="2" value="90" id="myRangeX" max="180" onmousedown="resetSliderY()">
+          <input type="range" min="0" step="2" value="90" id="myRangeX" max="180" onchange="resetSliderY()">
         </div></td>
       </tr>
         </table>
@@ -162,7 +162,7 @@
               <i class="fa-sharp fa-solid fa-circle-info" style="color: forestgreen;"></i> Instructions
           </button><br><br>
    <!--<div class="tooltip" onc><span class="tooltiptextleft">Select either "Custom" or "Presets" value</span></div>-->
-            <button id="startAnim" onclick="startAnimation(this);" style="float: right; width: 80%;">
+            <button id="startAnim" onclick="startAnimation(22,this);" style="float: right; width: 80%;">
               <i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation
           </button>
           </div>
@@ -179,222 +179,97 @@
   Our Research Team:<b>
   Arvind Mistry, John Cannon, Kieran Stone, Daniel Cyrus, Faisal Rezwan
   </b>
-  <br>Developers: Daniel Cyrus
+  <br>Developer: Daniel Cyrus
   <br>
   Contact: <a href="mailto:far8@aber.ac.uk">Faisal Rezwan</a>
   
 </div>
 </body>
 
-<script>
-
-
-
-/////////////////////////////////////////////////
+<script type="module">
 const container = document.getElementById("canvas3D");
 var sliderX = document.getElementById("myRangeX");
 var sliderY = document.getElementById("myRangeY");
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 60, 400 / 400, 0.1, 1000 );
 
-const renderer = new THREE.WebGLRenderer();
-renderer.setClearColor( 0xffffff, 1);
-renderer.setSize(450,300);
-document.body.appendChild(renderer.domElement);
 
-////////////////////Sphere
-/*
-const geometrysp = new THREE.BoxGeometry( 7, 5, 0.01 );
-const loaderEyesp = new THREE.TextureLoader();
+  import * as THREE from "https://unpkg.com/three@0.125.2/build/three.module.js";
+  import { OBJLoader } from "https://unpkg.com/three@0.125.2/examples/jsm/loaders/OBJLoader.js";
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(
+    75,
+    450 / 320,
+    0.1,
+    1000
+  );
+
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(450, 320);
+  renderer.setClearColor("#ffffff");
+  //document.body.appendChild(renderer.domElement);
+  container.appendChild( renderer.domElement );
+
   
-  const materialEyesp = new THREE.MeshBasicMaterial({
-    map: loaderEyesp.load('resources/img/circle.png'),
-    transparent: true, opacity: 1, color: 0xffffff
-  });
-const cube1 = new THREE.Mesh( geometry1, materialEye1 );
-scene.add( cube1 );
-*/
-///Egg
-const points = [];
-for ( let deg = 0; deg <= 180; deg += 6 ) {
-    const rad = Math.PI * deg / 180;
-    const point = new THREE.Vector2( ( 0.72 + .08 * Math.cos( rad ) ) * Math.sin( rad ), - Math.cos( rad ) ); // the "egg equation"
-    points.push( point );
+  const loader = new OBJLoader( );
+  //var model;
+  loader.load("model/heart_new.obj", obj => {
+      model = obj;
+      
+model.traverse(function (child) {
+for(var index=1;index<=45;index++)
+{
+let nn = 'Sphere.0'+index.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+if(child.name==nn){
+  const material = new THREE.MeshBasicMaterial( { color: 0xff0000 , opacity :0.5, transparent : true, side:THREE.DoubleSide} );
+  child.material = material;
+  child.visible = false;
+}
+if(child.name=="egg"){
+  const material = new THREE.MeshBasicMaterial( { color: 0xaaaaaa , opacity :0.4, transparent : true, side:THREE.DoubleSide} );
+  child.material = material;
 
 }
-///////////////////blue egg
-const materialEye = new THREE.MeshBasicMaterial({
-    transparent: true, opacity: 0.8, color: 0x0000aa
-  });
+if(child.name=="left"){
+  const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 , side:THREE.DoubleSide} );
+  child.material = material;
 
-const geometryEgg = new THREE.LatheGeometry( points, 32 );
-const EggBlue = new THREE.Mesh( geometryEgg, materialEye );
+}
+if(child.name=="right"){
+  const material = new THREE.MeshBasicMaterial( { color: 0x0000ff , side:THREE.DoubleSide} );
+  child.material = material;
 
-scene.add( EggBlue );
-EggBlue.scale.x = 3.5;
-EggBlue.scale.y = 3.5;
-EggBlue.scale.z = 0.01;
-EggBlue.rotation.y=(180 * Math.PI) /180;
-//EggBlue.rotation.x=(180 * Math.PI) /180;
-/////circle
-const geometryCy = new THREE.CylinderGeometry( 3, 3, 0.01, 20 ); 
-const materialCy = new THREE.MeshBasicMaterial( {color: 0x00aa00,opacity: 0.8} ); 
-const cylinderCy = new THREE.Mesh( geometryCy, materialCy ); 
-scene.add( cylinderCy );
-cylinderCy.position.x = -.75
-
-//cylinderCy.rotation.y = (180 * Math.PI) /180;
-//scene.add( cube1 );
-/////yellow egg
-const materialEyeYello = new THREE.MeshBasicMaterial({
-    transparent: true, opacity: 0.8, color: 0xaaaa00
-  });
-
-const geometryEgg1 = new THREE.LatheGeometry( points, 32 );
-const EggYellow = new THREE.Mesh( geometryEgg1, materialEyeYello );
-
-scene.add( EggYellow );
-EggYellow.scale.x = 0.01;
-EggYellow.scale.y = 3.5;
-EggYellow.scale.z = 3.5;
-EggYellow.rotation.y=(180 * Math.PI) /180;
-//////////////lines///////////////
-
-const geometryLine = new THREE.BoxGeometry( 7, .1, .1 );
-const loaderEyeline = new THREE.TextureLoader();
-  
-  const materialEyeline = new THREE.MeshBasicMaterial({
-    transparent: false, opacity: 1, color: 0xff0000
-  });
-const line1 = new THREE.Mesh( geometryLine, materialEyeline );
-
-
-const geometryLine1 = new THREE.BoxGeometry( .1, .1, 7 );
-const loaderEyeline1 = new THREE.TextureLoader();
-  
-  const materialEyeline1 = new THREE.MeshBasicMaterial({
-    transparent: false, opacity: 1, color: 0x0000ff
-  });
-const line2 = new THREE.Mesh( geometryLine1, materialEyeline1 );///lead v5 blue
-
-
-
-const geometryLine2 = new THREE.BoxGeometry( .1, 6, .1 );
-const loaderEyeline2 = new THREE.TextureLoader();
-  
-  const materialEyeline2 = new THREE.MeshBasicMaterial({
-    transparent: false, opacity: 1, color: 0x00aa00
-  });
-const line3 = new THREE.Mesh( geometryLine2, materialEyeline2 );
-
-////////////////////////////////////Cylinders
-const materialC = new THREE.MeshBasicMaterial({
-    transparent: false, opacity: 1, color: 0xffff00
-  });
-
-var outerRadius = 1;
-var innerRadius = 0.8;
-var height = 1;
-
-var arcShape = new THREE.Shape();
-arcShape.moveTo(outerRadius * 2, outerRadius);
-arcShape.absarc(outerRadius, outerRadius, outerRadius, 0, Math.PI * 2, false);
-var holePath = new THREE.Path();
-holePath.moveTo(outerRadius + innerRadius, outerRadius);
-holePath.absarc(outerRadius, outerRadius, innerRadius, 0, Math.PI * 2, true);
-arcShape.holes.push(holePath);
-var geometryC = new THREE.ExtrudeGeometry(arcShape, {
-  amount: height,
-  bevelEnabled: false,
-  steps: 1,
-  curveSegments: 60
-});
-geometryC.center();
-geometryC.rotateX(Math.PI * -.5);
-var meshCylinder = new THREE.Mesh(geometryC, [materialC, materialC]);
-scene.add(meshCylinder);
-meshCylinder.position.x = -.75
-meshCylinder.scale.y = 0.02;
-//////////////////////////////////////////////////////////
-
-var arcShape1 = new THREE.Shape();
-arcShape1.moveTo(outerRadius * 2, outerRadius);
-arcShape1.absarc(outerRadius, outerRadius, outerRadius, 0, Math.PI * 2, false);
-var holePath1 = new THREE.Path();
-holePath1.moveTo(outerRadius + innerRadius, outerRadius);
-holePath1.absarc(outerRadius, outerRadius, innerRadius, 0, Math.PI * 2, true);
-arcShape1.holes.push(holePath1);
-var geometryC1 = new THREE.ExtrudeGeometry(arcShape1, {
-  amount: height,
-  bevelEnabled: false,
-  steps: 1,
-  curveSegments: 60
-});
-geometryC1.center();
-geometryC1.rotateX(Math.PI * -.5);
-var meshCylinder1 = new THREE.Mesh(geometryC1, [materialC, materialC]);
-scene.add(meshCylinder1);
-meshCylinder1.rotation.x = (90 * Math.PI) /180 * -1;
-meshCylinder1.position.x = -.75
-meshCylinder1.scale.y = 0.02;
-/////////////////////////////////////
-camera.position.z = 8;
-camera.position.x = -.75;
-
-line1.position.x = -.75
-line2.position.x = .0
-line3.position.x = -.75
-
-
-function animate() {
-	requestAnimationFrame( animate );
-    var deg=(sliderX.value * Math.PI) /180;
-    var deg1=(sliderY.value * Math.PI) /180 * -1;
-	//cube.rotation.x += 0.01;
-	  
- 
-    EggBlue.rotation.z = EggBlue.rotation.z - (EggBlue.rotation.z - deg) ;
-    EggBlue.rotation.x = EggBlue.rotation.x - (EggBlue.rotation.x - deg1) ;
-
-    EggYellow.rotation.z = EggYellow.rotation.z - (EggYellow.rotation.z - deg) ;
-    EggYellow.rotation.x = EggYellow.rotation.x - (EggYellow.rotation.x - deg1) ;
-
-    cylinderCy.rotation.z =  cylinderCy.rotation.z - (cylinderCy.rotation.z - deg) ;;
-    cylinderCy.rotation.x = cylinderCy.rotation.x - (cylinderCy.rotation.x - deg1) ;
- 
-    line1.rotation.y = EggBlue.rotation.z - (EggBlue.rotation.z - deg);
-    line1.rotation.z = EggBlue.rotation.x - (EggBlue.rotation.x - deg1);
-
-    line2.rotation.y = EggBlue.rotation.z - (EggBlue.rotation.z - deg);
-    line2.rotation.z = EggBlue.rotation.x - (EggBlue.rotation.x - deg1);
-
-    line3.rotation.y = EggBlue.rotation.z - (EggBlue.rotation.z - deg);
-    line3.rotation.z = EggBlue.rotation.x - (EggBlue.rotation.x - deg1);
-
-    cylinderCy.rotation.z = EggBlue.rotation.z - (EggBlue.rotation.z - deg);
-    cylinderCy.rotation.x = EggBlue.rotation.x - (EggBlue.rotation.x - deg1);
-
-    meshCylinder.rotation.z =  EggBlue.rotation.z - (EggBlue.rotation.z - deg);
-    meshCylinder.rotation.x = EggBlue.rotation.x - (EggBlue.rotation.x - deg1);
-    if(sliderX.value!=90)
-    meshCylinder1.rotation.z =  EggBlue.rotation.z - (EggBlue.rotation.z - deg);
-    if(sliderY.value!=90)
-    meshCylinder1.rotation.x = meshCylinder1.rotation.x - (meshCylinder1.rotation.x - deg1);
+}
+}
     
+});
 
-	renderer.render( scene, camera );
-}
+scene.add(model);
+  });
+  camera.position.set(0, 0, 8);
+  camera.lookAt(-1, 1, 0);
 
-function resetSliderX(){
-    sliderX.value = 90
-}
+  const animate = function() {
+    requestAnimationFrame(animate);
+    if (model) {
+      model.rotation.x += 0.001;
+    //  model.rotation.y += 0.01;
+    }
+    renderer.render(scene, camera);
+  };
 
-function resetSliderY(){
-    sliderY.value = 90
+  animate();
+
+
+</script>
+
+<script>
+  var model;
+function resetSliderY(elem){
+  model.rotation.x += 0.01;
 }
-animate();
-container.appendChild( renderer.domElement );
+/////////////////////////////////////////////////
+
 //////////////////////////////////////////////CALCULATION///////////
 V5_Current_Result = [0,	0,	0.0625,	0.25,	0.4375,	0.4375,	0.25,	0.0625,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0];
 sV1_Current_Result =	[0,	0,	-0.125,	-0.5,	-0.875,	-0.875,	-0.5,	-0.125,	0,	0,	0,	0,	0, 0,	0,	0,	0,	0,	0,	0,	0,	0];
@@ -413,7 +288,7 @@ III_Current_Result =	[0,	0,	0.0625,	0.25,	0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0
       pointRadius: 0,
       label:"Lead V5",
       data: V5_Current_Result,
-      borderColor: "blue",
+      borderColor: "#0000ff",
       fill: false,
      // borderDash: [5,5],
       hidden:true
@@ -437,7 +312,39 @@ III_Current_Result =	[0,	0,	0.0625,	0.25,	0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0
       fill: false,
     //  borderDash: [5,5],
       hidden:true
-    }]
+    }
+    ,
+    {
+      pointStyle: 'line',
+      pointRadius: 0,
+      label:"original Lead V5",
+      data: V5_Current_Result,
+      borderColor: "#0000ff33",
+      fill: false,
+     // borderDash: [5,5],
+      hidden:false
+    },
+    {
+      pointStyle: 'line',
+      pointRadius: 0,
+      label:"Original Lead sV1",
+      data: sV1_Current_Result,
+      borderColor: "#ff000033",
+      fill: false,
+     // borderDash: [5,5],
+      hidden:false
+    },
+    {
+      pointStyle: 'line',
+      pointRadius: 0,
+      label:"Original Lead III",
+      data: III_Current_Result,
+      borderColor: "#00ff0033",
+      fill: false,
+    //  borderDash: [5,5],
+      hidden:false
+    }
+  ]
   },
   
   options: {responsive: true,
@@ -517,6 +424,7 @@ const III_current_result = [];
 const V5_current_result = [];
 const sv1_current_result = [];
 function UpdateData(){
+  
 LAD_range = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
 var ladVal = parseInt(document.getElementById("lad").value)
 for(var i=0;i<ladVal-1;i++)LAD_range[i]=0;
@@ -823,26 +731,6 @@ for(var i =3;i<25;i++)III_current_result.push(Balance_Averagesx3_III[i]);
 //chart.update();
       }
 function showOffCharts(elem, id){
-
-if(id==2){
-if(elem.checked)  
-  scene.add( line3 );
-else
-  scene.remove( line3 );
-}
-else if(id==1){
-if(elem.checked)  
-  scene.add( line1 );
-else
-  scene.remove( line1 );
-}
-else if(id==0){
-if(elem.checked)  
-  scene.add( line2 );
-else
-  scene.remove( line2 );
-}
-
 if(elem.checked)
   chart.data.datasets[parseInt(id)].hidden=false;
 else
@@ -862,14 +750,10 @@ else{
 }
 }
 
-var myInterval=null;
+//var myInterval=null;
 var tick =0;
 function draw(){
-  meshCylinder.scale.x = tick/5;
-  meshCylinder.scale.z = tick/5;
-
-  meshCylinder1.scale.x = tick/5;
-  meshCylinder1.scale.z = tick/5;
+ console.log("yes")
 const data0=[],data1=[],data2=[];
  for(var i=0;i<tick;i++)
   {
@@ -879,11 +763,13 @@ const data0=[],data1=[],data2=[];
 
 
   }
+  /*
   if(tick>22){
     clearInterval(myInterval);
     myInterval =null;
     btnStart.innerHTML = '<i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation'
   } 
+  */
 //alert(III_current_result);
 ////////////////////////////////////////////////////////////////
 chart.data.datasets[0].data=data0;
@@ -892,14 +778,8 @@ chart.data.datasets[2].data=data2;
 chart.update();
 tick = tick + 1;
 }
-
+/*
 function startAnimation(elem){
-  meshCylinder.scale.x = 0.1;
-  meshCylinder.scale.z =0.1;
-
-  meshCylinder1.scale.x = 0.1;
-  meshCylinder1.scale.z =0.1;
-
   elem.innerHTML= '<i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Stop Simulation'
   tick=0;
   UpdateData()
@@ -910,5 +790,43 @@ function startAnimation(elem){
     myInterval =null;
   }
 }
-</script>
+*/
+  
+ var sh = false;
+ var index = 22,index1 = 45;
+ function startAnimation(steps,elem){
+  elem.innerHTML= '<i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Stop Simulation'
+  
+  if(steps==22){UpdateData();tick=0;}
+
+ if(steps >= 0) {
+  draw()
+ let nn = 'Sphere.0'+index.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+ let nn1 = 'Sphere.0'+index1.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+ model.traverse(function (child) {
+ if(child.name==nn)child.visible = true;
+ if(child.name==nn1)child.visible = true;
+ });
+ setTimeout(startAnimation, 400, steps - 1,elem);
+ }
+ else{
+       
+ model.traverse(function (child) {
+ for(var index=0;index<=22;index++)
+ {
+ let nn = 'Sphere.0'+index.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+ let nn1 = 'Sphere.0'+(index+22).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+ if(child.name==nn)child.visible = false;
+ if(child.name==nn1)child.visible = false;
+ }
+     
+ });
+ index = 23
+ index1 = 46
+ btnStart.innerHTML = '<i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation'
+ } 
+ index -=1;
+ index1 -=1;
+ }
+ </script>
 </html>
