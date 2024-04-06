@@ -40,12 +40,12 @@
         <td>Rotate Vertically</td>
         <td>
         <div class="range3d_1" style="--step:10; --min:-90; --max:90">
-          <input type="range" min="0" step="10" value="90" id="myRangeY" max="180" onmousedown="resetSliderX()"  orient="vertical">
+          <input type="range" min="-180" step="10" value="0" id="myRangeY" max="180" oninput="resetSliderX(this)"  orient="vertical">
         </div></td>
         <td style="width: 20%;"></td>
         <td>Rotate Horizontally</td>
         <td><div class="range3d" style="--step:10; --min:-90; --max:90">
-          <input type="range" min="0" step="2" value="90" id="myRangeX" max="180" onchange="resetSliderY()">
+          <input type="range" min="-180" step="2" value="0" id="myRangeX" max="180" oninput="resetSliderY(this)">
         </div></td>
       </tr>
         </table>
@@ -179,7 +179,7 @@
   Our Research Team:<b>
   Arvind Mistry, John Cannon, Kieran Stone, Daniel Cyrus, Faisal Rezwan
   </b>
-  <br>Developer: Daniel Cyrus
+  <br>Developers: Daniel Cyrus
   <br>
   Contact: <a href="mailto:far8@aber.ac.uk">Faisal Rezwan</a>
   
@@ -217,43 +217,49 @@ var sliderY = document.getElementById("myRangeY");
       model = obj;
       
 model.traverse(function (child) {
-for(var index=1;index<=45;index++)
-{
-let nn = 'Sphere.0'+index.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
-if(child.name==nn){
-  const material = new THREE.MeshBasicMaterial( { color: 0xff0000 , opacity :0.5, transparent : true, side:THREE.DoubleSide} );
-  child.material = material;
-  child.visible = false;
-}
-if(child.name=="egg"){
-  const material = new THREE.MeshBasicMaterial( { color: 0xaaaaaa , opacity :0.4, transparent : true, side:THREE.DoubleSide} );
-  child.material = material;
+  for(var index=1;index<=22;index++)
+  {
+    let nn = 'signalleft.0'+index.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+    if(child.name==nn){
+      const material = new THREE.MeshBasicMaterial( { color: 0xff0000 , opacity :0.5, transparent : true, side:THREE.DoubleSide} );
+      child.material = material;
+      child.visible = false;
+    }
+    let nn1 = 'signalright.0'+index.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+    if(child.name==nn1){
+      const material = new THREE.MeshBasicMaterial( { color: 0xff0000 , opacity :0.5, transparent : true, side:THREE.DoubleSide} );
+      child.material = material;
+      child.visible = false;
+    }
+  }
+    if(child.name=="Heart_Sector"){
+      const material = new THREE.MeshBasicMaterial( { color: 0xaaaaaa , opacity :0.4, transparent : true, side:THREE.DoubleSide} );
+      child.material = material;
 
-}
-if(child.name=="left"){
-  const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 , side:THREE.DoubleSide} );
-  child.material = material;
+    }
+    if(child.name=="LEFT_VENTRICLE"){
+      const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 , side:THREE.DoubleSide} );
+      child.material = material;
 
-}
-if(child.name=="right"){
-  const material = new THREE.MeshBasicMaterial( { color: 0x0000ff , side:THREE.DoubleSide} );
-  child.material = material;
+    }
+    if(child.name=="RIGHT_VENTRICLE"){
+      const material = new THREE.MeshBasicMaterial( { color: 0x0000ff , side:THREE.DoubleSide} );
+      child.material = material;
 
-}
-}
+    }
     
 });
 
 scene.add(model);
   });
-  camera.position.set(0, 0, 8);
+  camera.position.set(0, 0, 5);
   camera.lookAt(-1, 1, 0);
 
   const animate = function() {
     requestAnimationFrame(animate);
     if (model) {
-      model.rotation.x += 0.001;
-    //  model.rotation.y += 0.01;
+      model.rotation.x = degX;
+      model.rotation.y = degY;
     }
     renderer.render(scene, camera);
   };
@@ -265,8 +271,13 @@ scene.add(model);
 
 <script>
   var model;
+degY = 0.0;
+degX = 0.0;
 function resetSliderY(elem){
-  model.rotation.x += 0.01;
+  degY = (elem.value* Math.PI)/180;
+}
+function resetSliderX(elem){
+  degX = (elem.value* Math.PI)/180;
 }
 /////////////////////////////////////////////////
 
@@ -793,7 +804,7 @@ function startAnimation(elem){
 */
   
  var sh = false;
- var index = 22,index1 = 45;
+ var index = 1;
  function startAnimation(steps,elem){
   elem.innerHTML= '<i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Stop Simulation'
   
@@ -801,8 +812,9 @@ function startAnimation(elem){
 
  if(steps >= 0) {
   draw()
- let nn = 'Sphere.0'+index.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
- let nn1 = 'Sphere.0'+index1.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+
+  let nn = 'signalleft.0'+index.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+  let nn1 = 'signalright.0'+index.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
  model.traverse(function (child) {
  if(child.name==nn)child.visible = true;
  if(child.name==nn1)child.visible = true;
@@ -814,19 +826,19 @@ function startAnimation(elem){
  model.traverse(function (child) {
  for(var index=0;index<=22;index++)
  {
- let nn = 'Sphere.0'+index.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
- let nn1 = 'Sphere.0'+(index+22).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+  
+  let nn = 'signalleft.0'+index.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+  let nn1 = 'signalright.0'+index.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
  if(child.name==nn)child.visible = false;
  if(child.name==nn1)child.visible = false;
  }
      
  });
- index = 23
- index1 = 46
+ index = 1
+ 
  btnStart.innerHTML = '<i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation'
  } 
- index -=1;
- index1 -=1;
+ index +=1;
  }
  </script>
 </html>
