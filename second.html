@@ -238,12 +238,12 @@ model.traverse(function (child) {
 
     }
     if(child.name=="LEFT_VENTRICLE"){
-      const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 , side:THREE.DoubleSide} );
+      const material = new THREE.MeshBasicMaterial( { color: 0x00bb00 , side:THREE.DoubleSide} );
       child.material = material;
 
     }
     if(child.name=="RIGHT_VENTRICLE"){
-      const material = new THREE.MeshBasicMaterial( { color: 0x0000ff , side:THREE.DoubleSide} );
+      const material = new THREE.MeshBasicMaterial( { color: 0x0000bb , side:THREE.DoubleSide} );
       child.material = material;
 
     }
@@ -328,7 +328,7 @@ III_Current_Result =	[0,	0,	0.0625,	0.25,	0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0
     {
       pointStyle: 'line',
       pointRadius: 0,
-      label:"original Lead V5",
+      label:"",
       data: V5_Current_Result,
       borderColor: "#0000ff33",
       fill: false,
@@ -338,7 +338,7 @@ III_Current_Result =	[0,	0,	0.0625,	0.25,	0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0
     {
       pointStyle: 'line',
       pointRadius: 0,
-      label:"Original Lead sV1",
+      label:"",
       data: sV1_Current_Result,
       borderColor: "#ff000033",
       fill: false,
@@ -348,7 +348,7 @@ III_Current_Result =	[0,	0,	0.0625,	0.25,	0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0
     {
       pointStyle: 'line',
       pointRadius: 0,
-      label:"Original Lead III",
+      label:"",
       data: III_Current_Result,
       borderColor: "#00ff0033",
       fill: false,
@@ -430,12 +430,14 @@ function presets(elem){
 
 }
 
-
-const III_current_result = [];
-const V5_current_result = [];
-const sv1_current_result = [];
+var III_current_result = [];
+var V5_current_result = [];
+var sv1_current_result = [];
 function UpdateData(){
-  
+  III_current_result = [];
+  V5_current_result = [];
+  sv1_current_result = [];
+
 LAD_range = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
 var ladVal = parseInt(document.getElementById("lad").value)
 for(var i=0;i<ladVal-1;i++)LAD_range[i]=0;
@@ -802,15 +804,22 @@ function startAnimation(elem){
   }
 }
 */
-  
+function disableEnable(val){
+  var inputs = document.getElementsByTagName("input");
+for (var i = 0; i < inputs.length; i++) {
+   
+      inputs[i].disabled = val;
+    
+}
+}
  var sh = false;
  var index = 1;
  function startAnimation(steps,elem){
   elem.innerHTML= '<i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Stop Simulation'
   
-  if(steps==22){UpdateData();tick=0;}
+  if(steps==22 && index==1){UpdateData();tick=0;disableEnable(true)}
 
- if(steps >= 0) {
+ if(steps >= 0 ) {
   draw()
 
   let nn = 'signalleft.0'+index.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
@@ -819,9 +828,10 @@ function startAnimation(elem){
  if(child.name==nn)child.visible = true;
  if(child.name==nn1)child.visible = true;
  });
+ index +=1;
  setTimeout(startAnimation, 400, steps - 1,elem);
  }
- else{
+ else if(steps<0){
        
  model.traverse(function (child) {
  for(var index=0;index<=22;index++)
@@ -835,10 +845,10 @@ function startAnimation(elem){
      
  });
  index = 1
- 
  btnStart.innerHTML = '<i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation'
- } 
- index +=1;
+ disableEnable(false) 
+} 
+ 
  }
  </script>
 </html>
