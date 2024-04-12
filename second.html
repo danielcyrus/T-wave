@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
     <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="resources/css/main2.css">
        <!-- <link rel="stylesheet" href="resources/css/tooltip.css">-->
         <link href="resources/css/fontawesome.css" rel="stylesheet">
@@ -8,7 +9,9 @@
     <link href="resources/css/solid.css" rel="stylesheet">
     <!--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>-->
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>-->
-    <script src="resources/js/chart.js"></script>
+    <!--<script src="resources/js/chart.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
    <!-- <script src="resources/js/three.js"></script> -->
     </head>
   
@@ -19,14 +22,13 @@
        <h2>T And U Wave Repolarisation Model</h2>
    </div>
    <div>
-    <div style="display: flex;">
+    <div style="display: flex;" id="modeldiv">
      
-   <div id="eggmodel" style="flex: 1;"> <b style="font-size: 19px;">Egg Model</b><br><div id="canvas3D" style="width:80%;height:90%;display: inline-block;position: relative;"></div></div>
+   <div id="eggmodel" style="flex: 1;"> <b style="font-size: 19px;">Egg Model</b><br><div id="canvas3D" style="width:80%;height:80%;position: relative;"></div></div>
 
-   <div id="graph" style="flex: 1;"> <b style="font-size: 19px;">Repolarisation Trace</b> <!--<i class="fa-solid fa-download" style="color: rgb(34, 87, 139);float:right;" onclick='saveCanvasAsImage("eggChart","chart.jpg");'></i>-->
+   <div id="graph" style="flex: 1;"> <b style="font-size: 19px;">Repolarisation Trace</b> 
     <br>
-    <div style="display: inline;"></dvi><div style="display: inline;margin-left: 160px;float: left;">T wave</div><div style="display: inline;float: right;margin-right: 90px;">U wave</div></div>
-    <canvas id="eggChart" style="width:80%;height:90%;display: inline-block;position: relative;"></canvas></div>
+    <canvas id="eggChart" style="width:500px;height:500px;margin-left: 15%;"></canvas></div>
   </div>
    <div id="configure" style="width: 99%;">
     <b style="font-size: 19px;">Settings</b>
@@ -56,15 +58,15 @@
         <br>
       <table style="width: 100%;margin-left: 20%;margin-top: 20px;">
         <tr>
-        <td><input type="checkbox" id="Lead_V5" onchange="showOffCharts(this,0);" style="float: right;"></td>
+        <td><input type="checkbox" id="Lead_V5" onchange="showOffCharts(this,0);" style="float: right;" checked="true"></td>
           <td><label for="Lead_V5" style="float: left;">Lead V5</label></td>
       </tr>
       <tr>
-        <td><input type="checkbox" id="Lead_sV1" onchange="showOffCharts(this,1);" style="float: right;"></td>
+        <td><input type="checkbox" id="Lead_sV1" onchange="showOffCharts(this,1);" style="float: right;" checked="true"></td>
         <td><label for="Lead_sV1" style="float: left;">Lead sV1</label></td>
         </tr>
         <tr>
-          <td><input type="checkbox" id="Lead_III" onchange="showOffCharts(this,2);" style="float: right;"></td>
+          <td><input type="checkbox" id="Lead_III" onchange="showOffCharts(this,2);" style="float: right;" checked="true"></td>
             <td><label for="Lead_III" style="float: left;">Lead III</label></td>
       </tr>
       </table>
@@ -99,7 +101,7 @@
           <table style="width: 100%;padding: 5%;">
           <tr>
             <td></td>
-          <td><p style="text-align: right;font-size: 14px;">Proximal&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Distal&ensp;</p></td>
+          <td><p style="text-align: center;font-size: 14px;">Proximal&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Distal&ensp;</p></td>
           </tr>
           <tr>
             <td><label for="vehicle1"> Left Anterior Descending Artery </label></td>
@@ -133,11 +135,11 @@
             <br><br>
             <table>
               <tr></tr>
-           <td> <input type="checkbox" id="Anterior_Rotated_Heart" name="vehicle1" onchange="setEnable(this);"></td>
+           <td> <input type="checkbox" id="Anterior_Rotated_Heart" name="vehicle1" onchange="setEnable(this);" checked="true"></td>
             <td><label for="Anterior_Rotated_Heart" style="float: left;"> Anterior Rotated Heart</label></td>
           </tr>
           <tr>
-            <td><input type="checkbox" id="Prominent_U_Wave_Factors_Present" disabled></td>
+            <td><input type="checkbox" id="Prominent_U_Wave_Factors_Present"></td>
             <td> <label for="Prominent_U_Wave_Factors_Present" style="float: left;"> Prominent U Wave Factors Present </label></td>
             </tr>
             </table>
@@ -199,13 +201,13 @@ var sliderY = document.getElementById("myRangeY");
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
     75,
-    450 / 320,
+    650 / 420,
     0.1,
     1000
   );
 
   const renderer = new THREE.WebGLRenderer();
-  renderer.setSize(450, 320);
+  renderer.setSize(650, 420);
   renderer.setClearColor("#ffffff");
   //document.body.appendChild(renderer.domElement);
   container.appendChild( renderer.domElement );
@@ -217,26 +219,12 @@ var sliderY = document.getElementById("myRangeY");
       model = obj;
       
 model.traverse(function (child) {
-  for(var index=1;index<=22;index++)
-  {
-    let nn = 'signalleft.0'+index.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
-    if(child.name==nn){
-      const material = new THREE.MeshBasicMaterial( { color: 0xff0000 , opacity :0.5, transparent : true, side:THREE.DoubleSide} );
-      child.material = material;
-      child.visible = false;
-    }
-    let nn1 = 'signalright.0'+index.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
-    if(child.name==nn1){
-      const material = new THREE.MeshBasicMaterial( { color: 0xff0000 , opacity :0.5, transparent : true, side:THREE.DoubleSide} );
-      child.material = material;
-      child.visible = false;
-    }
-  }
-    if(child.name=="Heart_Sector"){
+  if(child.name=="Heart_Sector"){
       const material = new THREE.MeshBasicMaterial( { color: 0xaaaaaa , opacity :0.4, transparent : true, side:THREE.DoubleSide} );
       child.material = material;
 
     }
+
     if(child.name=="LEFT_VENTRICLE"){
       const material = new THREE.MeshBasicMaterial( { color: 0x00bb00 , side:THREE.DoubleSide} );
       child.material = material;
@@ -247,6 +235,21 @@ model.traverse(function (child) {
       child.material = material;
 
     }
+    for(var index=1;index<=22;index++)
+  {
+    let nn = 'signalleft.0'+index.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+    if(child.name==nn){
+      const material = new THREE.MeshBasicMaterial( { color: 0xff0000 , opacity :0.5, transparent : false, side:THREE.DoubleSide} );
+      child.material = material;
+      child.visible = false;
+    }
+    let nn1 = 'signalright.0'+index.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+    if(child.name==nn1){
+      const material = new THREE.MeshBasicMaterial( { color: 0xff0000 , opacity :0.5, transparent : false, side:THREE.DoubleSide} );
+      child.material = material;
+      child.visible = false;
+    }
+  }
     
 });
 
@@ -282,15 +285,32 @@ function resetSliderX(elem){
 /////////////////////////////////////////////////
 
 //////////////////////////////////////////////CALCULATION///////////
-V5_Current_Result = [0,	0,	0.0625,	0.25,	0.4375,	0.4375,	0.25,	0.0625,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0];
-sV1_Current_Result =	[0,	0,	-0.125,	-0.5,	-0.875,	-0.875,	-0.5,	-0.125,	0,	0,	0,	0,	0, 0,	0,	0,	0,	0,	0,	0,	0,	0];
-III_Current_Result =	[0,	0,	0.0625,	0.25,	0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0.0625,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0];
+V5_Current_Result =   [0,	0,	0.0625,	0.25,	0.4375,	0.4375,	0.25,	0.0625,	0,	0,	0,	0,	0,	0,	0,	0,	0, 0.0625,	0.125,	0,	0,	0];
+sV1_Current_Result =	[0,	0,	-0.125,	-0.5,	-0.875,	-0.875,	-0.5,	-0.125,	0,	0,	0,	0,	0, 0,	0,	0,	0, -0.125,	-0.25,	0,	0,	0];
+III_Current_Result =	[0,	0,	0.0625,	0.25,0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0.0625,	0,	0,	0,	0,	0,	0, 0.0625,	0.125,	0,	0,	0];
 
 
 ///////////graph
   var xValues = [25,	50,	75,	100,	125,	150,	175,	200,	225,	250,	275,	300,	325,	350,	375,	400,	425,	450,	475,	500,	525,	550];
     var chart =new Chart("eggChart", {
   type: "line",
+  plugins: [{
+    afterDraw: chart1 => {
+      let ctx = chart1.chart.ctx;
+      let xAxis = chart1.scales['x-axis-0'];
+      let yAxis = chart1.scales['y-axis-0'];
+      let maxValue = Math.max(...chart1.data.datasets[0].data);
+      let minValue = Math.min(...chart1.data.datasets[0].data);
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.font = '15px Arial';      
+      ctx.fillStyle = 'black';
+      ctx.textAlign = 'left';
+      ctx.fillText('T wave', xAxis.left + 75, yAxis.top + 45);
+      ctx.fillText('U wave', xAxis.right - 85, yAxis.top + 45);
+      ctx.restore();
+    }
+  }],
   data: {
     labels: xValues,
     datasets: [
@@ -302,7 +322,7 @@ III_Current_Result =	[0,	0,	0.0625,	0.25,	0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0
       borderColor: "#0000ff",
       fill: false,
      // borderDash: [5,5],
-      hidden:true
+      hidden:false
     },
     {
       pointStyle: 'line',
@@ -312,7 +332,7 @@ III_Current_Result =	[0,	0,	0.0625,	0.25,	0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0
       borderColor: "red",
       fill: false,
      // borderDash: [5,5],
-      hidden:true
+      hidden:false
     },
     {
       pointStyle: 'line',
@@ -322,7 +342,7 @@ III_Current_Result =	[0,	0,	0.0625,	0.25,	0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0
       borderColor: "green",
       fill: false,
     //  borderDash: [5,5],
-      hidden:true
+      hidden:false
     }
     ,
     {
@@ -350,23 +370,30 @@ III_Current_Result =	[0,	0,	0.0625,	0.25,	0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0
       pointRadius: 0,
       label:"",
       data: III_Current_Result,
-      borderColor: "#00ff0033",
+      borderColor: "#00ff0055",
       fill: false,
     //  borderDash: [5,5],
-      hidden:false
+      hidden:false,
+      hiddenLegend: true,
     }
   ]
-  },
+    },
   
-  options: {responsive: true,
+  options: {responsive: false,
     legend: {position: 'bottom' ,display: true,labels: {
-      usePointStyle: true
+      filter: function (legendItem, chartData) {
+                        return (chartData.datasets[legendItem.datasetIndex].label)
+                    },
+      usePointStyle: true,
+
     }},
     scales: {
       xAxes: [{ticks: {min: 0, max:360},scaleLabel:{display: true,labelString: 'mSec'}}],
       yAxes: [{ticks: {min: -1.5, max:+1.5},scaleLabel:{display: true,labelString: 'mV'}}],
     }
+    
   }
+  
 });
 
 function presets(elem){
@@ -476,8 +503,10 @@ var Severity_of_Damage =	document.getElementById("Right_Ventricular").value;
 
 
   if(document.getElementById("Anterior_Rotated_Heart").checked)U_Wave_present= 	1;
+  //else U_Wave_present= 	0;
   if(document.getElementById("Prominent_U_Wave_Factors_Present").checked)Prominent_U_Wave_present= 	1;
- 
+  //else Prominent_U_Wave_present= 	0;
+
 
 ///////////Lead v5 page
 var Posterior_Signal_Strength = 0.5;
@@ -815,6 +844,7 @@ for (var i = 0; i < inputs.length; i++) {
  var sh = false;
  var index = 1;
  function startAnimation(steps,elem){
+ 
   elem.innerHTML= '<i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Stop Simulation'
   
   if(steps==22 && index==1){UpdateData();tick=0;disableEnable(true)}
