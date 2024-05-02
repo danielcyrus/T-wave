@@ -187,7 +187,10 @@
   
 </div>
 </body>
-
+<script>
+  var scene;
+  const cubes = []
+</script>
 <script type="module">
 const container = document.getElementById("canvas3D");
 var sliderX = document.getElementById("myRangeX");
@@ -198,7 +201,7 @@ var sliderY = document.getElementById("myRangeY");
   import * as THREE from "https://unpkg.com/three@0.125.2/build/three.module.js";
   import { OBJLoader } from "https://unpkg.com/three@0.125.2/examples/jsm/loaders/OBJLoader.js";
 
-  const scene = new THREE.Scene();
+  scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
     75,
     650 / 420,
@@ -255,6 +258,27 @@ model.traverse(function (child) {
 
 scene.add(model);
   });
+
+const geometry1 = new THREE.BoxGeometry( .2, 5, .2 ); 
+const material1 = new THREE.MeshBasicMaterial( {color: 0x0000ff} ); 
+cubes.push(new THREE.Mesh( geometry1, material1 )); 
+cubes[0].name = "v5"
+cubes[0].rotation.z = 10
+scene.add( cubes[0] );
+/////////////////////
+const geometry2 = new THREE.BoxGeometry( 5, .2, .2 ); 
+const material2 = new THREE.MeshBasicMaterial( {color: 0xff0000} ); 
+cubes.push(new THREE.Mesh( geometry2, material2 )); 
+cubes[1].rotation.z = 10
+cubes[1].name = "sv1"
+scene.add( cubes[1] );
+/////////////////////
+const geometry3 = new THREE.BoxGeometry( .2, .2, 5 ); 
+const material3 = new THREE.MeshBasicMaterial( {color: 0x00ff00} ); 
+cubes.push(new THREE.Mesh( geometry3, material3 )); 
+cubes[2].name = "III"
+scene.add( cubes[2] );
+
   camera.position.set(0, 0, 5);
   camera.lookAt(-1, 1, 0);
 
@@ -263,6 +287,17 @@ scene.add(model);
     if (model) {
       model.rotation.x = degX;
       model.rotation.y = degY;
+
+      cubes[0].rotation.x=degX;
+      cubes[0].rotation.y=degY;
+
+      cubes[1].rotation.x=degX;
+      cubes[1].rotation.y=degY;
+
+      cubes[2].rotation.x=degX;
+      cubes[2].rotation.y=degY;
+
+     
     }
     renderer.render(scene, camera);
   };
@@ -586,7 +621,7 @@ const Balance_Averagesx3 =[0,0,0];for(var i =3;i<22;i++)Balance_Averagesx3.push(
 const Three_Averaged = [(Balance_raw_data[0]+Balance_raw_data[1])/2];for(var i =1;i<21;i++)Three_Averaged.push((Balance_Averagesx2[i-1]+Balance_Averagesx2[i]+Balance_Averagesx2[i+1])/3);Three_Averaged.push((Balance_Averagesx2[20]+Balance_Averagesx2[21])/2);Three_Averaged.push(0);Three_Averaged.push(0);Three_Averaged.push(0);
 ////////////////////////////////
 for(var i =3;i<25;i++)V5_current_result.push(Balance_Averagesx3[i]);
-alert(V5_current_result);
+
 /////////////////////////Lead SV1 //////////
 //***************************************************************
 var Posterior_Signal_Strength_sv1 = 1;
@@ -771,10 +806,16 @@ for(var i =4;i<26;i++)III_current_result.push(Balance_Averagesx3_III[i]);
 //chart.update();
       }
 function showOffCharts(elem, id){
-if(elem.checked)
+  const names =["v5","sv1","III"]
+if(elem.checked){
   chart.data.datasets[parseInt(id)].hidden=false;
-else
+  scene.add( cubes[id] );
+}
+else{
 chart.data.datasets[parseInt(id)].hidden=true;
+var selectedObject = scene.getObjectByName(names[id]);
+  scene.remove( selectedObject );
+}
 
 chart.update();
 }
@@ -793,14 +834,13 @@ else{
 //var myInterval=null;
 var tick =0;
 function draw(){
- console.log("yes")
+
 const data0=[],data1=[],data2=[];
  for(var i=0;i<tick;i++)
   {
     data0.push(V5_current_result[i]);
     data1.push(sv1_current_result[i]);
     data2.push(III_current_result[i]);
-
 
   }
   /*
