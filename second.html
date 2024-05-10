@@ -165,7 +165,7 @@
               <i class="fa-sharp fa-solid fa-circle-info" style="color: forestgreen;"></i> Instructions
           </button><br><br>
    <!--<div class="tooltip" onc><span class="tooltiptextleft">Select either "Custom" or "Presets" value</span></div>-->
-            <button class="elems" id="startAnim" onclick="startAnimation(22,this);" style="float: right; width: 80%;">
+            <button id="startAnim" onclick="startPause(this);" style="float: right; width: 80%;">
               <i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation
           </button>
           </div>
@@ -832,15 +832,17 @@ for(var i =4;i<26;i++)III_current_result.push(Balance_Averagesx3_III[i]);
 //chart.update();
       }
 function showOffCharts(elem, id){
-
+  const dataName =["Lead V5","Lead sV1","Lead II"]
   const names =["v5","sv1","III"]
 if(elem.checked){
   
   chart.data.datasets[parseInt(id)].hidden=false;
+  chart.data.datasets[parseInt(id)].label = dataName[parseInt(id)];
   scene.add( cubes[id] );
 }
 else{
 chart.data.datasets[parseInt(id)].hidden=true;
+chart.data.datasets[parseInt(id)].label = "";
 var selectedObject = scene.getObjectByName(names[id]);
   scene.remove( selectedObject );
 }
@@ -909,13 +911,28 @@ for (var i = 0; i < inputs.length; i++) {
 }
  var sh = false;
  var index = 1;
+ var pause = false;
+ var steps=22
+ function startPause(elem){
+  
+  if(pause==false){
+  elem.innerHTML= '<i class="fa-sharp fa-solid fa-pause" style="color: forestgreen;"></i> Pause Simulation';
+  pause = true;
+
+ }
+ else
+{
+  elem.innerHTML= '<i class="fa-sharp fa-solid fa-pause" style="color: forestgreen;"></i> Continue Simulation';
+  pause = false;
+  
+}
+startAnimation(steps,elem);
+ }
  function startAnimation(steps,elem){
  
-  elem.innerHTML= '<i class="fa-sharp fa-solid fa-pause" style="color: forestgreen;"></i> Pause Simulation'
-  
   if(steps==22 && index==1){UpdateData();tick=0;disableEnable(true)}
 
- if(steps >= 0 ) {
+ if(steps >= 0 && pause==true) {
   draw()
 
   let nn = 'signalleft.0'+index.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
@@ -942,7 +959,8 @@ for (var i = 0; i < inputs.length; i++) {
  });
  index = 1
  btnStart.innerHTML = '<i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation'
- disableEnable(false) 
+ disableEnable(false)
+ steps =22 
 } 
  
  }
