@@ -189,7 +189,8 @@
 </body>
 <script>
   var scene;
-  const cubes = []
+  const cubes = [];
+  var heartRotation = 0.0;
 </script>
 <script type="module">
 const container = document.getElementById("canvas3D");
@@ -325,7 +326,7 @@ scene.add( cubes[2] );
     requestAnimationFrame(animate);
     if (model) {
       model.rotation.x = degX;
-      model.rotation.y = degY;
+      model.rotation.y = degY+heartRotation;
 
       cubes[0].rotation.x=degX;
       cubes[0].rotation.y=degY;
@@ -890,8 +891,12 @@ chart.update();
 var btnStart = document.getElementById("startAnim");
 function setEnable(elem){
   if(elem.checked)
+  {
+    heartRotation = -0.3;
   document.getElementById("Prominent_U_Wave_Factors_Present").disabled = false;
+  }
 else{
+  heartRotation = 0.0;
   temp =document.getElementById("Prominent_U_Wave_Factors_Present");
   temp.disabled = true;
   temp.checked= false;
