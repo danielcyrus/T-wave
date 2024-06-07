@@ -25,11 +25,10 @@
    <div>
     <div style="display: flex;" id="modeldiv">
      
-   <div id="eggmodel" style="flex: 1;"> <b style="font-size: 19px;">Egg Model</b><br><div id="canvas3D" style="width:80%;height:80%;position: relative;"></div></div>
-
-   <div id="graph" style="flex: 1;"> <b style="font-size: 19px;">Repolarisation Trace</b> 
+   <div id="eggmodel" style="width:49%;height:500px;"> <b style="font-size: 19px;">Egg Model</b><br><div id="canvas3D" style="width:80%;height:80%;"></div></div>
+   <div id="graph"  style="width:49%;height:500px;"> <b style="font-size: 19px;">Repolarisation Trace</b> 
     <br>
-    <canvas id="eggChart" style="width:500px;height:500px;margin-left: 15%;"></canvas></div>
+    <canvas id="eggChart" style="width:80%;height:90%;"></canvas></div>
   </div>
    <div id="configure" style="width: 99%;">
     <b style="font-size: 19px;">Settings</b><a onclick="expandShrink()" style="font-size: large;">^</a>
@@ -197,21 +196,60 @@ const container = document.getElementById("canvas3D");
 var sliderX = document.getElementById("myRangeX");
 var sliderY = document.getElementById("myRangeY");
 
+var toth = window.innerHeight;
+var totw = window.innerWidth;
 
+if(totw-200<toth){ 
+      document.getElementById('modeldiv').style.display="block";
+  }
+    else 
+      document.getElementById('modeldiv').style.display="flex";
 
   import * as THREE from "https://unpkg.com/three@0.125.2/build/three.module.js";
   import { OBJLoader } from "https://unpkg.com/three@0.125.2/examples/jsm/loaders/OBJLoader.js";
 
   scene = new THREE.Scene();
+  const renderer = new THREE.WebGLRenderer();
+  var clientHeight = document.getElementById('canvas3D').clientHeight;
+  var clientWidth = document.getElementById('canvas3D').clientWidth;
+
   const camera = new THREE.PerspectiveCamera(
-    75,
-    650 / 420,
+    45,
+    clientWidth / clientHeight,
     0.1,
     1000
   );
 
-  const renderer = new THREE.WebGLRenderer();
-  renderer.setSize(650, 420);
+
+
+
+  window.addEventListener('resize', () => {
+
+    var clientHeight = document.getElementById('canvas3D').clientHeight;
+  var clientWidth = document.getElementById('canvas3D').clientWidth;
+
+    camera.aspect = clientWidth / clientHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(clientWidth, clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    
+    renderer.render(scene, camera); // -> Also needed
+
+
+    var toth = window.innerHeight;
+    var totw = window.innerWidth;
+
+    if(totw-200<toth){ 
+      document.getElementById('modeldiv').style.display="block";
+  }
+    else 
+      document.getElementById('modeldiv').style.display="flex";
+
+
+});
+
+  renderer.setSize(clientWidth, clientHeight);
   renderer.setClearColor("#ffffff");
   //document.body.appendChild(renderer.domElement);
   container.appendChild( renderer.domElement );
@@ -280,7 +318,7 @@ cubes[2].name = "III"
 scene.add( cubes[2] );
 /////////////////////
 
-  camera.position.set(0, 0, 5);
+  camera.position.set(0, 0, 10);
   camera.lookAt(-1, 1, 0);
 
   const animate = function() {
