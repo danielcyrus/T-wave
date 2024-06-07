@@ -32,10 +32,10 @@
     <canvas id="eggChart" style="width:500px;height:500px;margin-left: 15%;"></canvas></div>
   </div>
    <div id="configure" style="width: 99%;">
-    <b style="font-size: 19px;">Settings</b>
+    <b style="font-size: 19px;">Settings</b><a onclick="expandShrink()" style="font-size: large;">^</a>
     <br>
     <br>
-      <div id="div-slider" style ="width: 45%;height: 200px;border-width: 1px;border-color: black;border-style: solid;display: inline-block;vertical-align: middle;border-radius: 5px;">
+      <div id="div-slider" class="div-setting"  style ="width: 45%;height: 200px;border-width: 1px;border-color: black;border-style: solid;display: inline-block;vertical-align: middle;border-radius: 5px;">
         <b>Model Orientation</b>
         <br>
         <table>
@@ -922,7 +922,7 @@ for (var i = 0; i < inputs.length; i++) {
  }
  else
 {
-  elem.innerHTML= '<i class="fa-sharp fa-solid fa-pause" style="color: forestgreen;"></i> Continue Simulation';
+  elem.innerHTML= '<i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Continue Simulation';
   pause = false;
   
 }
@@ -958,11 +958,20 @@ startAnimation(steps,elem);
      
  });
  index = 1
- btnStart.innerHTML = '<i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation'
- disableEnable(false)
- steps =22 
+ btnStart.innerHTML = '<i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation';
+ disableEnable(false);
+ steps =22;
+ tick =0;
+ pause = false; 
 } 
  
+ }
+ function expandShrink(){
+  div = document.getElementsByClassName("div-setting")[0]
+  div.innerHTML =""
+  div.style = ";animation-name: shrink;animation-duration: 3s;"
+ 
+  
  }
  </script>
 </html>
