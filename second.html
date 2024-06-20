@@ -125,7 +125,7 @@
         </tr>
           <tr>
             <td><label for="Severity_Of_Occulsion"> Severity Of Occulsion </label></td>
-              <td><input class="elems" type="number" id="Severity_Of_Occulsion" name="quantity" min="0.0" max="1.0" step="0.1" value="1.0"></td>
+              <td><input class="elems" type="number" id="Severity_Of_Occulsion" name="quantity" min="0.0" max="1.0" step="0.1" value="0.5"></td>
           </tr>
           </table>
         </div>
@@ -139,7 +139,7 @@
             <td><label for="Anterior_Rotated_Heart" style="float: left;"> Anterior Rotated Heart</label></td>
           </tr>
           <tr>
-            <td><input class="elems" type="checkbox" id="Prominent_U_Wave_Factors_Present"></td>
+            <td><input class="elems" type="checkbox" id="Prominent_U_Wave_Factors_Present" onchange="updateModel(this)"></td>
             <td> <label for="Prominent_U_Wave_Factors_Present" style="float: left;"> Prominent U Wave Factors Present </label></td>
             </tr>
             </table>
@@ -191,6 +191,7 @@
   var scene;
   const cubes = [];
   var heartRotation = 0.0;
+var MainOpacity =0.4;
 </script>
 <script type="module">
 const container = document.getElementById("canvas3D");
@@ -220,8 +221,6 @@ if(totw-200<toth){
     0.1,
     1000
   );
-
-
 
 
   window.addEventListener('resize', () => {
@@ -255,7 +254,7 @@ if(totw-200<toth){
   //document.body.appendChild(renderer.domElement);
   container.appendChild( renderer.domElement );
 
-  
+  const Mainmaterial = new THREE.MeshBasicMaterial( { color: 0xaaaaaa , opacity :0.4, transparent : true, side:THREE.DoubleSide} );
   const loader = new OBJLoader( );
   //var model;
   loader.load("model/heart_new2.obj", obj => {
@@ -263,8 +262,8 @@ if(totw-200<toth){
       
 model.traverse(function (child) {
   if(child.name=="Heart_Sector"){
-      const material = new THREE.MeshBasicMaterial( { color: 0xaaaaaa , opacity :0.4, transparent : true, side:THREE.DoubleSide} );
-      child.material = material;
+      
+      child.material = Mainmaterial;
 
     }
 
@@ -297,6 +296,7 @@ model.traverse(function (child) {
 });
 
 scene.add(model);
+
   });
 
 const geometry1 = new THREE.BoxGeometry( .15, 5, .15 ); 
@@ -325,6 +325,7 @@ scene.add( cubes[2] );
   const animate = function() {
     requestAnimationFrame(animate);
     if (model) {
+      Mainmaterial.opacity=MainOpacity;
       model.rotation.x = degX;
       model.rotation.y = degY+heartRotation;
 
@@ -600,6 +601,7 @@ var Severity_of_Damage =	document.getElementById("Severity_Of_Occulsion").value;
   if(document.getElementById("Anterior_Rotated_Heart").checked)U_Wave_present= 	1;
   //else U_Wave_present= 	0;
   if(document.getElementById("Prominent_U_Wave_Factors_Present").checked)Prominent_U_Wave_present= 	1;
+
   //else Prominent_U_Wave_present= 	0;
 
 
@@ -887,6 +889,12 @@ var selectedObject = scene.getObjectByName(names[id]);
 }
 
 chart.update();
+}
+function updateModel(elem){
+  if(elem.checked)
+    MainOpacity =0.8;
+  else
+    MainOpacity =0.4; 
 }
 var btnStart = document.getElementById("startAnim");
 function setEnable(elem){
