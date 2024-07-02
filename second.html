@@ -79,19 +79,19 @@
           <table style="width: 100%;padding: 5%;">
         <tr>
          <td><label for="Basal_Septal" style="float:left"> Basal Septal </label></td> 
-         <td><input class="elems" type="number" id="Basal_Septal"  min="1" max="1.5" step="0.1" value="1.0"></td>
+         <td><input class="elems Hypertrophy" type="number" id="Basal_Septal"  min="1" max="1.5" step="0.1" value="1.0" onchange="changeMatColor()"></td>
         </tr>
         <tr>
           <td><label for="Apical_Septal" style="float:left"> Apical Septal </label></td>
-          <td><input class="elems" type="number" id="Apical_Septal"  min="1" max="1.5" step="0.1" value="1.0" ></td>
+          <td><input class="elems Hypertrophy" type="number" id="Apical_Septal"  min="1" max="1.5" step="0.1" value="1.0"  onchange="changeMatColor()"></td>
         </tr>
           <tr>
             <td><label for="Left_Ventricular" style="float:left"> Left Ventricular </label></td>
-              <td><input class="elems" type="number" id="Left_Ventricular"  min="1" max="1.5" step="0.1" value="1.0"> </td>
+              <td><input class="elems Hypertrophy" type="number" id="Left_Ventricular"  min="1" max="1.5" step="0.1" value="1.0"  onchange="changeMatColor()"> </td>
         </tr>
         <tr>
           <td><label for="Right_Ventricular" style="float:left"> Right Ventricular </label></td>
-          <td><input class="elems" type="number" id="Right_Ventricular" min="1" max="1.5" step="0.1" value="1.0" ></td>
+          <td><input class="elems Hypertrophy" type="number" id="Right_Ventricular" min="1" max="1.5" step="0.1" value="1.0"  onchange="changeMatColor()"></td>
         </tr>
         </table>
         </div>
@@ -105,23 +105,23 @@
           </tr>
           <tr>
             <td><label for="vehicle1"> Left Anterior Descending Artery </label></td>
-              <td><input type="range" class="damage elems" orient="horizontal" min="1" max="21" value="21" id="lad" step="1"/></td>
+              <td><input type="range" class="damage elems" orient="horizontal" min="1" max="21" value="21" id="lad" step="1"  onchange="changeMatColor()"/></td>
         </tr>
           <tr>
             <td><label for="vehicle2"> Left Circumflex Artery </label></td>
-              <td><input type="range" class="damage elems" orient="horizontal" min="9" max="22" value="22" id="lcx" step="1"/></td>
+              <td><input type="range" class="damage elems" orient="horizontal" min="9" max="22" value="22" id="lcx" step="1"  onchange="changeMatColor()"/></td>
         </tr>
           <tr>
             <td><label for="vehicle3"> Proximal Right Coronary Artery </label></td>
-              <td><input type="range" class="damage elems" orient="horizontal" min="9" max="22" value="22" id="rca" step="1"/></td>
+              <td><input type="range" class="damage elems" orient="horizontal" min="9" max="22" value="22" id="rca" step="1"  onchange="changeMatColor()"/></td>
         </tr>
           <tr>
             <td><label for="vehicle3"> Right Marginal Artery </label></td>
-              <td><input type="range" class="damage elems" orient="horizontal" min="12" max="21" value="21" id="rma" step="1"/></td>
+              <td><input type="range" class="damage elems" orient="horizontal" min="12" max="21" value="21" id="rma" step="1"  onchange="changeMatColor()"/></td>
         </tr>
           <tr>
             <td><label for="vehicle3"> Posterior Descending Artery </label></td>
-              <td><input type="range" class="damage elems" orient="horizontal" min="1" max="21" value="21" id="pda" step="1"/></td>
+              <td><input type="range" class="damage elems" orient="horizontal" min="1" max="21" value="21" id="pda" step="1"  onchange="changeMatColor()"/></td>
         </tr>
           <tr>
             <td><label for="Severity_Of_Occulsion"> Severity Of Occulsion </label></td>
@@ -192,6 +192,7 @@
   const cubes = [];
   var heartRotation = 0.0;
 var MainOpacity =0.4;
+var MainColor = 0xaaaaaa;
 </script>
 <script type="module">
 const container = document.getElementById("canvas3D");
@@ -281,13 +282,13 @@ model.traverse(function (child) {
   {
     let nn = 'signalleft.0'+index.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
     if(child.name==nn){
-      const material = new THREE.MeshBasicMaterial( { color: 0xff0000 , opacity :0.5, transparent : false, side:THREE.DoubleSide} );
+      const material = new THREE.MeshBasicMaterial( { color: 0xc76d0e , opacity :0.5, transparent : false, side:THREE.DoubleSide} );
       child.material = material;
       child.visible = false;
     }
     let nn1 = 'signalright.0'+index.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
     if(child.name==nn1){
-      const material = new THREE.MeshBasicMaterial( { color: 0xff0000 , opacity :0.5, transparent : false, side:THREE.DoubleSide} );
+      const material = new THREE.MeshBasicMaterial( { color: 0xc76d0e , opacity :0.5, transparent : false, side:THREE.DoubleSide} );
       child.material = material;
       child.visible = false;
     }
@@ -326,6 +327,7 @@ scene.add( cubes[2] );
     requestAnimationFrame(animate);
     if (model) {
       Mainmaterial.opacity=MainOpacity;
+      Mainmaterial.color.setHex(MainColor);
       model.rotation.x = degX;
       model.rotation.y = degY+heartRotation;
 
@@ -361,9 +363,12 @@ function resetSliderX(elem){
 /////////////////////////////////////////////////
 
 //////////////////////////////////////////////CALCULATION///////////
-var V5_Current_Result =   [0,	0,	0.0625,	0.25,	0.4375,	0.4375,	0.25,	0.0625,	0,	0,	0,	0,	0,	0,	0,	0,	0, 0.0625,	0.125,	0,	0,	0];
-var sV1_Current_Result =	[0,	0,	-0.125,	-0.5,	-0.875,	-0.875,	-0.5,	-0.125,	0,	0,	0,	0,	0, 0,	0,	0,	0, -0.125,	-0.25,	0,	0,	0];
-var III_Current_Result =	[0,	0,	0.0625,	0.25,0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0.0625,	0,	0,	0,	0,	0,	0, 0.0625,	0.125,	0,	0,	0];
+                          
+var V5_Current_Result =   [0,	0,	0.0625,	0.25,	0.4375,	0.4375,	0.25,	0.0625,	0,	0,	0,	0,	0,	0,	0,	0,	0, 0.0625,	0.1875,	0,	0,	0];
+
+var sV1_Current_Result =	[0,	0,	-0.125,	-0.5,	-0.875,	-0.875,	-0.5,	-0.125,	0,	0,	0,	0,	0, 0,	0,	0,	0, -0.125,	-0.375,	0,	0,	0];
+                                    
+var III_Current_Result =	[0,	0,	0.0625,	0.25,0.4375,	0.5,	0.5,	0.5,	0.4375,	0.25,	0.0625,	0,	0,	0,	0,	0, 0.0625,	0.1875,	0,	0,	0];
 
 
 ///////////graph
@@ -508,7 +513,7 @@ function presets(elem){
  else if(val==2){
     document.getElementById("lad").value =1;
     document.getElementById("lcx").value=9;
-    document.getElementById("rca").value=21;
+    document.getElementById("rca").value=22;
     document.getElementById("rma").value=21;
     document.getElementById("pda").value=21;
     document.getElementById("Severity_Of_Occulsion").value=0.5;
@@ -524,7 +529,7 @@ function presets(elem){
   else if(val==4){
     document.getElementById("lad").value =1;
     document.getElementById("lcx").value=22;
-    document.getElementById("rca").value=21;
+    document.getElementById("rca").value=22;
     document.getElementById("rma").value=21;
     document.getElementById("pda").value=21;
     document.getElementById("Severity_Of_Occulsion").value=0.5;
@@ -532,7 +537,7 @@ function presets(elem){
   else if(val==5){
     document.getElementById("lad").value =21;
     document.getElementById("lcx").value=9;
-    document.getElementById("rca").value=21;
+    document.getElementById("rca").value=22;
     document.getElementById("rma").value=21;
     document.getElementById("pda").value=21;
     document.getElementById("Severity_Of_Occulsion").value=0.5;
@@ -540,7 +545,7 @@ function presets(elem){
   else if(val==6){
     document.getElementById("lad").value =21;
     document.getElementById("lcx").value=22;
-    document.getElementById("rca").value=21;
+    document.getElementById("rca").value=22;
     document.getElementById("rma").value=1;
     document.getElementById("pda").value=21;
     document.getElementById("Severity_Of_Occulsion").value=0.5;
@@ -548,7 +553,7 @@ function presets(elem){
   else if(val==7){
     document.getElementById("lad").value =21;
     document.getElementById("lcx").value=22;
-    document.getElementById("rca").value=21;
+    document.getElementById("rca").value=22;
     document.getElementById("rma").value=21;
     document.getElementById("pda").value=1;
     document.getElementById("Severity_Of_Occulsion").value=0.5;
@@ -865,7 +870,7 @@ const Balance_Averagesx3_III =[0,0,0];for(var i =3;i<22;i++)Balance_Averagesx3_I
 ////////////////////////////////
 
 for(var i =4;i<26;i++)III_current_result.push(Balance_Averagesx3_III[i]);
-//alert(III_current_result);
+
 ////////////////////////////////////////////////////////////////
 //chart.data.datasets[0].data=V5_current_result;
 //chart.data.datasets[1].data=sv1_current_result;
@@ -892,7 +897,7 @@ chart.update();
 }
 function updateModel(elem){
   if(elem.checked)
-    MainOpacity =0.8;
+    MainOpacity =0.6;
   else
     MainOpacity =0.4; 
 }
@@ -1024,5 +1029,25 @@ startAnimation(steps,elem);
  
   
  }
+ function changeMatColor(){
+  elem = document.getElementsByClassName("Hypertrophy");
+  var check = 0;
+  for(var i=0;i<elem.length;i++){
+    if(elem[i].value>1.0){if(check==2)check=3;else check=1;break;}
+    
+  }
+
+  elem1 = document.getElementsByClassName("damage");
+
+  for(var i=0;i<elem1.length;i++){
+    if(elem1[i].value!=elem1[i].max){if(check==1)check=3;else check=2;break;}
+  
+  }
+if (check==0)MainColor=0xaaaaaa;
+else if(check==3)MainColor=0xaa00aa;
+else if(check==1)MainColor=0x0000ff;
+else MainColor=0xff00000;
+ }
+
  </script>
 </html>
