@@ -467,6 +467,8 @@ for (var i = 0; i < cells.length; i++) {
 function presets(element){
 const proximal= document.getElementById("proximal");
 const apical= document.getElementById("apical");
+const severity = document.getElementById("damageCombo");
+severity.value="0.5";
 	proximal.value = 1.0
 	apical.value = 1.0
   clearDamages();
@@ -483,71 +485,105 @@ const apical= document.getElementById("apical");
     break;
   case 3:
 		  disableElements();
-		  proximal.value = 1.0
-		apical.value = 2.0
+		  proximal.value = "1.0"
+		  apical.value = "2.0"
 		  break;
   case 4:
  
   disableElements();
+    for(var i=24;i<27;i++)
+    {
+     damageIndex[i]=1;
+     ctx.fillStyle = '#ff0000';
+     ctx.fillRect(damageRects[i], 70, 7 , 20);
+    }
+    break;
+    case 5://inverted T wave
+    severity.value="1.0";
+    disableElements();
+    for(var i=24;i<27;i++)
+    {
+     damageIndex[i]=1;
+     ctx.fillStyle = '#ff0000';
+     ctx.fillRect(damageRects[i], 70, 7 , 20);
+    }
+    break;
+    case 6://biphasiz T wave 1
+    severity.value="1.0";
+    disableElements();
+    for(var i=25;i<27;i++)
+    {
+     damageIndex[i]=1;
+     ctx.fillStyle = '#ff0000';
+     ctx.fillRect(damageRects[i], 70, 7 , 20);
+    }
+    break;
+    case 7://biphasiz T wave 2
+    proximal.value = "1.0"
+		  apical.value = "2.0"
+    severity.value="1.0";
+    disableElements();
+    for(var i=23;i<26;i++)
+    {
+     damageIndex[i]=1;
+     ctx.fillStyle = '#ff0000';
+     ctx.fillRect(damageRects[i], 70, 7 , 20);
+    }
+    break;
+    case 8://Bifid T wave
+    proximal.value = "1.0"
+		  apical.value = "2.0"
+    severity.value="1.0";
+    disableElements();
+    for(var i=25;i<26;i++)
+    {
+     damageIndex[i]=1;
+     ctx.fillStyle = '#ff0000';
+     ctx.fillRect(damageRects[i], 70, 7 , 20);
+    }
+    break;
+    case 9://St Depression 1
+    proximal.value = "1.0"
+		apical.value = "2.0"
+    severity.value="0.5";
+    disableElements();
+    for(var i=13;i<26;i++)
+    {
+     damageIndex[i]=1;
+     ctx.fillStyle = '#ff0000';
+     ctx.fillRect(damageRects[i], 70, 7 , 20);
+    }
+    break;
+    case 10://St Depression 2
+    proximal.value = "1.0"
+		apical.value = "2.0"
+    severity.value="0.5";
+    disableElements();
+    for(var i=13;i<24;i++)
+    {
+     damageIndex[i]=1;
+     ctx.fillStyle = '#ff0000';
+     ctx.fillRect(damageRects[i], 70, 7 , 20);
+    }
+    break;
+    case 11://St Depression 3
+    proximal.value = "1.0"
+		apical.value = "2.0"
+    severity.value="1.0";
+    disableElements();
+    for(var i=21;i<27;i++)
+    {
+     damageIndex[i]=1;
+     ctx.fillStyle = '#ff0000';
+     ctx.fillRect(damageRects[i], 70, 7 , 20);
+    }
+    break;
+    case 12://St evalation
+    proximal.value = "1.0"
+		apical.value = "2.0"
+    severity.value="0.5";
+    disableElements();
     for(var i=0;i<12;i++)
-    {
-     damageIndex[i]=1;
-     ctx.fillStyle = '#ff0000';
-     ctx.fillRect(damageRects[i], 70, 7 , 20);
-    }
-    break;
-    case 5:
-   
-    disableElements();
-    for(var i=12;i<23;i++)
-    {
-     damageIndex[i]=1;
-     ctx.fillStyle = '#ff0000';
-     ctx.fillRect(damageRects[i], 70, 7 , 20);
-    }
-    break;
-    case 6:
-  
-    disableElements();
-    for(var i=0;i<2;i++)
-    {
-     damageIndex[i]=1;
-     ctx.fillStyle = '#ff0000';
-     ctx.fillRect(damageRects[i], 70, 7 , 20);
-    const elem = document.getElementById("damageCombo");
-    elem.value="1.0";   
-	    const apical = document.getElementById("apical");
-	     const distal = document.getElementById("distal");
-	   apical.value = "1.5"
-	    distal.value = "1.5"
-    }
-    break;
-    case 7:
-  
-    disableElements();
-    for(var i=24;i<27;i++)
-    {
-     damageIndex[i]=1;
-     ctx.fillStyle = '#ff0000';
-     ctx.fillRect(damageRects[i], 70, 7 , 20);
-    }
-    break;
-    case 8:
-  
-    disableElements();
-    const elem = document.getElementById("damageCombo");
-    elem.value="1.0";
-    for(var i=24;i<27;i++)
-    {
-     damageIndex[i]=1;
-     ctx.fillStyle = '#ff0000';
-     ctx.fillRect(damageRects[i], 70, 7 , 20);
-    }
-    break;
-    case 9:
-  
-    disableElements();
-    for(var i=21;i<24;i++)
     {
      damageIndex[i]=1;
      ctx.fillStyle = '#ff0000';
