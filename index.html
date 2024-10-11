@@ -59,12 +59,17 @@
     
       <option value="1">Custom</option>
       <option value="2">Normal T Wave</option>
-      <option value="3">ST Elevation</option>
-      <option value="4">ST Depression</option>
-      <option value="5">Higher T Wave</option>
-      <option value="6">Flattened T Wave</option>
-      <option value="7">Inverted T Wave</option>
-      <option value="8">Biphasic T Wave</option>
+      <option value="3">Higher T Wave</option>
+      <option value="4">Flat T Wave</option>
+      <option value="5">Inverted T Wave</option>
+      <option value="6">Biphasic T Wave 1</option>
+      <option value="7">Biphasic T Wave 2</option>
+      <option value="8">Bifid T Wave</option>
+      <option value="9">ST Depression 1</option>
+      <option value="10">ST Depression 2</option>
+      <option value="11">ST Depression 3</option>
+      <option value="12">ST Elevation</option>
+	    
     </select><br><br>
     <div class="tooltip"><span class="tooltiptextleft">Run,Pause or Continue the simulation</span></div>
       <button id="startAnim" onclick="startAnimation(this);">
@@ -460,6 +465,10 @@ for (var i = 0; i < cells.length; i++) {
 } 
 }
 function presets(element){
+const proximal= document.getElementById("proximal");
+const apical= document.getElementById("apical");
+	proximal.value = 1.0
+	apical.value = 1.0
   clearDamages();
   rad=-10;
   draw();
@@ -470,10 +479,14 @@ function presets(element){
     enableElements();
     break;
     case 2:
-   
-    disableElements();
+    disableElements();	  
     break;
   case 3:
+		  disableElements();
+		  proximal.value = 1.0
+		apical.value = 1.0
+		  break;
+  case 4:
  
   disableElements();
     for(var i=0;i<12;i++)
@@ -483,7 +496,7 @@ function presets(element){
      ctx.fillRect(damageRects[i], 70, 7 , 20);
     }
     break;
-    case 4:
+    case 5:
    
     disableElements();
     for(var i=12;i<23;i++)
@@ -493,7 +506,7 @@ function presets(element){
      ctx.fillRect(damageRects[i], 70, 7 , 20);
     }
     break;
-    case 5:
+    case 6:
   
     disableElements();
     for(var i=0;i<2;i++)
@@ -509,7 +522,7 @@ function presets(element){
 	    distal.value = "1.5"
     }
     break;
-    case 6:
+    case 7:
   
     disableElements();
     for(var i=24;i<27;i++)
@@ -519,7 +532,7 @@ function presets(element){
      ctx.fillRect(damageRects[i], 70, 7 , 20);
     }
     break;
-    case 7:
+    case 8:
   
     disableElements();
     const elem = document.getElementById("damageCombo");
@@ -531,7 +544,7 @@ function presets(element){
      ctx.fillRect(damageRects[i], 70, 7 , 20);
     }
     break;
-    case 8:
+    case 9:
   
     disableElements();
     for(var i=21;i<24;i++)
