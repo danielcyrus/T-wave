@@ -27,12 +27,12 @@
     <b>Settings</b>
     <br>
     <div>
-      <div class="tooltip"><span class="tooltiptextbottom">Select the level of damage</span></div>
+      
     <div style="display: inline-block;vertical-align:top;width: 40%;">
       
     <div class="grid-container">
       <div class="grid-item">Basal Hypertrophy</div>
-      <div class="grid-item"><input type="number" id="proximal" name="quantity" min="1" max="2" step="0.1" value="1.0" class="settings"></div>
+      <div class="grid-item"><input type="number" id="proximal" name="quantity" min="1" max="2" step="0.1" value="1.0" class="settings"><div class="tooltip"><span class="tooltiptextright">Select hypertrophy applied to the Basal (symmetrical) or Apical (asymmetrical) part of the egg</span></div></div>
       <div class="grid-item">Apical Hypertrophy</div>
       <div class="grid-item"><input type="number" id="apical" name="quantity" min="1" max="2" step="0.1" value="1.0" class="settings"></div>  
       <!--<div class="grid-item">Distal  Hypertrophy</div>  
@@ -43,36 +43,39 @@
         <option value="1.0">Severe Damage</option>
       </select></div>
      
-     
+      <div class="tooltip"><span class="tooltiptextbottom">Select the level of damage</span></div>
     </div>
    
     </div>
+    
     <div style="width: 40%;display: inline-block;vertical-align:top;text-align: right;" >
+
+      
       <!--<button id="Instructions" onclick="Swal.fire({text:'Click on the green lead to designate damaged areas, or select one of the presets, then run the simulation. You can also adjust the hypertrophy or damage severity to see the effects on the T wave simulation.',confirmButtonColor: 'forestgreen'})">-->
         <button id="Instructions" onclick="showTooltip();">
         <i class="fa-sharp fa-solid fa-circle-info" style="color: forestgreen;"></i> Instructions
     </button><br><br>
+    <div class="tooltip"><span class="tooltiptextleft">Select either "Custom" or "Presets" value</span></div>
 
-   <div class="tooltip"><span class="tooltiptextleft">Select either "Custom" or "Presets" value</span></div>
    
-    Presets
+    Presets &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <select name="damage" id="preset" onchange="presets(this)">
     
-      <!-- <option value="1">1.Custom</option> -->
-      <option value="2">1.Normal T Wave</option>
-      <option value="3">2.Higher T Wave</option>
-      <option value="4">3.Flat T Wave</option>
-      <option value="5">4.Inverted T Wave</option>
-      <option value="6">5.Biphasic T Wave 1</option>
-      <option value="7">6.Biphasic T Wave 2</option>
-      <option value="8">7.Bifid T Wave</option>
-      <option value="9">8.ST Depression 1</option>
-      <option value="10">9.ST Depression 2</option>
-      <option value="11">10.ST Depression 3</option>
-      <option value="12">11.ST Elevation</option>
+      <option value="1">&nbsp;&nbsp;Custom</option>
+      <option value="2">&nbsp;1.&nbsp;Normal T Wave</option>
+      <option value="3">&nbsp;2.&nbsp;Higher T Wave</option>
+      <option value="4">&nbsp;3.&nbsp;Flat T Wave</option>
+      <option value="5">&nbsp;4.&nbsp;Inverted T Wave</option>
+      <option value="6">&nbsp;5.&nbsp;Biphasic T Wave 1</option>
+      <option value="7">&nbsp;6.&nbsp;Biphasic T Wave 2</option>
+      <option value="8">&nbsp;7.&nbsp;Bifid T Wave</option>
+      <option value="9">&nbsp;8.&nbsp;ST Depression 1</option>
+      <option value="10">&nbsp;9.&nbsp;ST Depression 2</option>
+      <option value="11">10.&nbsp;ST Depression 3</option>
+      <option value="12">11.&nbsp;ST Elevation</option>
 	    
     </select><br><br>
-    <div class="tooltip"><span class="tooltiptextbottom">Run,Pause or Continue the simulation</span></div>
+    <div class="tooltip"><span class="tooltiptextbottombottom">Run,Pause or Continue the simulation</span></div>
       <button id="startAnim" onclick="startAnimation(this);">
         <i class="fa-sharp fa-solid fa-play" style="color: forestgreen;"></i> Run Simulation
     </button>
@@ -86,12 +89,12 @@
   This work is based on the paper from the <a href="scholar.google.com">link</a>
   <br>
   Our Research Team:<b>
-  Arvind Mistry, John Cannon, Kieran Stone, Daniel Cyrus, Faisal Rezwan
+    Faisal Rezwan, Arvind Mistry, John Cannon, Kieran Stone, Daniel Cyrus, Ignacy Mokrzecki
   </b>
-  <br>Developers: Daniel Cyrus
+  <br>Developers: Daniel Cyrus, Arvind Mistry
   <br>
-  Contact: <a href="mailto:far8@aber.ac.uk">Faisal Rezwan</a>
-  
+  Contact: <a href="mailto:far8@aber.ac.uk">Faisal Rezwan</a><br>
+  <p style="float: right;margin-right:30px"><a href="">User Manual</a></p>
 </div>
 </body>
 <script>
@@ -106,6 +109,8 @@ function showTooltip(){
   var cells = document.getElementsByClassName("tooltiptextleft"); 
   var cells1 = document.getElementsByClassName("tooltiptextright"); 
   var cells2 = document.getElementsByClassName("tooltiptexttop"); 
+  var cells3 = document.getElementsByClassName("tooltiptextbottom"); 
+  var cells4 = document.getElementsByClassName("tooltiptextbottombottom"); 
   
 if(intru==false){
   for (var i = 0; i < cells.length; i++) { 
@@ -123,6 +128,18 @@ if(intru==false){
   for (var i = 0; i < cells2.length; i++) { 
     cells2[i].style.visibility = "visible";
     cells2[i].style.opacity= .9;
+  //cells[i].style.display= "block";
+ 
+  } 
+  for (var i = 0; i < cells3.length; i++) { 
+    cells3[i].style.visibility = "visible";
+    cells3[i].style.opacity= .9;
+  //cells[i].style.display= "block";
+ 
+  } 
+  for (var i = 0; i < cells4.length; i++) { 
+    cells4[i].style.visibility = "visible";
+    cells4[i].style.opacity= .9;
   //cells[i].style.display= "block";
  
   } 
